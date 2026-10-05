@@ -3,6 +3,7 @@ from pathlib import Path
 from datetime import datetime, timezone
 from zipfile import ZipFile, ZIP_DEFLATED
 import argparse, hashlib, json, subprocess
+from release_config import VERSION, SCHEMA, source_path
 
 root = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
@@ -12,8 +13,8 @@ def git(*params):
     return subprocess.check_output(['git', '-C', str(root), *params])
 if git('status','--porcelain').strip(): raise SystemExit('Commit all intended changes before building.')
 commit = git('rev-parse','HEAD').decode().strip()
-version = '0.8.7'
-names = [p.decode('utf8') for p in git('ls-files','-z').split(b'\0') if p]
+version = VERSION
+names = [p.decode('utf8') for p in git('ls-files','-z').split(b'\0') if p and source_path(p.decode('utf8'))]
 files = {}
 for name in names:
     p=Path(name)
@@ -30,6 +31,8 @@ if qualification.get('wordpress_integration',{}).get('status') != 'passed' or no
 plugin_hash=hashlib.sha256(b''.join(name.encode()+b'\0'+files[name] for name in sorted(files) if name.startswith('wordpress/') and name.endswith('.php'))).hexdigest()
 if qualification.get('tested_plugin_sha256') != plugin_hash:
     raise SystemExit('Plugin changed since WordPress integration test.')
+if qualification.get('version') != VERSION or qualification.get('integration',{}).get('concurrency',{}).get('status') != 'passed' or qualification.get('integration',{}).get('load',{}).get('status') != 'passed':
+    raise SystemExit('Current release qualification including concurrency/load is required.')
 if tests.get('status') != 'passed' or tests.get('browser',{}).get('status') != 'passed':
     raise SystemExit('Successful local tests including browser are required.')
 if tests.get('tested_source_sha256') != hashlib.sha256(b''.join(name.encode()+b'\0'+files[name] for name in sorted(files) if name.startswith(('frontend/','wordpress/','tests/')) and name!='frontend/manifest.json')).hexdigest():
@@ -40,7 +43,7 @@ for image in sorted((root/'runtime/screenshots').glob('*.png')):
     files['evidence/screenshots/'+image.name]=image.read_bytes()
 out=args.output.resolve();out.mkdir(parents=True,exist_ok=True)
 archive_name=f'hlasuj-{version}-source.zip'
-manifest={'product':'Hlasuj! by MiloslavHub','version':version,'frontend_version':version,'backend_version':version,'schema_version':'0.8.5','docs_version':version,'git_commit':commit,'built_at':datetime.now(timezone.utc).isoformat(),'status':'qualified-patch','production_deployed':'see deployment report','backup_restore_verified':True,'wordpress_database_integration_tested':True,'artifact':archive_name,'files':[{'path':n,'size':len(data),'sha256':hashlib.sha256(data).hexdigest()} for n,data in sorted(files.items())]}
+manifest={'product':'Hlasuj! by MiloslavHub','version':version,'frontend_version':version,'backend_version':version,'schema_version':SCHEMA,'docs_version':version,'git_commit':commit,'built_at':datetime.now(timezone.utc).isoformat(),'status':'qualified-patch','production_deployed':'see deployment report','backup_restore_verified':True,'wordpress_database_integration_tested':True,'artifact':archive_name,'files':[{'path':n,'size':len(data),'sha256':hashlib.sha256(data).hexdigest()} for n,data in sorted(files.items())]}
 manifest_bytes=(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n').encode('utf8')
 archive=out/archive_name
 with ZipFile(archive,'w',ZIP_DEFLATED) as z:

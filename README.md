@@ -2,13 +2,13 @@
 
 ## GitHub a distribuce
 
-Projekt používá [CZudla/miloslavhub-hlasuj](https://github.com/CZudla/miloslavhub-hlasuj). Větev `main` uchovává ověřený základ 0.8.7, `develop` následný pracovní vývoj. Dva balíčky a PDF jsou v `releases/0.8.7/`. Postup práce a obnova původní historie jsou v [docs/GITHUB.md](docs/GITHUB.md).
+Projekt používá [CZudla/miloslavhub-hlasuj](https://github.com/CZudla/miloslavhub-hlasuj). Větev `main` uchovává aktuální kvalifikované vydání, `develop` následný pracovní vývoj. Dva balíčky a PDF jsou v `releases/0.8.8/`. Postup práce a obnova původní historie jsou v [docs/GITHUB.md](docs/GITHUB.md).
 
-**0.8.7 — opravné vydání před širším Pilot Foundation.**
+**0.8.8 — transakční ochrana souběhu hlasování.**
 
-Vývojová migrace GPT‑6 a vypnutý AI pilot: [stav migrace](docs/GPT-6-MIGRATION-STATUS.md), [popis pilotu a testů](docs/AI-PILOT.md). Tyto změny zatím nejsou součástí nasazeného vydání 0.8.7.
+Vývojová migrace GPT‑6 a vypnutý AI pilot: [stav migrace](docs/GPT-6-MIGRATION-STATUS.md), [popis pilotu a testů](docs/AI-PILOT.md). AI je standardně vypnutá. Aktuální vydání a konkrétní nasazení dokládá RELEASE-0.8.8.md a deployment zpráva.
 
-Rozsah, provedená ověření a zbývající omezení jsou v docs/RELEASE-0.8.7.md. Stav konkrétního nasazení dokládá samostatná deployment zpráva; sestavení ZIPu samo nasazení nepotvrzuje.
+Rozsah, provedená ověření a zbývající omezení jsou v docs/RELEASE-0.8.8.md. Stav konkrétního nasazení dokládá samostatná deployment zpráva; sestavení ZIPu samo nasazení nepotvrzuje.
 
 Tato složka je nový zdrojový Git repozitář vytvořený z ověřených podkladů. Frontend z archivu 25. 9. 2026 se shoduje s 34 staženými frontendovými soubory serveru z 28. 9. Plugin pochází ze stejného serverového snímku a měl verzi 0.8.5. Produkční konfigurace a data nebyly kopírovány.
 
@@ -27,7 +27,7 @@ python tests/run.py --php C:/php84/php.exe
 python tests/run.py --php C:/php84/php.exe --browser
 ```
 
-Node musí mít dostupný balíček `playwright` (případně přes `NODE_PATH`). Testy založí dočasný server pouze na `127.0.0.1`, používají syntetická data a po dokončení jej ukončí. Výsledky a screenshoty zůstávají v ignorované složce `runtime/`. Testy WordPress kontraktů používají testovací objekty; dodatečný tests/wordpress-integration.php ověřuje 19 scénářů na skutečném WordPressu a MariaDB v izolovaném prostředí. Plné místní WordPress/DB ověření, 28 kontrol souběhu a 13 kontrol skutečné administrace v Edge spouští `tests/local-integration.py`; postup je v [AI-PILOT.md](docs/AI-PILOT.md). [Souhrn výsledků z 5. 10.](docs/test-evidence/2026-10-05-local.json) neobsahuje konfigurace ani provozní logy. Zátěžový test zatím není součástí ověření.
+Node musí mít dostupný balíček `playwright` (případně přes `NODE_PATH`). Testy založí dočasný server pouze na `127.0.0.1`, používají syntetická data a po dokončení jej ukončí. Výsledky a screenshoty zůstávají v ignorované složce `runtime/`. Testy WordPress kontraktů používají testovací objekty; dodatečný tests/wordpress-integration.php ověřuje 19 scénářů na skutečném WordPressu a MariaDB v izolovaném prostředí. Plné místní WordPress/DB ověření, 28 kontrol souběhu a 13 kontrol skutečné administrace v Edge spouští `tests/local-integration.py`; postup je v [AI-PILOT.md](docs/AI-PILOT.md). [Souhrn výsledků z 5. 10.](docs/test-evidence/2026-10-05-local.json) neobsahuje konfigurace ani provozní logy. Místní souběžné dávky 30 a 100 hlasů spustíte přepínačem --load u tests/local-integration.py. Nejde o ověření kapacity hostingu.
 
 ## Dokumentace
 
@@ -44,7 +44,7 @@ python scripts/refresh_manifest.py
 python tests/run.py --browser
 git add .
 git commit -m "Describe the tested change"
-python scripts/build_release.py --output ../../outputs/0.8.7
+python scripts/build_release.py --output ../../outputs/0.8.8
 ```
 
-Sestavení odmítne nečistý checkout, citlivé názvy souborů, zastaralý frontend manifest a kód změněný od úspěšných testů. ZIP obsahuje přesný seznam souborů s hashi, commit a důkazy testů. Neobsahuje produkční config ani DB. Sestavení 0.8.7 vyžaduje také úspěšný integrační test a doklad obnovení obou databází.
+Sestavení odmítne nečistý checkout, citlivé názvy souborů, zastaralý frontend manifest a kód změněný od úspěšných testů. ZIP obsahuje přesný seznam souborů s hashi, commit a důkazy testů. Neobsahuje produkční config ani DB. Sestavení aktuální verze vyžaduje také úspěšný integrační test a doklad obnovení obou databází.

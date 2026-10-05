@@ -1,6 +1,6 @@
 # Manuál studenta
 
-Hlasuj! by MiloslavHub · 0.8.7
+Hlasuj! by MiloslavHub · 0.8.8
 
 ## Připojení a odpověď
 

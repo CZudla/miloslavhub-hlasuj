@@ -2,9 +2,9 @@
 
 ## Co je hotové v této iteraci
 
-Audit se strukturou A–M, zdrojový Git repozitář, opravná implementace 0.8.7, testy, ověřená obnova záloh, produkční nasazení, devět českých dokumentů pro zákazníka, společná PDF/HTML příručka, produktový list, marketingové texty a upravitelný banner. Dva výsledné ZIPy mají vlastní seznam souborů a kontrolní součty.
+Audit se strukturou A–M, zdrojový Git repozitář, opravná implementace 0.8.8, testy, ověřená obnova záloh, produkční nasazení, devět českých dokumentů pro zákazníka, společná PDF/HTML příručka, produktový list, marketingové texty a upravitelný banner. Dva výsledné ZIPy mají vlastní seznam souborů a kontrolní součty.
 
-Za aktuální stav vydání považujte RELEASE-0.8.7.md a DEPLOYMENT-2026-10-02.md. AUDIT.md zachycuje výchozí audit a historické doklady. MASTER-SPEC.md a centrální registr jsou zadání směru; jejich přítomnost neznamená implementaci každého požadavku.
+Za aktuální stav vydání považujte RELEASE-0.8.8.md a DEPLOYMENT-2026-10-05.md. AUDIT.md zachycuje výchozí audit a historické doklady. MASTER-SPEC.md a centrální registr jsou zadání směru; jejich přítomnost neznamená implementaci každého požadavku.
 
 ## Autorský balíček
 
@@ -20,11 +20,11 @@ Zákaznický instalační ZIP je připraven pro technické předání. Neuzavír
 
 ### NOW — další bezpečná iterace
 
-Krátký pilot s jedním učitelem a testovací skupinou, sepsání skutečných problémů ovládání, revize textů a zákaznických instalačních kroků na oddělené instalaci. Doplnit schválenou licenci vlastních částí a podmínky předání. Založit vzdálený Git repozitář, až autor určí jeho umístění a přístupy. Nepřepisovat historické výsledky ani QR.
+Krátký pilot s jedním učitelem a testovací skupinou, sepsání skutečných problémů ovládání, revize textů a zákaznických instalačních kroků na oddělené instalaci. Doplnit schválenou licenci vlastních částí a podmínky předání. Aktivní GitHub repozitář je CZudla/miloslavhub-hlasuj; pravidla jsou v GITHUB.md. Nepřepisovat historické výsledky ani QR.
 
 ### NEXT
 
-Navrhnout oprávnění a vlastnictví obsahu před více učiteli, omezit přístup k výsledkům podle jasné politiky, ověřit souběžné hlasování/uzavření a limity hostingu. Připravit návrh domácího úkolu s pedagogickým UI: Ve výuce / Jako domácí úkol, Odevzdat do, pokusy, správná odpověď a vysvětlení po odevzdání. Samostatné řešení studentem musí mít vlastní průběh. Návrh má pokrýt jednu otázku i sadu, výsledky, bodování, soukromí a export/import.
+Navrhnout oprávnění a vlastnictví obsahu před více učiteli, omezit přístup k výsledkům podle jasné politiky, navázat na ověřený souběh hlasování a prověřit kapacitu hostingu. Připravit návrh domácího úkolu s pedagogickým UI: Ve výuce / Jako domácí úkol, Odevzdat do, pokusy, správná odpověď a vysvětlení po odevzdání. Samostatné řešení studentem musí mít vlastní průběh. Návrh má pokrýt jednu otázku i sadu, výsledky, bodování, soukromí a export/import.
 
 ### LATER
 

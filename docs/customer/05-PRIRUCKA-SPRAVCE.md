@@ -1,6 +1,6 @@
 # Příručka správce: instalace, aktualizace a obnova
 
-Hlasuj! by MiloslavHub · 0.8.7
+Hlasuj! by MiloslavHub · 0.8.8
 
 ## 1. Složení a požadavky
 
@@ -15,7 +15,7 @@ Potřebujete HTTPS, PHP s MySQLi, WordPress REST API a pro frontend přepis adre
 1. Připravte oddělenou testovací instalaci WordPressu a prázdnou externí databázi. Ověřte její zálohování a dostupnost z hostingu.
 2. Do **prázdné externí databáze** importujte `database-schema.sql` z pluginu. Staré migrační soubory nejsou seznam kroků pro novou instalaci.
 3. Do `wp-config.php` před načtení WordPressu vložte konstanty `MHL_LIVE_DB_HOST`, `MHL_LIVE_DB_NAME`, `MHL_LIVE_DB_USER`, `MHL_LIVE_DB_PASSWORD` s údaji této instalace. Nevkládejte hesla do repozitáře ani do zákaznických ZIPů.
-4. Nainstalujte `instalace/miloslavhub-live-0.8.7.zip` jako WordPress plugin a aktivujte ho. Ponechte název složky `miloslavhub-live`.
+4. Nainstalujte `instalace/miloslavhub-live-0.8.8.zip` jako WordPress plugin a aktivujte ho. Ponechte název složky `miloslavhub-live`.
 5. Obsah `instalace/frontend/` nahrajte do kořene frontendového hostitele. Z příkladu připravte vlastní `config.php`. API URL musí směřovat na váš WordPress s `/wp-json/mhl/v1`; frontendové adresy, odkazy a kontakt nahraďte vlastními. Příklad obsahuje adresy původního projektu.
 6. V **Živé hlasování → Nastavení** nastavte Adresu hlasování a Povolený frontend (CORS) na svůj HTTPS frontend. Zkontrolujte zprávu o připojení a schématu.
 7. Vyplňte provozovatele, kontakt pro soukromí, přiměřené retenční doby a zamýšlené soutěžní funkce.
@@ -25,7 +25,7 @@ Chybějící frontendový `config.php` vrací HTTP 503 se zprávou pro správce.
 
 ## 3. Aktualizace existujícího systému
 
-Pro přechod z ověřeného schématu 0.8.5 na vydání 0.8.7 **není potřeba databázová migrace**. Verze aplikace a verze schématu jsou vedeny odděleně. Existující dodatečné indexy nemusí znamenat chybu; před změnou je porovnejte s reálnou strukturou.
+Pro přechod z ověřeného schématu 0.8.5 na vydání 0.8.8 **není potřeba databázová migrace**. Verze aplikace a verze schématu jsou vedeny odděleně. Existující dodatečné indexy nemusí znamenat chybu; před změnou je porovnejte s reálnou strukturou.
 
 Před aktualizací ověřte výchozí verze a neprobíhající výuku. Zálohujte obě databáze, celý WordPress s médii, plugin, frontend a obě konfigurace. Proveďte zkušební obnovu. Frontend a plugin přepněte koordinovaně na stejné vydání. Zachovejte konfiguraci, názvy pluginových složek, doménu a trvalé identifikátory obsahu.
 
@@ -45,6 +45,10 @@ Při návratu opravného vydání bez změny schématu obvykle stačí obnovit p
 
 Kontrolujte dostupnost frontendu, REST API, stav externí databáze, místo na disku a běh retenčního úklidu. Demo expiruje za 15 minut, fyzické soubory se mažou při následných požadavcích. Retence pluginu se také spouští za běžného provozu; přesný čas výmazu bez provozu není garantován.
 
-Projekční token chraňte před nechtěným sdílením. CORS a `noindex` nejsou přístupové oprávnění. Veřejná dostupnost některých výsledkových endpointů zůstává známým omezením 0.8.7. Před použitím pro citlivé hodnocení je nutné upravit přístupový model.
+Projekční token chraňte před nechtěným sdílením. CORS a `noindex` nejsou přístupové oprávnění. Veřejná dostupnost některých výsledkových endpointů zůstává známým omezením 0.8.8. Před použitím pro citlivé hodnocení je nutné upravit přístupový model.
 
-Multi-teacher izolace, rate limiting a atomická ochrana souběhu hlasu s uzavřením vyžadují další vývoj. Výkon pro konkrétní počet současných účastníků ověřte na cílovém hostingu; toto vydání nemá zátěžovou certifikaci.
+Souběh hlasu s uzavřením a opakováním je chráněn transakcí a ověřen 28 řízenými scénáři. Tabulky runs, sessions, votes a session_joins musí používat InnoDB; automatická konverze se neprovádí. Pro tuto aktualizaci ověřené produkce nebyla potřeba migrace.
+
+Multi-teacher izolace a rate limiting vyžadují další vývoj. Místní test ověřil dávky 30 a 100 souběžných hlasů, ale kapacitu webových workerů a polling ověřte na cílovém hostingu. Toto vydání nemá zátěžovou certifikaci.
+
+AI pomoc s přeformulováním a překladem je volitelná a ve výchozím stavu vypnutá. Zapnutí poskytovatele a placené API vyžaduje samostatné rozhodnutí provozovatele. AI návrh se použije pouze po potvrzení učitelem; studentské výsledky se neodesílají. Technické nastavení a limity jsou v AI-PILOT.md autorských zdrojů.

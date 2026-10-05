@@ -1,5 +1,12 @@
 # Změny
 
+## 0.8.8 — 2026-10-05 — souběh hlasování
+
+- Kvalifikována transakční ochrana příjmu hlasu a změn stavu běhu/otázky; bez automatické DB migrace.
+- Přidán místní test souběžných dávek 30 a 100 odpovědí s kontrolou duplicit a uzavření.
+- Sjednocena metadata sestavení, vyloučeno vkládání starých releases do zdrojů nových ZIPů; aktualizovány zákaznické příručky a marketing.
+- Volitelný AI pilot zůstává vypnutý, bez placených API volání. Stav nasazení uvádí DEPLOYMENT-2026-10-05.md.
+
 ## Rozpracováno — 2026-10-05 — vývojová větev
 
 - Projektová volba GPT‑6.1 Sol při zachování úrovně high a projektové instrukce.

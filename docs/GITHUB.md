@@ -4,13 +4,13 @@ Oficiální repozitář: https://github.com/CZudla/miloslavhub-hlasuj.
 
 ## Větve a vydání
 
-- `main`: zdrojový základ ověřeného vydání 0.8.7, dokumentace a podklady předání.
+- `main`: aktuální kvalifikované vydání 0.8.8, dokumentace a podklady předání.
 - `develop`: pracovní vývoj po 0.8.7, včetně místního AI pilotu a rozpracovaných změn souběhu hlasování. Tato větev se automaticky nenasazuje.
 - `release/0.8.7`: pojmenovaný zdrojový snímek původního vydání.
 
 Nasazený aplikační commit z původní místní historie je `40dce6213af07b01f4f9f2bf428786709979c109`; předání dokumentace bylo dokončeno v `d6bc71d`. GitHub import má vlastní commity. Původní historie je zachována v `releases/history-before-github.bundle` a v autorském ZIPu. Úplnou místní historii lze obnovit pomocí `git clone history-before-github.bundle hlasuj-history`.
 
-Distribuce jsou v `releases/0.8.7/`: autorský ZIP, zákaznický ZIP, české PDF příručky, produktový list a kontrolní součty. Jsou to nezměněné historické soubory předání. Nová verze musí mít vlastní vydání a ověření. Jednotlivé upravitelné manuály jsou v `docs/customer/`, marketingové podklady v `docs/marketing/`.
+Distribuce 0.8.8 jsou v `releases/0.8.8/`; původní 0.8.7 zůstává v `releases/0.8.7/`: autorský ZIP, zákaznický ZIP, české PDF příručky, produktový list a kontrolní součty. Jsou to nezměněné historické soubory předání. Nová verze musí mít vlastní vydání a ověření. Jednotlivé upravitelné manuály jsou v `docs/customer/`, marketingové podklady v `docs/marketing/`.
 
 ## Práce z místního projektu
 

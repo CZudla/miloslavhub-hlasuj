@@ -1,7 +1,7 @@
 {
   "product": "Hlasuj! by MiloslavHub",
-  "frontend_version": "0.8.7",
-  "backend_version": "0.8.7",
+  "frontend_version": "0.8.8",
+  "backend_version": "0.8.8",
   "schema_version": "0.8.5",
   "status": "release-candidate",
   "backend_changed": true,

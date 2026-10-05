@@ -12,6 +12,7 @@ require_once $testRoot.'/wp-content/plugins/miloslavhub-live/miloslavhub-live.ph
 MHL_Core::register_content_types();MHL_REST::init();
 $input=json_decode(stream_get_contents(STDIN),true,512,JSON_THROW_ON_ERROR);
 $db=MHL_DB::db();
+$barrier_wait_ms=0.0;
 if(!empty($input['barrier'])){
     $barrier=$input['barrier'];
     $directory=realpath($barrier['directory']);
@@ -20,7 +21,7 @@ if(!empty($input['barrier'])){
         throw new RuntimeException('Barrier files must stay inside runtime.');
     }
     $hit=false;
-    add_filter('query',static function($query) use ($barrier,$directory,&$hit){
+    add_filter('query',static function($query) use ($barrier,$directory,&$hit,&$barrier_wait_ms){
         $matches=match($barrier['point']){
             'before_lock','observe_lock'=>str_starts_with($query,'SELECT * FROM mhl_runs WHERE')&&str_ends_with($query,'FOR UPDATE'),
             'after_lock'=>str_starts_with($query,'SELECT * FROM mhl_sessions WHERE')&&str_ends_with($query,'FOR UPDATE'),
@@ -30,11 +31,13 @@ if(!empty($input['barrier'])){
         if($matches&&!$hit){
             $hit=true;file_put_contents($directory.'/ready','1');
             if($barrier['point']!=='observe_lock'){
-                $deadline=microtime(true)+15;
+                $wait_began=microtime(true);
+                $deadline=microtime(true)+min(120,max(15,(int)($barrier['timeout']??15)));
                 while(!is_file($directory.'/release')){
                     if(microtime(true)>$deadline){throw new RuntimeException('Barrier timed out');}
                     usleep(10000);
                 }
+                $barrier_wait_ms+=1000*(microtime(true)-$wait_began);
             }
         }
         return $query;
@@ -63,8 +66,10 @@ if($operation==='setup'){
         'mode'=>$mode,'participant_id'=>str_repeat('c',32),'option_index'=>0
     ]];
 }elseif($operation==='vote'){
-    $r=new WP_REST_Request('POST','/mhl/v1/vote');$r->set_header('Content-Type','application/json');$r->set_body(wp_json_encode($input['fixture']['body']));
-    $response=rest_do_request($r);$result=['status'=>$response->get_status(),'data'=>$response->get_data()];
+    $body=$input['fixture']['body'];
+    if(isset($input['participant_id'])){$body['participant_id']=$input['participant_id'];}
+    $r=new WP_REST_Request('POST','/mhl/v1/vote');$r->set_header('Content-Type','application/json');$r->set_body(wp_json_encode($body));
+    $began=microtime(true);$response=rest_do_request($r);$result=['status'=>$response->get_status(),'data'=>$response->get_data(),'duration_ms'=>max(0,1000*(microtime(true)-$began)-$barrier_wait_ms)];
 }elseif($operation==='inspect'){
     $f=$input['fixture'];
     $result=['votes'=>(int)$db->get_var($db->prepare('SELECT COUNT(*) FROM mhl_votes WHERE run_id=%d',$f['run_id'])),

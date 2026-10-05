@@ -21,6 +21,7 @@ parser.add_argument('--wordpress-source',type=Path,required=True)
 parser.add_argument('--mariadb-dir',type=Path,required=True)
 parser.add_argument('--php',default='C:/php84/php.exe')
 parser.add_argument('--browser',action='store_true')
+parser.add_argument('--load',action='store_true')
 args=parser.parse_args()
 repo=Path(__file__).resolve().parents[1]
 root=args.root.resolve();source=args.wordpress_source.resolve();database=args.mariadb_dir.resolve()
@@ -69,6 +70,9 @@ add_filter('pre_http_request',static function($pre,$args,$url){
 """,encoding='utf8')
 log=(root/'database.log').open('wb');web_log=None;web=None
 server=subprocess.Popen([str(database/'bin/mariadbd.exe'),'--no-defaults',f'--basedir={database}',f'--datadir={data}',f'--port={dbport}','--bind-address=127.0.0.1','--console'],stdout=log,stderr=log,creationflags=hidden)
+if args.load:
+    # Each WordPress worker opens both WP and voting DB connections; this is local only.
+    report['test_database_max_connections']=500
 env=dict(os.environ,MHL_TEST_WP_PATH=str(site),MHL_TEST_ADMIN_PASSWORD=admin_password,MHL_TEST_ADMIN_LOGIN='integration_admin')
 mysql=[database/'bin/mariadb.exe',f'--defaults-file={client}']
 try:
@@ -79,11 +83,15 @@ try:
             time.sleep(.2)
     else:raise RuntimeError('Local DB timed out')
     run(mysql,input=b'CREATE DATABASE integration_wp CHARACTER SET utf8mb4; CREATE DATABASE integration_votes CHARACTER SET utf8mb4;')
+    if args.load:run(mysql,input=b'SET GLOBAL max_connections=500;')
     run(mysql,input=b'USE integration_votes;\n'+(repo/'wordpress/miloslavhub-live/database-schema.sql').read_bytes())
     for name in ['wordpress-integration.php','ai-wordpress-integration.php']:
         result=json.loads(run(php+[repo/'tests'/name],env=env));report[name]=result;print(name,json.dumps(result),flush=True)
     result=json.loads(run([sys.executable,repo/'tests/concurrency.py','--php',args.php],env=env))
     report['concurrency']=result;print('concurrency',json.dumps(result),flush=True)
+    if args.load:
+        result=json.loads(run([sys.executable,repo/'tests/load.py','--php',args.php],env=env))
+        report['load']=result;print('load',json.dumps(result),flush=True)
     if args.browser:
         fixture=json.loads(run(php+[repo/'tests/ai-wordpress-browser-setup.php'],env=env))
         web_log=(root/'web.log').open('wb')

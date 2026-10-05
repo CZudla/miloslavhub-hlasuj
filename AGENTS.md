@@ -3,7 +3,7 @@
 ## Source of truth
 
 - Read README.md and the relevant sections of docs/MASTER-SPEC.md before changing behavior. Follow docs/PRODUCT-PRINCIPLES.md.
-- docs/RELEASE-0.8.7.md and docs/DEPLOYMENT-2026-10-02.md describe the qualified baseline. Older notes in ARCHITECTURE.md and ITERATION-PLAN.md may describe an earlier state.
+- docs/RELEASE-0.8.8.md and docs/DEPLOYMENT-2026-10-05.md describe the qualified baseline. Older notes in ARCHITECTURE.md and ITERATION-PLAN.md may describe an earlier state.
 - Planned features in MASTER-SPEC.md and ROADMAP.md are not evidence of implemented behavior. Trace behavior to code and tests.
 
 ## Architecture and contracts

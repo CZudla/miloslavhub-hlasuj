@@ -22,4 +22,4 @@ QR připojuje. Hlasování spouští učitel. Časový limit běží společně 
 
 **Zopakovat otázku** použijte jen při zamýšleném novém pokusu. Při běžném výpadku nejprve obnovte původní stránku a zkontrolujte připojení.
 
-Hlasuj! by MiloslavHub · 0.8.7 · 2. října 2026
+Hlasuj! by MiloslavHub · 0.8.8 · 5. října 2026

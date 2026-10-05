@@ -1,6 +1,6 @@
 # Referenční příručka
 
-Hlasuj! by MiloslavHub · 0.8.7 · referenční stav zdrojového kódu
+Hlasuj! by MiloslavHub · 0.8.8 · referenční stav zdrojového kódu
 
 ## Obsah a režimy
 
@@ -22,7 +22,7 @@ Hlasuj! by MiloslavHub · 0.8.7 · referenční stav zdrojového kódu
 |---|---|
 | Neaktivní (`idle`) | Není spuštěný odpovídající běh; učitel připraví přednášku |
 | Připravená (`waiting`) | Čeká na Spustit hlasování |
-| Připojování (`joining`) | Historický stav; v 0.8.7 čeká na učitele stejně jako připravená otázka |
+| Připojování (`joining`) | Historický stav; v 0.8.8 čeká na učitele stejně jako připravená otázka |
 | Probíhá (`open`) | Přijímá odpovědi do časového limitu nebo ručního ukončení |
 | Ukončená (`closed`) | Další hlasy nepřijímá; lze probrat výsledky nebo vědomě zopakovat |
 | Přeskočená (`skipped`) | Dokončený stav; otevření studentského odkazu jej neobnovuje |
@@ -66,7 +66,7 @@ Zástupné názvy v závorkách nenahrazujte odhadem. Použijte adresy vytvořen
 
 UTF-8 s BOM, oddělovač `;`. Sloupce: `run_id`, `session_id`, `question`, `nickname`, `option`, `is_correct`, `response_ms`, `points`, `created_at`. Možnost je označena písmenem, správnost hodnotou 1/0, u ankety může být prázdná. Čas odpovědi je v milisekundách. Databázové časové údaje jsou ukládány v UTC; administrace je může zobrazovat v místním čase WordPressu.
 
-CSV obsahuje jednotlivé hlasy, nikoli celé nastavení předmětu. Před sdílením vyberte nezbytné sloupce a zvažte odstranění přezdívek. Export otázek a následný import nejsou v 0.8.7 hotovou funkcí.
+CSV obsahuje jednotlivé hlasy, nikoli celé nastavení předmětu. Před sdílením vyberte nezbytné sloupce a zvažte odstranění přezdívek. Export otázek a následný import nejsou v 0.8.8 hotovou funkcí.
 
 ## API pro technického správce
 

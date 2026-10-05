@@ -1,6 +1,6 @@
 # Manuál učitele
 
-Hlasuj! by MiloslavHub · 0.8.7
+Hlasuj! by MiloslavHub · 0.8.8
 
 ## 1. Přístup a příprava
 
@@ -62,3 +62,7 @@ Respondenti hlasují samostatně. Dlouhodobá anketa neběží podle společnéh
 Otevřete **Archiv výsledků**, najděte živou relaci a klikněte na **CSV**. Soubor obsahuje jednotlivé hlasy včetně přezdívky, odpovědi, správnosti, času a bodů. Uchovávejte jej v chráněném úložišti; neposílejte ho veřejně.
 
 CSV se otevírá jako UTF-8 s oddělovačem středník. Text začínající znakem vzorce je chráněn apostrofem. Export výsledků není přenosem otázek ani úplnou zálohou aplikace.
+
+## Volitelná pomoc AI
+
+Správce může samostatně povolit pomoc s přeformulováním a překladem otázky. Ve výchozím nastavení je vypnutá. Zapnutý panel nejprve ukáže text určený k odeslání, potom návrh; použití návrhu v editoru potvrzujete sami. Běžné uložení otázky je další samostatný krok. Výsledky studentů se neposílají. Tato aktualizace placeného poskytovatele nezapíná.

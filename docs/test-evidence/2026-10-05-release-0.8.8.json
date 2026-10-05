@@ -1,0 +1,144 @@
+{
+  "date": "2026-10-05",
+  "version": "0.8.8",
+  "status": "passed",
+  "paid_api_calls": 0,
+  "regression": {
+    "status": "passed",
+    "production_access": false,
+    "wordpress_database_integration": "not run",
+    "php_lint": "passed",
+    "javascript_lint": "passed",
+    "security_contracts": {
+      "suite": "security-contracts",
+      "checks": 51,
+      "status": "passed"
+    },
+    "ai_contracts": {
+      "status": "passed",
+      "checks": 93,
+      "provider": "in-memory double",
+      "paid_calls": 0
+    },
+    "ai_disabled": {
+      "status": "passed",
+      "checks": 3
+    },
+    "demo_http_checks": 18,
+    "browser": {
+      "status": "passed",
+      "checks": 11,
+      "screenshots": 2,
+      "backend": "synthetic HTTP fixtures; demo PHP real",
+      "external_requests": 0
+    },
+    "ai_browser": {
+      "status": "passed",
+      "checks": 12,
+      "external_requests": 0,
+      "provider": "synthetic HTTP fixture"
+    },
+    "tested_source_sha256": "be6ca3153381fd175ca2fe12685fcf69ce2b49e793053482809066a68e40d3dd"
+  },
+  "integration": {
+    "status": "passed",
+    "production_data_used": false,
+    "paid_api_calls": 0,
+    "external_http_blocked": true,
+    "test_database_max_connections": 500,
+    "wordpress-integration.php": {
+      "status": "passed",
+      "checks": 19,
+      "wordpress": "7.1.2",
+      "database": "11.4.9-MariaDB",
+      "production_data_used": false,
+      "concurrency_tested": false
+    },
+    "ai-wordpress-integration.php": {
+      "status": "passed",
+      "checks": 21,
+      "wordpress": "7.1.2",
+      "database": "11.4.9",
+      "provider": "pre_http_request fixture",
+      "paid_calls": 0
+    },
+    "concurrency": {
+      "status": "passed",
+      "checks": 28,
+      "independent_processes": true,
+      "production_data_used": false,
+      "paid_api_calls": 0
+    },
+    "load": {
+      "status": "passed",
+      "scenarios": [
+        {
+          "students": 30,
+          "concurrent_workers": 30,
+          "status": "passed",
+          "votes": 30,
+          "burst_seconds": 2.038,
+          "handler_p50_ms": 2016.0,
+          "handler_p95_ms": 2212.0,
+          "handler_max_ms": 2417.9
+        },
+        {
+          "students": 100,
+          "concurrent_workers": 100,
+          "status": "passed",
+          "votes": 100,
+          "burst_seconds": 0.978,
+          "handler_p50_ms": 161.4,
+          "handler_p95_ms": 756.7,
+          "handler_max_ms": 1349.4
+        }
+      ],
+      "production_data_used": false,
+      "paid_api_calls": 0,
+      "transport": "independent PHP CLI processes using real REST callbacks and MariaDB",
+      "limits": "Local burst test; does not measure hosting HTTP workers, network or sustained polling"
+    },
+    "wordpress_admin_browser": {
+      "status": "passed",
+      "checks": 13,
+      "actual_wordpress_admin": true,
+      "external_requests_blocked": 7,
+      "paid_api_calls": 0
+    },
+    "browser_persistence": "passed",
+    "servers_stopped": true
+  },
+  "restore_summary": {
+    "status": "passed",
+    "source": "fresh authorized production SQL exports",
+    "restore_target": "isolated loopback MariaDB",
+    "production_modified": false,
+    "databases": {
+      "wordpress": {
+        "tables": 130,
+        "rows": 125778,
+        "check_tables": "passed_for_supported_tables",
+        "unsupported_check_count": 1
+      },
+      "voting": {
+        "tables": 5,
+        "rows": 52,
+        "check_tables": "passed_for_supported_tables",
+        "unsupported_check_count": 0
+      }
+    },
+    "voting_engines": {
+      "mhl_participants": "InnoDB",
+      "mhl_runs": "InnoDB",
+      "mhl_sessions": "InnoDB",
+      "mhl_session_joins": "InnoDB",
+      "mhl_votes": "InnoDB"
+    },
+    "active_live_test_runs": 0,
+    "server_stopped": true
+  },
+  "limits": [
+    "Local tests do not prove hosting worker or polling capacity",
+    "Actual AI quality and availability were not evaluated"
+  ]
+}

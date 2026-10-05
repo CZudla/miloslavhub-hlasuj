@@ -3,7 +3,7 @@
  * Plugin Name: Hlasuj! by MiloslavHub
  * Plugin URI: https://miloslavhub.cz/
  * Description: Živé hlasování pro přednášky: předměty, přednášky, banka otázek, stálé QR adresy, testovací režim, bodování, archiv a REST API pro hlasuj.miloslavhub.cz.
- * Version: 0.8.7
+ * Version: 0.8.8
  * Requires at least: 6.4
  * Requires PHP: 8.1
  * Author: Miloslav Hub
@@ -14,7 +14,7 @@
 
 if (!defined('ABSPATH')) { exit; }
 
-define('MHL_VERSION', '0.8.7');
+define('MHL_VERSION', '0.8.8');
 define('MHL_SCHEMA_VERSION', '0.8.5');
 define('MHL_FILE', __FILE__);
 define('MHL_DIR', plugin_dir_path(__FILE__));
