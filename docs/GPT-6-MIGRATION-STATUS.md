@@ -85,3 +85,7 @@ Projektové modelové nastavení lze vrátit odstraněním dvou přidaných `.co
 AI je nyní vypnutá; nebyl nastaven skutečný klíč, spuštěn placený požadavek, změněno produkční schéma ani provedeno nasazení. Nový kód patří do vývojové větve GitHubu, není kvalifikovaným vydáním 0.8.7. Produkční verzi stále dokládá DEPLOYMENT-2026-10-02.md.
 
 Následuje zátěžové ověření na očekávaném počtu studentů, kontrola cílového stagingu a až po samostatném povolení skutečná API evaluace. Volba Solu pro vývoj je nastavena; placené porovnání modelů zůstává podle přání uživatele neprovedené.
+
+## Následné vydání 0.8.8
+
+Kód této vývojové etapy byl kvalifikován jako 0.8.8 a nasazen 5. 10. 2026. AI zůstává vypnutá, bez placených volání. Rozsah a aktuální důkazy jsou v RELEASE-0.8.8.md a DEPLOYMENT-2026-10-05.md; předchozí stav v tomto dokumentu zachycuje průběh místního pilotu.

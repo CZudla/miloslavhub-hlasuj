@@ -9,3 +9,7 @@ Dne 5. 10. prošlo 269 kontrol: původní regrese a AI kontrakty, WordPress/DB i
 Testy používaly syntetická data, loopback a náhradní transport poskytovatele. Placené API se nevolalo. Zátěž na očekávaném počtu studentů a dostupnost, cena a kvalita skutečného modelu zůstávají neověřené. Produkční konfigurace, databáze a logy jsou mimo GitHub.
 
 Podrobnosti: [stav migrace](GPT-6-MIGRATION-STATUS.md), [AI pilot a opakování testů](AI-PILOT.md), [pravidla GitHubu a vydání](GITHUB.md).
+
+## Následné vydání 0.8.8
+
+Kód této vývojové etapy byl kvalifikován jako 0.8.8 a nasazen 5. 10. 2026. AI zůstává vypnutá, bez placených volání. Rozsah a aktuální důkazy jsou v RELEASE-0.8.8.md a DEPLOYMENT-2026-10-05.md; předchozí stav v tomto dokumentu zachycuje průběh místního pilotu.

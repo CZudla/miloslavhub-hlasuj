@@ -71,7 +71,7 @@ with ZipFile(plugin,'w',ZIP_DEFLATED) as z:
     for n,d in sources.items():
         if n.startswith('wordpress/'):z.writestr(n.removeprefix('wordpress/'),d)
 customer[f'instalace/miloslavhub-live-{VERSION}.zip']=plugin.getvalue()
-customer['instalace/frontend/release.json']=(json.dumps({'product':deploy['product'],'version':f'{VERSION}','schema_version':SCHEMA,'git_commit':deploy['application_commit'],'database_migration_required':False},indent=2)+'\n').encode()
+customer['instalace/frontend/release.json']=(json.dumps(deploy['release_metadata'],indent=2)+'\n').encode()
 customer['instalace/CTETE-PRED-INSTALACI.txt']='Začněte dokumentem dokumentace/PRIRUCKY.html, kapitola Příručka správce. Frontend a plugin instalujte koordinovaně. Vlastní config.php není dodán. V config.example.php nahraďte adresy projektu adresami své instalace. Novou DB vytvořte ze schema SQL; existující schéma 0.8.5 nemigrujte. Historické SQL migrace neimportujte všechny.\n'.encode('utf8')
 
 def finish(kind,files):
