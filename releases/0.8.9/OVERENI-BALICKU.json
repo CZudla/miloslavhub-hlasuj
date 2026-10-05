@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "version": "0.8.9",
+  "results": {
+    "AUTORSKY": {
+      "files": 177,
+      "bytes": 19563721,
+      "sha256": "f17187b764412b7515b76409df5f5482a4a3ffe93081dc53ca00acb2a7878b8c",
+      "manifest": "passed",
+      "known_credentials_found": 0
+    },
+    "deployed_runtime_files_compared": 61,
+    "ZAKAZNICKY": {
+      "files": 71,
+      "bytes": 3026019,
+      "sha256": "c11cee4d68d83306d8f5760626261d26b607b51347307f1962e52d31def55f81",
+      "manifest": "passed",
+      "known_credentials_found": 0
+    }
+  },
+  "production_configuration_included": false
+}
