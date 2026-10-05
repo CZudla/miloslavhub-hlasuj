@@ -1,0 +1,13 @@
+**/config.php
+**/wp-config.php
+.env
+.env.*
+!.env.example
+runtime/
+artifacts/
+*.log
+*.sql.gz
+*.dump
+node_modules/
+/vendor/
+__pycache__/
