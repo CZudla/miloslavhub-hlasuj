@@ -1,6 +1,6 @@
 # Volitelný AI asistent: lokální pilot
 
-Stav k 4. 10. 2026: implementováno a místně ověřeno včetně REST integrace na WordPressu/MariaDB; funkce je ve výchozím stavu vypnutá. Nebyla nasazena ani ověřena placeným voláním modelu. Tento dokument rozšiřuje vývojovou dokumentaci, nepopisuje funkci již dostupnou v produkční 0.8.7.
+Stav k 5. 10. 2026: implementováno a místně ověřeno včetně REST integrace a celého průchodu administrací WordPressu v Edge; funkce je ve výchozím stavu vypnutá. Nebyla nasazena ani ověřena placeným voláním modelu. Tento dokument rozšiřuje vývojovou dokumentaci, nepopisuje funkci již dostupnou v produkční 0.8.7.
 
 ## Co pilot umí
 
@@ -42,7 +42,7 @@ Kontrakt vychází z [GPT‑6.1 Sol](https://developers.openai.com/api/docs/mode
 
 `tests/ai.php` nahrazuje WordPress, databázi a HTTP transport testovacími objekty. `tests/ai-browser.cjs` používá skutečný panel vykreslený PHP, skutečný JavaScript a syntetické HTTP odpovědi na loopbacku. Tím se ověřuje tok editoru a chybové stavy; nejde o plný WordPress editor ani hodnocení skutečného modelu.
 
-`tests/ai-wordpress-integration.php` byl 4. 10. spuštěn na izolovaném WordPressu 7.1.2 a MariaDB 11.4.9: 21 kontrol prošlo. Stejné prostředí prošlo také 19 původními kontrolami hlasování. AI integrační test ověřuje skutečné REST permission callbacks, nonce, role, opt-out, nezměněný příspěvek po návrhu, běžné explicitní uložení a souběh dvou DB spojení. HTTP transport je přerušen WordPress filtrem `pre_http_request`; neproběhlo volání poskytovatele. Prohlížečový průchod celou WordPress administrací ani zátěž skupiny tím nejsou pokryty.
+`tests/ai-wordpress-integration.php` byl 4. 10. spuštěn na izolovaném WordPressu 7.1.2 a MariaDB 11.4.9: 21 kontrol prošlo. Stejné prostředí prošlo také 19 původními kontrolami hlasování. AI integrační test ověřuje skutečné REST permission callbacks, nonce, role, opt-out, nezměněný příspěvek po návrhu, běžné explicitní uložení a souběh dvou DB spojení. HTTP transport je přerušen WordPress filtrem `pre_http_request`; neproběhlo volání poskytovatele. Dne 5. 10. byly stejné kontroly zopakovány; přibylo 28 kontrol souběhu hlasování a 13 kontrol celého AI panelu v administraci Edge. Zátěž skupiny zatím není pokryta.
 
 ```text
 php tests/ai.php
@@ -50,14 +50,22 @@ php tests/ai.php disabled
 python tests/run.py --php C:/php84/php.exe --browser
 ```
 
+Pro opakovatelné úplné ověření použít místně rozbalený WordPress a Windows MariaDB. Cílová složka nesmí existovat; používat krátkou cestu mimo OneDrive. Zástupné cesty níže nahradit konkrétními místními cestami:
+
+```text
+python tests/local-integration.py --root C:/hlasuj-test-new --wordpress-source C:/runtimes/wordpress --mariadb-dir C:/runtimes/mariadb --php C:/php84/php.exe --browser
+```
+
+Runner používá `mysqli`, dvě nové DB se syntetickým obsahem a pouze loopback. Vytvoří náhradní provider transport pro skutečné webové požadavky a ověří uložený stav otázky i osobní vypnutí. Oba servery zastaví také při selhání. Konfigurace a logy zůstávají v místní cílové složce; souhrn je v ignorovaném `runtime/local-integration-results.json`. Souhrn ověření pro GitHub je v [test-evidence/2026-10-05-local.json](test-evidence/2026-10-05-local.json).
+
 Pokud není Playwright dostupný v Node, nastavit `NODE_PATH` na místní balíčky. V této pracovní stanici byl použit balíček z `C:/Users/mihu0334/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules`.
 
 `tests/fixtures/ai-evaluation.jsonl` obsahuje 40 syntetických zadání: 10 přeformulování, 10 překladů, 10 budoucích operací a 10 hraničních vstupů. Budoucí operace musí nynější pilot odmítnout. U přijatých zadání jsou uvedena kritéria věcného hodnocení. Soubor neobsahuje naměřené výsledky; hodnocení skutečných modelů zůstává neprovedeno podle požadavku uživatele na testy bez placeného API.
 
 ## Před skutečným pilotem
 
-1. Na stagingu dokončit prohlížečový průchod celou WordPress administrací a ověřit dostupnost GET_LOCK na cílovém hostingu. Místní REST/DB integrace je ověřena.
-2. Ověřit souběžné hlasování s AI a bez AI na očekávaném počtu studentů; dokončit potřebné opravy hlasovacího jádra z roadmapy.
+1. Na stagingu zopakovat prohlížečový průchod a ověřit dostupnost GET_LOCK i engine InnoDB na cílovém hostingu. Místní průchod administrací a REST/DB integrace jsou ověřeny.
+2. Ověřit souběžné hlasování s AI a bez AI na očekávaném počtu studentů; zohlednit společný zámek běhu v měření výkonu. Lokální testy pořadí hlasu a uzavření již prošly.
 3. Zajistit přístup k API, rozpočet, odpovídající nastavení zpracování dat a hodnotitele českých/anglických výstupů.
 4. Porovnat Sol a Lunu na stejných vstupech. Pro cenu za použitelný návrh doplnit sběr skutečné tokenové spotřeby z odpovědí poskytovatele; aktuální panel ji neměří.
 5. Teprve nad výsledkem připravit kvalifikovaný release, aktualizaci zákaznických příruček, zálohu a nasazení podle DEPLOYMENT.md.

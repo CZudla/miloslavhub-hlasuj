@@ -1,7 +1,11 @@
-# Vývojový snímek pro GitHub — 5. 10. 2026
+# Vývojová větev Hlasuj! — 5. 10. 2026
 
-Původní místní commit: `28b07ebd36ab11e04e072268e60357412a7fedc8`. Zachycuje místní rozpracované změny AI pilotu a transakčního řízení hlasování. Není nasazený a není novým vydáním 0.8.7.
+Prvotní import zachytil místní commit `28b07ebd36ab11e04e072268e60357412a7fedc8`. Následující místní commit `83f545abfa330cf7a2c9a6b681433539b38efc51` doplnil skutečné ověření WordPress administrace, opakovatelný integrační runner a dokumentaci výsledků.
 
-Regresní runner při prvotním přenosu prošel: syntaxe PHP/JS, 51 původních kontraktů, 93 AI kontraktů, 3 kontroly vypnuté AI, 18 HTTP kontrol dema, 11 původních prohlížečových a 12 AI prohlížečových kontrol. Pro poslední úpravy souběhu nebyly v tomto přenosu opakovány skutečné WordPress/DB a souběhové testy. Poskytovatel AI byl nahrazen syntetickými odpověďmi, placená API se nevolala.
+Větev obsahuje výchozím stavem vypnutý AI pilot a transakční řízení hlasování. Nejde o nasazenou verzi ani nové kvalifikované vydání 0.8.7.
 
-Další místní změny vzniklé během přenosu je nutné samostatně commitnout a ověřit. Podrobnosti předchozího AI pilotu jsou v GPT-6-MIGRATION-STATUS.md.
+Dne 5. 10. prošlo 269 kontrol: původní regrese a AI kontrakty, WordPress/DB integrace, 28 kontrol souběhu nezávislých PHP procesů a 13 kontrol celého AI panelu v administraci WordPressu v Edge. Navíc byl ověřen konečný uložený stav otázky, odpovědí a osobního vypnutí. [Souhrnný doklad](test-evidence/2026-10-05-local.json) obsahuje rozsah a limity ověření.
+
+Testy používaly syntetická data, loopback a náhradní transport poskytovatele. Placené API se nevolalo. Zátěž na očekávaném počtu studentů a dostupnost, cena a kvalita skutečného modelu zůstávají neověřené. Produkční konfigurace, databáze a logy jsou mimo GitHub.
+
+Podrobnosti: [stav migrace](GPT-6-MIGRATION-STATUS.md), [AI pilot a opakování testů](AI-PILOT.md), [pravidla GitHubu a vydání](GITHUB.md).

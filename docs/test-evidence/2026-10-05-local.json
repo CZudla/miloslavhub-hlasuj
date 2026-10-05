@@ -1,0 +1,89 @@
+{
+  "date": "2026-10-05",
+  "timezone": "Europe/Prague",
+  "status": "passed",
+  "scope": "Local synthetic data; no production access or deployment",
+  "paid_api_calls": 0,
+  "real_model_quality_evaluated": false,
+  "regression": {
+    "status": "passed",
+    "production_access": false,
+    "wordpress_database_integration": "not run",
+    "php_lint": "passed",
+    "javascript_lint": "passed",
+    "security_contracts": {
+      "suite": "security-contracts",
+      "checks": 51,
+      "status": "passed"
+    },
+    "ai_contracts": {
+      "status": "passed",
+      "checks": 93,
+      "provider": "in-memory double",
+      "paid_calls": 0
+    },
+    "ai_disabled": {
+      "status": "passed",
+      "checks": 3
+    },
+    "demo_http_checks": 18,
+    "browser": {
+      "status": "passed",
+      "checks": 11,
+      "screenshots": 2,
+      "backend": "synthetic HTTP fixtures; demo PHP real",
+      "external_requests": 0
+    },
+    "ai_browser": {
+      "status": "passed",
+      "checks": 12,
+      "external_requests": 0,
+      "provider": "synthetic HTTP fixture"
+    },
+    "tested_source_sha256": "d4d8634e3aa0ba309976f395c08a53ebff5cfc9016ad29435b2d6d566d5eb0f2"
+  },
+  "integration": {
+    "status": "passed",
+    "production_data_used": false,
+    "paid_api_calls": 0,
+    "external_http_blocked": true,
+    "wordpress-integration.php": {
+      "status": "passed",
+      "checks": 19,
+      "wordpress": "7.1.2",
+      "database": "11.4.9-MariaDB",
+      "production_data_used": false,
+      "concurrency_tested": false
+    },
+    "ai-wordpress-integration.php": {
+      "status": "passed",
+      "checks": 21,
+      "wordpress": "7.1.2",
+      "database": "11.4.9",
+      "provider": "pre_http_request fixture",
+      "paid_calls": 0
+    },
+    "concurrency": {
+      "status": "passed",
+      "checks": 28,
+      "independent_processes": true,
+      "production_data_used": false,
+      "paid_api_calls": 0
+    },
+    "wordpress_admin_browser": {
+      "status": "passed",
+      "checks": 13,
+      "actual_wordpress_admin": true,
+      "external_requests_blocked": 7,
+      "paid_api_calls": 0
+    },
+    "browser_persistence": "passed",
+    "servers_stopped": true
+  },
+  "total_checks_in_suites": 269,
+  "limits": [
+    "No load test at expected classroom size",
+    "No real provider availability, price or quality evaluation",
+    "No production deployment or existing table conversion"
+  ]
+}

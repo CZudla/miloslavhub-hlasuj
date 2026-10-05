@@ -1,12 +1,14 @@
 # Změny
 
-## Rozpracováno — 2026-10-04 — pouze lokálně
+## Rozpracováno — 2026-10-05 — vývojová větev
 
 - Projektová volba GPT‑6.1 Sol při zachování úrovně high a projektové instrukce.
 - Ve výchozím stavu vypnutý AI pilot pro správce: přeformulování otázky, překlad cs/en, kontrola odesílaného obsahu, náhled a potvrzení návrhu.
 - Samostatné ověření oprávnění, limitů, chyb poskytovatele a ochrany novějších úprav v editoru; syntetická hodnoticí sada.
 - Navíc ověřeno 19 původních WordPress/DB scénářů a 21 nových AI integračních kontrol na WordPressu 7.1.2/MariaDB 11.4.9. Provider HTTP je nahrazen syntetickými odpověďmi.
-- Bez placených volání API a bez nasazení. Skutečná kvalita modelů, plný průchod administrací v prohlížeči a zátěž skupiny nejsou zatím ověřeny; podrobnosti v docs/AI-PILOT.md.
+- Opraven souběh hlasu s uzavřením/expirací/opakováním otázky společnou transakcí a zámkem běhu. Pro nové DB výslovně určeno InnoDB; existující DB se automaticky nekonvertuje.
+- Dne 5. 10. prošlo také 28 kontrol souběhu v nezávislých PHP procesech a 13 kontrol celého AI panelu ve skutečné WordPress administraci v Edge. Přidán opakovatelný runner izolovaného prostředí.
+- Bez placených volání API a bez nasazení. Skutečná kvalita modelů a zátěž skupiny zůstávají neověřené; podrobnosti v docs/AI-PILOT.md.
 
 ## 0.8.7 — 2026-10-02 — opravné vydání
 

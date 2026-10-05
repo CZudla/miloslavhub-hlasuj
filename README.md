@@ -6,7 +6,7 @@ Projekt používá [CZudla/miloslavhub-hlasuj](https://github.com/CZudla/milosla
 
 **0.8.7 — opravné vydání před širším Pilot Foundation.**
 
-Lokální rozpracovaná migrace GPT‑6 a vypnutý AI pilot: [stav migrace](docs/GPT-6-MIGRATION-STATUS.md), [popis pilotu a testů](docs/AI-PILOT.md). Tyto změny zatím nejsou součástí nasazeného vydání 0.8.7.
+Vývojová migrace GPT‑6 a vypnutý AI pilot: [stav migrace](docs/GPT-6-MIGRATION-STATUS.md), [popis pilotu a testů](docs/AI-PILOT.md). Tyto změny zatím nejsou součástí nasazeného vydání 0.8.7.
 
 Rozsah, provedená ověření a zbývající omezení jsou v docs/RELEASE-0.8.7.md. Stav konkrétního nasazení dokládá samostatná deployment zpráva; sestavení ZIPu samo nasazení nepotvrzuje.
 
@@ -27,7 +27,7 @@ python tests/run.py --php C:/php84/php.exe
 python tests/run.py --php C:/php84/php.exe --browser
 ```
 
-Node musí mít dostupný balíček `playwright` (případně přes `NODE_PATH`). Testy založí dočasný server pouze na `127.0.0.1`, používají syntetická data a po dokončení jej ukončí. Výsledky a screenshoty zůstávají v ignorované složce `runtime/`. Testy WordPress kontraktů používají testovací objekty; dodatečný tests/wordpress-integration.php ověřuje 19 scénářů na skutečném WordPressu a MariaDB v izolovaném prostředí. Zátěžový test zatím není součástí ověření.
+Node musí mít dostupný balíček `playwright` (případně přes `NODE_PATH`). Testy založí dočasný server pouze na `127.0.0.1`, používají syntetická data a po dokončení jej ukončí. Výsledky a screenshoty zůstávají v ignorované složce `runtime/`. Testy WordPress kontraktů používají testovací objekty; dodatečný tests/wordpress-integration.php ověřuje 19 scénářů na skutečném WordPressu a MariaDB v izolovaném prostředí. Plné místní WordPress/DB ověření, 28 kontrol souběhu a 13 kontrol skutečné administrace v Edge spouští `tests/local-integration.py`; postup je v [AI-PILOT.md](docs/AI-PILOT.md). [Souhrn výsledků z 5. 10.](docs/test-evidence/2026-10-05-local.json) neobsahuje konfigurace ani provozní logy. Zátěžový test zatím není součástí ověření.
 
 ## Dokumentace
 
