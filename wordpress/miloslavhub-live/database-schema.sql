@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS mhl_runs (
   closed_at DATETIME NULL,
   created_by BIGINT UNSIGNED NULL,
   PRIMARY KEY (id), KEY lecture_id (lecture_id), KEY subject_id (subject_id), KEY mode (mode), KEY status (status), KEY expires_at (expires_at)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE TABLE IF NOT EXISTS mhl_sessions (
   id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   run_id BIGINT UNSIGNED NOT NULL,
@@ -20,14 +20,14 @@ CREATE TABLE IF NOT EXISTS mhl_sessions (
   status VARCHAR(20) NOT NULL DEFAULT 'waiting',
   joining_started_at DATETIME NULL, last_join_at DATETIME NULL, opened_at DATETIME NULL, closed_at DATETIME NULL, reset_at DATETIME NULL, created_at DATETIME NOT NULL,
   PRIMARY KEY (id), KEY run_question (run_id,question_id), KEY question_id (question_id), KEY mode (mode), KEY status (status), KEY reset_at (reset_at)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE TABLE IF NOT EXISTS mhl_votes (
   id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   session_id BIGINT UNSIGNED NOT NULL, run_id BIGINT UNSIGNED NOT NULL, question_id BIGINT UNSIGNED NOT NULL,
   mode VARCHAR(10) NOT NULL DEFAULT 'live', participant_key CHAR(64) NOT NULL, nickname VARCHAR(80) NOT NULL DEFAULT '',
   option_index SMALLINT UNSIGNED NOT NULL, is_correct TINYINT(1) NULL, response_ms INT UNSIGNED NOT NULL DEFAULT 0, points INT UNSIGNED NOT NULL DEFAULT 0, created_at DATETIME NOT NULL,
   PRIMARY KEY (id), UNIQUE KEY one_vote (session_id,participant_key), KEY run_id (run_id), KEY question_id (question_id), KEY mode (mode), KEY participant_key (participant_key)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS mhl_participants (
   id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,

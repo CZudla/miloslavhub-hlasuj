@@ -16,6 +16,41 @@ class MHL_DB {
         return 'mhl_' . preg_replace('/[^a-z0-9_]/i', '', $name);
     }
 
+    /** Serialize writes to one run. Always lock the run before any session. */
+    public static function with_run_lock(int $run_id, callable $operation): mixed {
+        $db = self::db();
+        static $engines_checked = false;
+        if (!$engines_checked) {
+            foreach (array('runs','sessions','votes','session_joins') as $name) {
+                $engine = $db->get_var($db->prepare('SELECT ENGINE FROM information_schema.TABLES WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME=%s', self::table($name)));
+                if (strtoupper((string)$engine) !== 'INNODB') {
+                    return new WP_Error('mhl_transaction_required', 'Hlasování vyžaduje tabulky InnoDB. Kontaktujte správce.', array('status'=>503));
+                }
+            }
+            $engines_checked = true;
+        }
+        if ($db->query('START TRANSACTION') === false) {
+            return new WP_Error('mhl_database_busy', 'Databáze nyní nemůže potvrdit změnu. Zkuste to znovu.', array('status'=>503));
+        }
+        try {
+            $run = $db->get_row($db->prepare('SELECT * FROM '.self::table('runs').' WHERE id=%d FOR UPDATE', $run_id));
+            if (!$run) {
+                $db->query('ROLLBACK');
+                return new WP_Error('mhl_run_unavailable', 'Běh již není dostupný.', array('status'=>409));
+            }
+            $result = $operation($db, $run);
+            if (is_wp_error($result)) { $db->query('ROLLBACK'); return $result; }
+            if ($db->query('COMMIT') === false) {
+                $db->query('ROLLBACK');
+                return new WP_Error('mhl_database_busy', 'Změnu se nepodařilo potvrdit. Zkontrolujte stav a zkuste to znovu.', array('status'=>503));
+            }
+            return $result;
+        } catch (Throwable $error) {
+            $db->query('ROLLBACK');
+            return new WP_Error('mhl_database_busy', 'Změnu se nepodařilo dokončit. Zkuste to znovu.', array('status'=>503));
+        }
+    }
+
     public static function db(): wpdb {
         if (self::$db instanceof wpdb) { return self::$db; }
         if (!self::configured()) { throw new RuntimeException('MiloslavHub Live: samostatná databáze není nakonfigurována v wp-config.php.'); }

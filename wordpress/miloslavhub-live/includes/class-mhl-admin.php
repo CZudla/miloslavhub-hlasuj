@@ -449,7 +449,7 @@ class MHL_Admin {
         if($lid && MHL_DB::schema_ready()){
             $db=MHL_DB::db();$runs=MHL_DB::table('runs');$sessions=MHL_DB::table('sessions');$votes=MHL_DB::table('votes');
             $run_ids=$db->get_col($db->prepare("SELECT id FROM {$runs} WHERE lecture_id=%d AND mode='test'",$lid));
-            foreach($run_ids?:array() as $rid){$db->delete($votes,array('run_id'=>(int)$rid),array('%d'));$db->delete($sessions,array('run_id'=>(int)$rid),array('%d'));$db->delete($runs,array('id'=>(int)$rid),array('%d'));}
+            foreach($run_ids?:array() as $rid){if(!MHL_Core::delete_test_run((int)$rid)){wp_die('Test se nepodařilo odstranit.');}}
         }
         wp_safe_redirect(admin_url('admin.php?page=mhl-live-demo&reset=1')); exit;
     }
@@ -506,7 +506,7 @@ class MHL_Admin {
         if(!$lecture_id || get_post_type($lecture_id)!=='mhl_lecture'){wp_die('Přednáška nebyla nalezena.');}
         $subject_id=MHL_Core::get_lecture_subject_id($lecture_id);
         $subject_run=$subject_id?MHL_Core::get_active_run_for_subject($subject_id,$mode):null;
-        if($subject_run){MHL_Core::close_run((int)$subject_run->id);}
+        if($subject_run && !MHL_Core::close_run((int)$subject_run->id)){wp_die('Předchozí běh se nepodařilo uzavřít.');}
         $run=MHL_Core::create_run($lecture_id,$mode,get_current_user_id(),true);
         if(!$run){wp_die('Přednášku se nepodařilo spustit. Zkontrolujte, že má přiřazený předmět a alespoň jednu otázku.');}
         wp_safe_redirect(admin_url('admin.php?page='.($mode==='test'?'mhl-live-test':'mhl-live-control').'&run_id='.(int)$run->id));exit;
@@ -514,12 +514,35 @@ class MHL_Admin {
 
     private static function session_guard(): object { if(!current_user_can('manage_options')){wp_die('Nemáte oprávnění.');}$sid=absint($_GET['session_id']??0);check_admin_referer('mhl_session_'.$sid);$db=MHL_DB::db();$t=MHL_DB::table('sessions');$s=$db->get_row($db->prepare("SELECT * FROM {$t} WHERE id=%d",$sid));if(!$s){wp_die('Relace nebyla nalezena.');}return $s; }
     private static function redirect_run(int $run_id): void {$db=MHL_DB::db();$runs=MHL_DB::table('runs');$mode=(string)$db->get_var($db->prepare("SELECT mode FROM {$runs} WHERE id=%d",$run_id));$page=$mode==='test'?'mhl-live-test':($mode==='async'?'mhl-live-async':'mhl-live-control');wp_safe_redirect(admin_url('admin.php?page='.$page.'&run_id='.$run_id));exit;}
-    public static function open_session(): void {$s=self::session_guard();$db=MHL_DB::db();$t=MHL_DB::table('sessions');$now=MHL_Core::now_mysql();$db->query($db->prepare("UPDATE {$t} SET status='closed',closed_at=%s WHERE run_id=%d AND status IN ('joining','open') AND id<>%d",$now,(int)$s->run_id,(int)$s->id));$timeout=MHL_Core::question_time_limit((int)$s->question_id);$db->update($t,array('status'=>'open','opened_at'=>$now,'closed_at'=>null,'reset_at'=>$timeout>0?MHL_Core::mysql_after_seconds($timeout):null),array('id'=>(int)$s->id),array('%s','%s','%s','%s'),array('%d'));self::redirect_run((int)$s->run_id);}
-    public static function close_session(): void {$s=self::session_guard();$db=MHL_DB::db();$db->update(MHL_DB::table('sessions'),array('status'=>'closed','closed_at'=>MHL_Core::now_mysql()),array('id'=>(int)$s->id),array('%s','%s'),array('%d'));self::redirect_run((int)$s->run_id);}
-    public static function reset_session(): void {$s=self::session_guard();$db=MHL_DB::db();$t=MHL_DB::table('sessions');$db->update($t,array('status'=>'closed','closed_at'=>MHL_Core::now_mysql()),array('id'=>(int)$s->id),array('%s','%s'),array('%d'));$db->insert($t,array('run_id'=>(int)$s->run_id,'question_id'=>(int)$s->question_id,'mode'=>$s->mode,'status'=>'waiting','created_at'=>MHL_Core::now_mysql()),array('%d','%d','%s','%s','%s'));self::redirect_run((int)$s->run_id);}
-    public static function finish_run(): void {if(!current_user_can('manage_options')){wp_die('Nemáte oprávnění.');}$rid=absint($_GET['run_id']??0);check_admin_referer('mhl_finish_run_'.$rid);$db=MHL_DB::db();$runs=MHL_DB::table('runs');$mode=(string)$db->get_var($db->prepare("SELECT mode FROM {$runs} WHERE id=%d",$rid));MHL_Core::close_run($rid);$page=$mode==='test'?'mhl-live-test':($mode==='async'?'mhl-live-async':'mhl-live-control');wp_safe_redirect(admin_url('admin.php?page='.$page));exit;}
-    public static function simulate_votes(): void {if(!current_user_can('manage_options')){wp_die('Nemáte oprávnění.');}$sid=absint($_GET['session_id']??0);$rid=absint($_GET['run_id']??0);check_admin_referer('mhl_simulate_'.$sid);$db=MHL_DB::db();$sessions=MHL_DB::table('sessions');$votes=MHL_DB::table('votes');$s=$db->get_row($db->prepare("SELECT * FROM {$sessions} WHERE id=%d AND run_id=%d AND mode='test'",$sid,$rid));if(!$s||$s->status!=='open'){wp_die('Testovací otázka není otevřená.');}$qid=(int)$s->question_id;$opts=MHL_Core::get_question_options($qid);$qmode=MHL_Core::question_type($qid);$ci=MHL_Core::question_correct_index($qid);if($ci===null){$ci=-1;}$settings=MHL_Core::settings();for($i=1;$i<=5;$i++){$option=$opts?($i-1)%count($opts):0;$ms=900+$i*850;$correct=$qmode==='quiz'?($option===$ci?1:0):null;$points=0;if($correct){$mult=(float)(get_post_meta($qid,'_mhl_multiplier',true)?:1);$win=max(5,(int)(get_post_meta($qid,'_mhl_speed_window',true)?:$settings['speed_window']));$factor=max(0.0,1.0-(($ms/1000)/$win));$points=(int)round(((int)$settings['base_points']+((int)$settings['speed_points']*$factor))*$mult);}elseif($qmode==='poll'){$points=(int)get_post_meta($qid,'_mhl_poll_points',true);} $db->insert($votes,array('session_id'=>$sid,'run_id'=>$rid,'question_id'=>$qid,'mode'=>'test','participant_key'=>hash('sha256','test-'.$rid.'-'.$sid.'-'.$i.'-'.wp_generate_uuid4()),'nickname'=>'Test'.$i,'option_index'=>$option,'is_correct'=>$correct,'response_ms'=>$ms,'points'=>$points,'created_at'=>MHL_Core::now_mysql()),array('%d','%d','%d','%s','%s','%s','%d','%d','%d','%d','%s'));}self::redirect_run($rid);}
-    public static function clear_test_data(): void {if(!current_user_can('manage_options')){wp_die('Nemáte oprávnění.');}check_admin_referer('mhl_clear_test_data');$db=MHL_DB::db();$test_session_ids=$db->get_col("SELECT id FROM ".MHL_DB::table('sessions')." WHERE mode='test'");if($test_session_ids){$ids=implode(',',array_map('absint',$test_session_ids));$db->query("DELETE FROM ".MHL_DB::table('session_joins')." WHERE session_id IN ({$ids})");}$db->query("DELETE FROM ".MHL_DB::table('votes')." WHERE mode='test'");$db->query("DELETE FROM ".MHL_DB::table('sessions')." WHERE mode='test'");$db->query("DELETE FROM ".MHL_DB::table('runs')." WHERE mode='test'");$db->query("DELETE FROM ".MHL_DB::table('participants')." WHERE mode='test'");wp_safe_redirect(admin_url('admin.php?page=mhl-live-test'));exit;}
+    private static function session_action(string $action): void {
+        $s=self::session_guard();
+        $result=MHL_Core::change_session((int)$s->id,$action);
+        if(is_wp_error($result)){wp_die(esc_html($result->get_error_message()));}
+        self::redirect_run((int)$s->run_id);
+    }
+    public static function open_session(): void {self::session_action('open');}
+    public static function close_session(): void {self::session_action('close');}
+    public static function reset_session(): void {self::session_action('reset');}
+    public static function finish_run(): void {if(!current_user_can('manage_options')){wp_die('Nemáte oprávnění.');}$rid=absint($_GET['run_id']??0);check_admin_referer('mhl_finish_run_'.$rid);$db=MHL_DB::db();$runs=MHL_DB::table('runs');$mode=(string)$db->get_var($db->prepare("SELECT mode FROM {$runs} WHERE id=%d",$rid));if(!MHL_Core::close_run($rid)){wp_die('Běh se nepodařilo uzavřít.');}$page=$mode==='test'?'mhl-live-test':($mode==='async'?'mhl-live-async':'mhl-live-control');wp_safe_redirect(admin_url('admin.php?page='.$page));exit;}
+    public static function simulate_votes(): void {
+        if(!current_user_can('manage_options')){wp_die('Nemáte oprávnění.');}
+        $sid=absint($_GET['session_id']??0);$rid=absint($_GET['run_id']??0);
+        check_admin_referer('mhl_simulate_'.$sid);
+        $result=MHL_DB::with_run_lock($rid,static function($db,$run) use ($sid,$rid) {
+            $sessions=MHL_DB::table('sessions');$votes=MHL_DB::table('votes');$s=$db->get_row($db->prepare("SELECT * FROM {$sessions} WHERE id=%d AND run_id=%d AND mode='test'",$sid,$rid));if($run->mode!=='test'||$run->status!=='active'||!$s||$s->status!=='open'||($s->reset_at && strtotime($s->reset_at.' UTC')<=time())||($run->expires_at && strtotime($run->expires_at.' UTC')<=time())){return new WP_Error('mhl_test_closed','Testovací otázka není otevřená.');}$qid=(int)$s->question_id;$opts=MHL_Core::get_question_options($qid);$qmode=MHL_Core::question_type($qid);$ci=MHL_Core::question_correct_index($qid);if($ci===null){$ci=-1;}$settings=MHL_Core::settings();for($i=1;$i<=5;$i++){$option=$opts?($i-1)%count($opts):0;$ms=900+$i*850;$correct=$qmode==='quiz'?($option===$ci?1:0):null;$points=0;if($correct){$mult=(float)(get_post_meta($qid,'_mhl_multiplier',true)?:1);$win=max(5,(int)(get_post_meta($qid,'_mhl_speed_window',true)?:$settings['speed_window']));$factor=max(0.0,1.0-(($ms/1000)/$win));$points=(int)round(((int)$settings['base_points']+((int)$settings['speed_points']*$factor))*$mult);}elseif($qmode==='poll'){$points=(int)get_post_meta($qid,'_mhl_poll_points',true);} $ok=$db->insert($votes,array('session_id'=>$sid,'run_id'=>$rid,'question_id'=>$qid,'mode'=>'test','participant_key'=>hash('sha256','test-'.$rid.'-'.$sid.'-'.$i.'-'.wp_generate_uuid4()),'nickname'=>'Test'.$i,'option_index'=>$option,'is_correct'=>$correct,'response_ms'=>$ms,'points'=>$points,'created_at'=>MHL_Core::now_mysql()),array('%d','%d','%d','%s','%s','%s','%d','%d','%d','%d','%s'));if($ok===false){return new WP_Error('mhl_test_failed','Testovací hlasy se nepodařilo uložit.');}} return true;
+        });
+        if(is_wp_error($result)){wp_die(esc_html($result->get_error_message()));}
+        self::redirect_run($rid);
+    }
+    public static function clear_test_data(): void {
+        if(!current_user_can('manage_options')){wp_die('Nemáte oprávnění.');}
+        check_admin_referer('mhl_clear_test_data');
+        $db=MHL_DB::db();
+        $ids=$db->get_col("SELECT id FROM ".MHL_DB::table('runs')." WHERE mode='test'");
+        foreach($ids?:array() as $rid){if(!MHL_Core::delete_test_run((int)$rid)){wp_die('Test se nepodařilo odstranit.');}}
+        $db->query("DELETE FROM ".MHL_DB::table('participants')." WHERE mode='test'");
+        wp_safe_redirect(admin_url('admin.php?page=mhl-live-test'));exit;
+    }
     public static function csv_text(string $value): string {
         // Spreadsheet applications may ignore leading whitespace/control characters.
         return preg_match('/^[\x00-\x20\x{00A0}]*[=+@\-]/u', $value) || preg_match('/^[\t\r\n]/', $value)

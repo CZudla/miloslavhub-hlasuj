@@ -25,6 +25,8 @@ require_once MHL_DIR . 'includes/class-mhl-install.php';
 require_once MHL_DIR . 'includes/class-mhl-core.php';
 require_once MHL_DIR . 'includes/class-mhl-admin.php';
 require_once MHL_DIR . 'includes/class-mhl-rest.php';
+require_once MHL_DIR . 'includes/class-mhl-ai.php';
+require_once MHL_DIR . 'includes/class-mhl-ai-admin.php';
 
 register_activation_hook(__FILE__, array('MHL_Install', 'activate'));
 
@@ -35,6 +37,8 @@ add_action('plugins_loaded', static function () {
     MHL_Core::init();
     if (is_admin()) { MHL_Admin::init(); }
     MHL_REST::init();
+    MHL_AI::init();
+    if (is_admin()) { MHL_AI_Admin::init(); }
 });
 
 add_action('admin_notices', static function () {

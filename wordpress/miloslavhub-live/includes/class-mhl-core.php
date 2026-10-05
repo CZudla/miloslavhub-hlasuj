@@ -401,14 +401,79 @@ class MHL_Core {
         return $row?:null;
     }
 
-    public static function close_run(int $run_id): void {
-        if (!MHL_DB::schema_ready() || !$run_id) { return; }
-        $db=MHL_DB::db(); $runs=MHL_DB::table('runs'); $sessions=MHL_DB::table('sessions'); $now=self::now_mysql();
-        // Aktivní otázka se řádně uzavře. Otázky, které během přednášky nikdy nebyly aktivovány,
-        // se označí jako přeskočené, aby neovlivňovaly body ani statistiky účasti.
-        $db->query($db->prepare("UPDATE {$sessions} SET status='closed',closed_at=%s WHERE run_id=%d AND status IN ('joining','open')",$now,$run_id));
-        $db->query($db->prepare("UPDATE {$sessions} SET status='skipped',closed_at=%s WHERE run_id=%d AND status='waiting'",$now,$run_id));
-        $db->update($runs,array('status'=>'closed','closed_at'=>$now),array('id'=>$run_id),array('%s','%s'),array('%d'));
+    public static function close_run(int $run_id): bool {
+        if (!MHL_DB::schema_ready() || !$run_id) { return false; }
+        $result=MHL_DB::with_run_lock($run_id, static function($db,$run) use ($run_id) {
+            $runs=MHL_DB::table('runs'); $sessions=MHL_DB::table('sessions'); $now=self::now_mysql();
+            if ($db->update($runs,array('status'=>'closed','closed_at'=>$now),array('id'=>$run_id),array('%s','%s'),array('%d'))===false
+                || $db->query($db->prepare("UPDATE {$sessions} SET status='closed',closed_at=%s WHERE run_id=%d AND status IN ('joining','open')",$now,$run_id))===false
+                || $db->query($db->prepare("UPDATE {$sessions} SET status='skipped',closed_at=%s WHERE run_id=%d AND status='waiting'",$now,$run_id))===false) {
+                return new WP_Error('mhl_close_failed','Běh se nepodařilo uzavřít.',array('status'=>503));
+            }
+            return true;
+        });
+        return $result===true;
+    }
+
+    /** Delete a test run only after any vote in progress has finished. */
+    public static function delete_test_run(int $run_id): bool {
+        $result=MHL_DB::with_run_lock($run_id, static function($db,$run) use ($run_id) {
+            if ($run->mode!=='test') { return new WP_Error('mhl_test_only','Mazat lze pouze testovací běh.'); }
+            $sessions=MHL_DB::table('sessions'); $joins=MHL_DB::table('session_joins');
+            if ($db->query($db->prepare("DELETE j FROM {$joins} j INNER JOIN {$sessions} s ON s.id=j.session_id WHERE s.run_id=%d",$run_id))===false) {
+                return new WP_Error('mhl_delete_failed','Test se nepodařilo odstranit.');
+            }
+            foreach (array('votes','sessions','runs') as $name) {
+                if ($db->delete(MHL_DB::table($name),array($name==='runs'?'id':'run_id'=>$run_id),array('%d'))===false) {
+                    return new WP_Error('mhl_delete_failed','Test se nepodařilo odstranit.');
+                }
+            }
+            return true;
+        });
+        return $result===true;
+    }
+
+    private static function expire_sessions(int $run_id): void {
+        MHL_DB::with_run_lock($run_id, static function($db,$run) use ($run_id) {
+            $sessions=MHL_DB::table('sessions');
+            $ok=$db->query($db->prepare("UPDATE {$sessions} SET status='closed',closed_at=UTC_TIMESTAMP() WHERE run_id=%d AND status='open' AND reset_at IS NOT NULL AND reset_at<=UTC_TIMESTAMP()",$run_id));
+            return $ok===false?new WP_Error('mhl_expire_failed','Otázku se nepodařilo uzavřít.'):true;
+        });
+    }
+
+    /** Live controls and reset use the same run lock as accepting a vote. */
+    public static function change_session(int $session_id, string $action): array|WP_Error {
+        $db=MHL_DB::db(); $sessions=MHL_DB::table('sessions');
+        $initial=$db->get_row($db->prepare("SELECT * FROM {$sessions} WHERE id=%d",$session_id));
+        if (!$initial) { return new WP_Error('mhl_session_missing','Relace již není dostupná.',array('status'=>409)); }
+        return MHL_DB::with_run_lock((int)$initial->run_id, static function($db,$run) use ($session_id,$action,$sessions) {
+            $now=self::now_mysql();
+            if ($run->status!=='active' || ($run->expires_at && strtotime($run->expires_at.' UTC')<=time())) {
+                return new WP_Error('mhl_not_open','Běh již není aktivní.',array('status'=>409));
+            }
+            $s=$db->get_row($db->prepare("SELECT * FROM {$sessions} WHERE id=%d AND run_id=%d FOR UPDATE",$session_id,(int)$run->id));
+            if (!$s) { return new WP_Error('mhl_session_missing','Relace již není dostupná.',array('status'=>409)); }
+            $latest=(int)$db->get_var($db->prepare("SELECT MAX(id) FROM {$sessions} WHERE run_id=%d AND question_id=%d AND mode=%s",(int)$run->id,(int)$s->question_id,$s->mode));
+            if ($latest!==$session_id) { return new WP_Error('mhl_stale_session','Otázka již byla zopakována. Obnovte panel.',array('status'=>409)); }
+            if ($action==='open') {
+                if ($s->status==='open') { return array('session'=>$s,'changed'=>false); }
+                if (!in_array($s->status,array('waiting','joining'),true)) { return new WP_Error('mhl_not_open','Pro další hlasování použijte Zopakovat otázku.',array('status'=>409)); }
+                if ($s->mode!=='async' && $db->query($db->prepare("UPDATE {$sessions} SET status='closed',closed_at=%s WHERE run_id=%d AND mode=%s AND status IN ('joining','open') AND id<>%d",$now,(int)$run->id,$s->mode,$session_id))===false) {
+                    return new WP_Error('mhl_session_failed','Otázku se nepodařilo otevřít.',array('status'=>503));
+                }
+                $timeout=self::question_time_limit((int)$s->question_id);
+                $deadline=$s->mode==='async'?self::question_async_end_mysql((int)$s->question_id):($timeout>0?self::mysql_after_seconds($timeout):null);
+                $ok=$db->update($sessions,array('status'=>'open','joining_started_at'=>null,'last_join_at'=>null,'opened_at'=>$now,'closed_at'=>null,'reset_at'=>$deadline),array('id'=>$session_id));
+            } elseif ($action==='close' || $action==='reset') {
+                $ok=$db->update($sessions,array('status'=>'closed','closed_at'=>$now),array('id'=>$session_id));
+                if ($ok!==false && $action==='reset') {
+                    $ok=$db->insert($sessions,array('run_id'=>(int)$run->id,'question_id'=>(int)$s->question_id,'mode'=>$s->mode,'status'=>'waiting','created_at'=>$now));
+                    if ($ok!==false) { $session_id=(int)$db->insert_id; }
+                }
+            } else { return new WP_Error('mhl_bad_action','Neplatná operace.',array('status'=>400)); }
+            if ($ok===false) { return new WP_Error('mhl_session_failed','Změnu otázky se nepodařilo uložit.',array('status'=>503)); }
+            return array('session'=>$db->get_row($db->prepare("SELECT * FROM {$sessions} WHERE id=%d",$session_id)),'changed'=>true);
+        });
     }
 
     public static function create_run(int $lecture_id,string $mode='live',int $created_by=0,bool $close_existing=false): ?object {
@@ -418,7 +483,7 @@ class MHL_Core {
         $db=MHL_DB::db();$runs=MHL_DB::table('runs');$sessions=MHL_DB::table('sessions');$now=self::now_mysql();$settings=self::settings();
         if($close_existing){
             $existing_ids=$db->get_col($db->prepare("SELECT id FROM {$runs} WHERE lecture_id=%d AND mode=%s AND status='active'",$lecture_id,$mode));
-            foreach($existing_ids?:array() as $existing_id){ self::close_run((int)$existing_id); }
+            foreach($existing_ids?:array() as $existing_id){ if(!self::close_run((int)$existing_id)){return null;} }
         }
         $ok=$db->insert($runs,array(
             'lecture_id'=>$lecture_id,'subject_id'=>$subject_id,'title'=>get_the_title($lecture_id),'mode'=>$mode,'status'=>'active',
@@ -447,7 +512,7 @@ class MHL_Core {
         if(!$session){return null;}
         if($auto_close){$session=self::maybe_start_voting((int)$session->id)?:$session;}
         if($auto_close && $session->status==='open' && !empty($session->reset_at) && strtotime($session->reset_at.' UTC')<=time()){
-            $db->update($sessions,array('status'=>'closed','closed_at'=>self::now_mysql()),array('id'=>(int)$session->id),array('%s','%s'),array('%d'));
+            self::expire_sessions($run_id);
             $session=$db->get_row($db->prepare("SELECT * FROM {$sessions} WHERE id=%d",(int)$session->id));
         }
         return $session?:null;
@@ -457,7 +522,7 @@ class MHL_Core {
         if(!MHL_DB::schema_ready()){return null;}
         $db=MHL_DB::db();$sessions=MHL_DB::table('sessions');$now=self::now_mysql();
         $expired=$db->get_results($db->prepare("SELECT id FROM {$sessions} WHERE run_id=%d AND mode=%s AND status='open' AND reset_at IS NOT NULL AND reset_at<=%s",$run_id,$mode,$now));
-        foreach($expired?:array() as $row){$db->update($sessions,array('status'=>'closed','closed_at'=>$now),array('id'=>(int)$row->id),array('%s','%s'),array('%d'));}
+        if ($expired) { self::expire_sessions($run_id); }
         $row=$db->get_row($db->prepare("SELECT * FROM {$sessions} WHERE run_id=%d AND mode=%s AND status IN ('joining','open') ORDER BY COALESCE(joining_started_at,opened_at) DESC,id DESC LIMIT 1",$run_id,$mode));
         if($row && $row->status==='joining'){$row=self::maybe_start_voting((int)$row->id)?:$row;}
         return $row?:null;
@@ -475,7 +540,7 @@ class MHL_Core {
             $subject_id=self::get_lecture_subject_id($lecture_id);
             $subject_run=$mode==='async'?null:self::get_active_run_for_subject($subject_id,$mode);
             if($subject_run && (int)$subject_run->lecture_id!==$lecture_id){
-                self::close_run((int)$subject_run->id);
+                if(!self::close_run((int)$subject_run->id)){return array(null,null,false,'close_failed');}
             }
             $run=self::create_run($lecture_id,$mode,0,false);
             if(!$run){return array(null,null,false,'run_failed');}
@@ -485,18 +550,9 @@ class MHL_Core {
         if(in_array($session->status,array('closed','skipped'),true)){return array($run,$session,false,$session->status==='skipped'?'skipped':'completed');}
         if($session->status==='open'){return array($run,$session,false,'already_open');}
 
-        $db=MHL_DB::db();$sessions=MHL_DB::table('sessions');$now=self::now_mysql();
-        if($mode==='async'){
-            $end=self::question_async_end_mysql($question_id);
-            $db->update($sessions,array('status'=>'open','joining_started_at'=>null,'last_join_at'=>null,'opened_at'=>$now,'closed_at'=>null,'reset_at'=>$end),array('id'=>(int)$session->id),array('%s','%s','%s','%s','%s','%s'),array('%d'));
-            $session=$db->get_row($db->prepare("SELECT * FROM {$sessions} WHERE id=%d",(int)$session->id));
-            return array($run,$session,true,'async_open');
-        }
-        $db->query($db->prepare("UPDATE {$sessions} SET status='closed',closed_at=%s WHERE run_id=%d AND mode=%s AND status IN ('joining','open') AND id<>%d",$now,(int)$run->id,$mode,(int)$session->id));
-        $timeout=self::question_time_limit($question_id);
-        $db->update($sessions,array('status'=>'open','joining_started_at'=>null,'last_join_at'=>null,'opened_at'=>$now,'closed_at'=>null,'reset_at'=>$timeout>0?self::mysql_after_seconds($timeout):null),array('id'=>(int)$session->id),array('%s','%s','%s','%s','%s','%s'),array('%d'));
-        $session=$db->get_row($db->prepare("SELECT * FROM {$sessions} WHERE id=%d",(int)$session->id));
-        return array($run,$session,true,'teacher_open');
+        $changed=self::change_session((int)$session->id,'open');
+        if(is_wp_error($changed)){return array($run,null,false,'change_failed');}
+        return array($run,$changed['session'],$changed['changed'],$mode==='async'?'async_open':'teacher_open');
     }
 
 
@@ -525,9 +581,8 @@ class MHL_Core {
         $start=$s->joining_started_at?strtotime($s->joining_started_at.' UTC'):time();$last=$s->last_join_at?strtotime($s->last_join_at.' UTC'):$start;$now=time();
         $ready=(($now-$start)>=$min && ($now-$last)>=$quiet) || (($now-$start)>=$max);
         if(!$ready){return $s;}
-        $now_mysql=self::now_mysql();$timeout=self::question_time_limit((int)$s->question_id);$reset=$timeout>0?self::mysql_after_seconds($timeout):null;
-        $db->update($sessions,array('status'=>'open','opened_at'=>$now_mysql,'reset_at'=>$reset),array('id'=>$session_id),array('%s','%s','%s'),array('%d'));
-        return $db->get_row($db->prepare("SELECT * FROM {$sessions} WHERE id=%d",$session_id))?:null;
+        $changed=self::change_session($session_id,'open');
+        return is_wp_error($changed)?$s:$changed['session'];
     }
 
     public static function maybe_close_expired_runs(): void {

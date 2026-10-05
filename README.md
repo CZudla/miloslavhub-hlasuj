@@ -2,9 +2,11 @@
 
 ## GitHub a distribuce
 
-Oficiální repozitář je [CZudla/miloslavhub-hlasuj](https://github.com/CZudla/miloslavhub-hlasuj). Větev `main` obsahuje ověřený základ 0.8.7; `develop` následný pracovní vývoj. [Autorský balíček](releases/0.8.7/Hlasuj-0.8.7-AUTORSKY.zip), [zákaznický balíček](releases/0.8.7/Hlasuj-0.8.7-ZAKAZNICKY.zip) a PDF najdete v [releases/0.8.7](releases/0.8.7/README.md). Manuály jsou v [docs/customer](docs/customer), marketing v [docs/marketing](docs/marketing). Pravidla práce a původní historie jsou v [docs/GITHUB.md](docs/GITHUB.md).
+Projekt používá [CZudla/miloslavhub-hlasuj](https://github.com/CZudla/miloslavhub-hlasuj). Větev `main` uchovává ověřený základ 0.8.7, `develop` následný pracovní vývoj. Dva balíčky a PDF jsou v `releases/0.8.7/`. Postup práce a obnova původní historie jsou v [docs/GITHUB.md](docs/GITHUB.md).
 
 **0.8.7 — opravné vydání před širším Pilot Foundation.**
+
+Lokální rozpracovaná migrace GPT‑6 a vypnutý AI pilot: [stav migrace](docs/GPT-6-MIGRATION-STATUS.md), [popis pilotu a testů](docs/AI-PILOT.md). Tyto změny zatím nejsou součástí nasazeného vydání 0.8.7.
 
 Rozsah, provedená ověření a zbývající omezení jsou v docs/RELEASE-0.8.7.md. Stav konkrétního nasazení dokládá samostatná deployment zpráva; sestavení ZIPu samo nasazení nepotvrzuje.
 

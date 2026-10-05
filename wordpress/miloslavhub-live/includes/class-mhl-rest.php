@@ -247,16 +247,29 @@ class MHL_REST {
         $db=MHL_DB::db(); $votes=MHL_DB::table('votes');
         // Nebodovaná anketa používá pouze session-scoped klíč, takže nelze spojovat odpovědi napříč otázkami.
         $pkey=$nickname_required?MHL_Core::participant_key($participant_id):hash_hmac('sha256',$participant_id.'|session|'.(int)$session->id,wp_salt('nonce'));
-        $existing=$db->get_row($db->prepare("SELECT * FROM {$votes} WHERE session_id=%d AND participant_key=%s LIMIT 1",(int)$session->id,$pkey));
-        if($existing){return new WP_Error('mhl_already_voted','Na tuto otázku jste již hlasoval/a.',array('status'=>409));}
-        $correct=null; $points=0; $opened=$session->opened_at?strtotime($session->opened_at.' UTC'):time(); $ms=$mode==='async'?0:max(0,(int)round((microtime(true)-(float)$opened)*1000));
-        if($qmode==='quiz'){
-            $ci=MHL_Core::question_correct_index((int)$question->ID); $correct=($ci!==null && $option===$ci)?1:0;
-            if($correct){$s=MHL_Core::settings();$mult=(float)(get_post_meta($question->ID,'_mhl_multiplier',true)?:1);$win=max(5,(int)(get_post_meta($question->ID,'_mhl_speed_window',true)?:$s['speed_window']));$factor=max(0.0,1.0-(($ms/1000)/$win));$points=(int)round(((int)$s['base_points']+((int)$s['speed_points']*$factor))*$mult);}
-        } elseif($g['enabled']&&$poll_points>0){$points=$poll_points;}
-        $ok=$db->insert($votes,array('session_id'=>(int)$session->id,'run_id'=>(int)$run->id,'question_id'=>(int)$question->ID,'mode'=>$mode,'participant_key'=>$pkey,'nickname'=>$nickname,'option_index'=>$option,'is_correct'=>$correct,'response_ms'=>$ms,'points'=>$points,'created_at'=>MHL_Core::now_mysql()),array('%d','%d','%d','%s','%s','%s','%d','%d','%d','%d','%s'));
-        if(!$ok){return new WP_Error('mhl_vote_failed','Hlas se nepodařilo uložit.',array('status'=>500));}
-        return new WP_REST_Response(array('ok'=>true,'session_id'=>(int)$session->id,'response_ms'=>$ms,'results_pending'=>true),201);
+        return MHL_DB::with_run_lock((int)$run->id, static function($db,$run) use ($session,$question,$mode,$pkey,$nickname,$option,$qmode,$g,$poll_points,$votes) {
+            $initial_id=(int)$session->id;
+            $sessions=MHL_DB::table('sessions');
+            $session=$db->get_row($db->prepare("SELECT * FROM {$sessions} WHERE run_id=%d AND question_id=%d AND mode=%s ORDER BY id DESC LIMIT 1 FOR UPDATE",(int)$run->id,(int)$question->ID,$mode));
+            $expired=static fn($value)=>$value && strtotime($value.' UTC')<=microtime(true);
+            if($run->status!=='active' || $expired($run->expires_at) || !$session || (int)$session->id!==$initial_id || $session->status!=='open' || $expired($session->reset_at)) {
+                return new WP_Error('mhl_not_open','Hlasování právě není otevřené.',array('status'=>409));
+            }
+            $existing=$db->get_row($db->prepare("SELECT * FROM {$votes} WHERE session_id=%d AND participant_key=%s LIMIT 1",(int)$session->id,$pkey));
+            if($existing){return new WP_Error('mhl_already_voted','Na tuto otázku jste již hlasoval/a.',array('status'=>409));}
+            $correct=null; $points=0; $opened=$session->opened_at?strtotime($session->opened_at.' UTC'):time(); $ms=$mode==='async'?0:max(0,(int)round((microtime(true)-(float)$opened)*1000));
+            if($qmode==='quiz'){
+                $ci=MHL_Core::question_correct_index((int)$question->ID); $correct=($ci!==null && $option===$ci)?1:0;
+                if($correct){$s=MHL_Core::settings();$mult=(float)(get_post_meta($question->ID,'_mhl_multiplier',true)?:1);$win=max(5,(int)(get_post_meta($question->ID,'_mhl_speed_window',true)?:$s['speed_window']));$factor=max(0.0,1.0-(($ms/1000)/$win));$points=(int)round(((int)$s['base_points']+((int)$s['speed_points']*$factor))*$mult);}
+            } elseif($g['enabled']&&$poll_points>0){$points=$poll_points;}
+            $ok=$db->insert($votes,array('session_id'=>(int)$session->id,'run_id'=>(int)$run->id,'question_id'=>(int)$question->ID,'mode'=>$mode,'participant_key'=>$pkey,'nickname'=>$nickname,'option_index'=>$option,'is_correct'=>$correct,'response_ms'=>$ms,'points'=>$points,'created_at'=>MHL_Core::now_mysql()),array('%d','%d','%d','%s','%s','%s','%d','%d','%d','%d','%s'));
+            if(!$ok){return new WP_Error('mhl_vote_failed','Hlas se nepodařilo uložit.',array('status'=>500));}
+            // Reject and roll back if the deadline elapsed while calculating/storing the vote.
+            if($expired($run->expires_at) || $expired($session->reset_at)) {
+                return new WP_Error('mhl_not_open','Čas pro hlasování již vypršel.',array('status'=>409));
+            }
+            return new WP_REST_Response(array('ok'=>true,'session_id'=>(int)$session->id,'response_ms'=>$ms,'results_pending'=>true),201);
+        });
     }
 
 

@@ -1,0 +1,63 @@
+const {chromium}=require('playwright');
+const assert=require('node:assert/strict');
+const base=process.argv[2];
+if(!/^http:\/\/127\.0\.0\.1:\d+$/.test(base))throw new Error('Loopback required');
+(async()=>{
+  const browser=await chromium.launch({channel:'msedge',headless:true});
+  let checks=0, calls=0, mode='success', release;
+  const external=[], errors=[];
+  const context=await browser.newContext();
+  await context.route('**/*',async route=>{
+    const url=new URL(route.request().url());
+    if(url.origin!==base){external.push(url.origin);return route.abort();}
+    if(url.pathname.endsWith('/ai/preference'))return route.fulfill({json:route.request().postDataJSON()});
+    if(!url.pathname.endsWith('/ai/suggest'))return route.continue();
+    calls++;
+    if(mode==='delay')await new Promise(resolve=>{release=resolve;});
+    if(mode==='error')return route.fulfill({status:429,json:{message:'Limit návrhů byl vyčerpán.'}});
+    const body=route.request().postDataJSON();
+    return route.fulfill({json:{suggestion:{title:mode==='html'?'<img src=x onerror=alert(1)>':'Which number is not even?',options:body.options}}});
+  });
+  const page=await context.newPage();
+  page.on('pageerror',e=>errors.push(e.message));
+  const check=(value,message)=>{assert(value,message);checks++;};
+  const go=async()=>{await page.goto(base+'/test-ai-admin');};
+  const preview=async()=>{await page.locator('[data-ai-preview]').click();};
+  const send=async()=>{await preview();await page.locator('[data-ai-send]').click();};
+  const ready=async()=>{await page.locator('[data-ai-result-box]').waitFor({state:'visible'});};
+  try {
+    await go(); await preview();
+    check(calls===0,'Preview must not call provider');
+    await page.locator('#title').fill('Rozpracovaná změna');
+    await page.locator('[data-ai-send]').click();
+    check(calls===0,'Stale preview must not be sent');
+    await send(); await ready();
+    check(await page.locator('#title').inputValue()==='Rozpracovaná změna','Suggestion must not change editor automatically');
+    await page.locator('[data-ai-apply]').click();
+    check(await page.locator('#title').inputValue()==='Which number is not even?','Explicit apply changes editor');
+    check(await page.locator('input[name="mhl_options[]"]').nth(1).inputValue()==='3','Answer order preserved');
+    await go(); await send(); await ready();
+    await page.locator('#title').fill('Novější text'); await page.locator('[data-ai-apply]').click();
+    check(await page.locator('#title').inputValue()==='Novější text','Apply cannot overwrite newer edit');
+    await go(); mode='delay'; await send();
+    await page.waitForFunction(()=>document.querySelector('[data-ai-status]').textContent.includes('Připravuji'));
+    await page.locator('#title').fill('Text při čekání');
+    for(let attempt=0; !release && attempt<100; attempt++)await new Promise(resolve=>setTimeout(resolve,20));
+    assert(release,'Delayed fixture request did not arrive within two seconds');
+    release(); release=null;
+    await page.getByText('Během čekání jste otázku upravili.',{exact:false}).waitFor();
+    check(await page.locator('#title').inputValue()==='Text při čekání','In-flight response cannot overwrite edit');
+    mode='error'; await go(); await send();
+    await page.getByText('Limit návrhů byl vyčerpán.',{exact:true}).waitFor();
+    check(await page.locator('#title').inputValue()==='Které číslo není sudé?','Provider error preserves input');
+    mode='html'; await go(); await send(); await ready();
+    check(await page.locator('[data-ai-result] img').count()===0,'Preview treats model content as text');
+    await page.locator('[data-ai-discard]').click();
+    check(await page.locator('[data-ai-result-box]').isHidden(),'Discard hides suggestion');
+    await page.locator('[data-ai-toggle]').click();
+    await page.getByText('AI je pro váš účet vypnutá.',{exact:true}).waitFor();
+    check(await page.locator('[data-ai-preview]').isDisabled(),'Opt-out disables sending');
+    check(external.length===0 && errors.length===0,'No external traffic or browser errors');
+    console.log(JSON.stringify({status:'passed',checks,external_requests:external.length,provider:'synthetic HTTP fixture'}));
+  }finally{await browser.close();}
+})().catch(error=>{console.error(error);process.exit(1);});

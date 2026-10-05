@@ -20,10 +20,13 @@ for file in ROOT.rglob('*.php'):
     if 'runtime' not in file.parts:
         run([args.php, '-l', str(file)])
 report['php_lint'] = 'passed'
-for file in (ROOT/'frontend').rglob('*.js'):
-    run(['node', '--check', str(file)])
+for folder in ['frontend', 'wordpress']:
+    for file in (ROOT/folder).rglob('*.js'):
+        run(['node', '--check', str(file)])
 report['javascript_lint'] = 'passed'
 report['security_contracts'] = json.loads(run([args.php, str(ROOT/'tests/security.php')]))
+report['ai_contracts'] = json.loads(run([args.php, str(ROOT/'tests/ai.php')]))
+report['ai_disabled'] = json.loads(run([args.php, str(ROOT/'tests/ai.php'), 'disabled']))
 
 runtime = ROOT/'runtime'
 runtime.mkdir(exist_ok=True)
@@ -37,6 +40,8 @@ with tempfile.TemporaryDirectory(prefix='regression-', dir=runtime) as temp:
     temp = Path(temp)
     frontend = temp/'frontend'
     shutil.copytree(ROOT/'frontend', frontend)
+    (frontend/'test-ai').mkdir()
+    shutil.copy2(ROOT/'wordpress/miloslavhub-live/assets/ai-admin.js', frontend/'test-ai/ai-admin.js')
     # Test storage cannot collide with existing demos, even on the developer machine.
     storage = temp/'miloslavhub-live-demo'
     with socket.socket() as sock:
@@ -44,6 +49,8 @@ with tempfile.TemporaryDirectory(prefix='regression-', dir=runtime) as temp:
     base = f'http://127.0.0.1:{port}'
     router = temp/'router.php'
     router.write_text("<?php $path=parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH); if($path!=='/' && is_file(__DIR__.'/frontend'.$path))return false; if(str_starts_with($path,'/demo/')){require __DIR__.'/frontend/demo/index.php';}else{require __DIR__.'/frontend/index.php';}", encoding='utf8')
+    fixture = (ROOT/'tests/ai-admin-fixture.php').as_posix().replace("'", "\\'")
+    router.write_text(router.read_text(encoding='utf8').replace("if($path!=='/'", "if($path==='/test-ai-admin'){require '"+fixture+"';return;} if($path!=='/'"), encoding='utf8')
     log = (temp/'server.log').open('w', encoding='utf8')
     server = subprocess.Popen([args.php, '-d', f'sys_temp_dir={temp}', '-S', f'127.0.0.1:{port}', '-t', str(frontend), str(router)], stdout=log, stderr=log,
                               creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
@@ -108,6 +115,7 @@ with tempfile.TemporaryDirectory(prefix='regression-', dir=runtime) as temp:
         report['demo_http_checks'] = checks
         if args.browser:
             report['browser'] = json.loads(run(['node', str(ROOT/'tests/browser.cjs'), base]))
+            report['ai_browser'] = json.loads(run(['node', str(ROOT/'tests/ai-browser.cjs'), base]))
         report['status'] = 'passed'
     finally:
         server.terminate(); server.wait(timeout=10); log.close()

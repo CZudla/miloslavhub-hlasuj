@@ -1,5 +1,9 @@
 # API 0.8.7
 
+## Lokální rozpracované rozšíření AI
+
+Nové routy POST `/ai/suggest` a `/ai/preference` jsou lokální vývojové rozšíření, ve výchozím stavu vypnuté a dosud nenasazené. Vyžadují přihlášeného správce, REST nonce a u návrhu oprávnění k příslušné otázce. Přesný kontrakt a testy jsou v [AI-PILOT.md](AI-PILOT.md). Následující popis nadále dokumentuje vydání 0.8.7.
+
 **Aktualizace 2026-10-02 pro 0.8.7:** opravný rozsah původního 0.9.0-dev.1 prošel také 19 integračními kontrolami na WordPressu 7.1.2/MariaDB 11.4.9. Oba SQL exporty byly obnoveny a tabulky zkontrolovány lokálně. Původní body níže označené „dosud neověřeno“ zachycují stav před touto kvalifikací; aktuální souhrn je v RELEASE-0.8.7.md. Nasazení prokazuje samostatná deployment zpráva.
 
 Namespace zůstává `/wp-json/mhl/v1`. Technické názvy `mhl` a původní URL se nemění.
