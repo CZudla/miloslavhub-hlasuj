@@ -1,5 +1,10 @@
 # Stav úklidu po nasazení
 
+## Aktualizace 0.8.9 · 5. 10. 2026
+
+Serverové staging a rollback složky i režim údržby odstraněny po ověření nasazení. Nová chráněná záloha je C:\Users\mihu0334\AppData\Local\Hlasuj-private-backups\20261005-142547-089. Lokální servery vypnuté. Automatická kontrola odmítla také odstranění ověřených syntetických prostředí hlasuj-release-089-a a hlasuj-release-089-b s důvodem blocked by policy. Mazání nebylo obcházeno; zůstávají v místní cache a nejsou součástí Git ani balíčků. Serverový úklid je dokončený, úplný místní úklid není. Finální balíčky jsou v outputs/final-0.8.9.
+
+
 ## Dokončeno
 
 - Na produkci odstraněny čtyři dočasné složky: připravený frontend, připravený plugin a obě dočasné kopie předchozí verze.

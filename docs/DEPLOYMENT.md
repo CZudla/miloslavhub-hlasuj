@@ -26,3 +26,7 @@ Frontend a backend aktualizovat koordinovaně. Starý frontend očekává veřej
 Po nasazení ověřit verzi/commit, úvod, nové i staré QR, mobil, projekci, učitelské spuštění/ukončení, hlas, výsledky, export, opt-in, anonymitu a demo. Zapsat výsledek a reálný stav nasazení.
 
 Rollback bez změn schématu znamená vrátit koordinovaně předchozí frontend a plugin, zachovat config a provozní data. Neobnovovat bez rozmyslu starou databázi přes nové hlasy. Pokud změna dat vyžaduje DB obnovu, zastavit příjem hlasů a schválit způsob zachování nových záznamů. Návrat ke starému pluginu také vrací opravené chyby soukromí/aktivace; při bezpečnostním incidentu upřednostnit dočasné odstavení dotčené funkce před nekontrolovaným návratem.
+
+## Aktuální doklad 0.8.9
+
+Nasazeno 5. 10. 2026, frontend/plugin 0.8.9, schéma 0.8.5 bez migrace. Souborová shoda, obnovovací test a hranice produkčního ověření: DEPLOYMENT-2026-10-05-0.8.9.md. Přenos obsahu se automaticky po aktualizaci nespouští; vyžaduje potvrzení správce.

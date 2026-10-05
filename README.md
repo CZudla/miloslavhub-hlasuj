@@ -6,7 +6,7 @@ Projekt používá [CZudla/miloslavhub-hlasuj](https://github.com/CZudla/milosla
 
 **0.8.9 — přenos předmětu s náhledem a importem nových konceptů.**
 
-Vývojová migrace GPT‑6 a vypnutý AI pilot: [stav migrace](docs/GPT-6-MIGRATION-STATUS.md), [popis pilotu a testů](docs/AI-PILOT.md). AI je standardně vypnutá. Rozsah vydání dokládá RELEASE-0.8.9.md; konkrétní nasazení bude doloženo samostatnou zprávou DEPLOYMENT-2026-10-05-0.8.9.md.
+Vývojová migrace GPT‑6 a vypnutý AI pilot: [stav migrace](docs/GPT-6-MIGRATION-STATUS.md), [popis pilotu a testů](docs/AI-PILOT.md). AI je standardně vypnutá. Rozsah vydání dokládá RELEASE-0.8.9.md; konkrétní nasazení je doloženo samostatnou zprávou DEPLOYMENT-2026-10-05-0.8.9.md.
 
 Rozsah, provedená ověření a zbývající omezení jsou v docs/RELEASE-0.8.9.md. Stav konkrétního nasazení dokládá samostatná deployment zpráva; sestavení ZIPu samo nasazení nepotvrzuje.
 

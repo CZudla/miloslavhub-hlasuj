@@ -12,3 +12,7 @@ Aktuální rozsah je v ITERATION-PLAN.md. Tato iterace uzavírá malý soubor be
 6. Dokončit stabilní distribuci, marketingovou galerii, licence, zálohu, schválené nasazení a produkční smoke test.
 
 Cards, AI, licensing, billing, referral, další moduly a standalone SQLite zůstávají pozdějším směrem. Centrální registr v XLSX má vlastní ID; stav testů této iterace je v TRACEABILITY.md. XLSX nebyl přepsán.
+
+## Dokončeno v 0.8.9
+
+Verzovaný JSON export předmětu s přednáškami a přiřazenými otázkami, náhled a potvrzený import nových konceptů. Vazby a pořadí zachovány; oprávnění, validation, jednorázové potvrzení a návrat při zachycené chybě ověřeny. Kategorie, assets, externí URL, termíny a výsledkový archiv zůstávají dalším rozšířením. Podrobnosti v RELEASE-0.8.9.md.

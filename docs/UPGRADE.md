@@ -10,3 +10,7 @@ Výchozí soubory: plugin 0.8.5, frontend manifest 0.7.9 + demo 0.8.6.16. Nasaze
 - Stávající `config.php` se zachovává mimo Git/balíček. Nová instalace ho musí výslovně připravit podle `config.example.php`; vzor obsahuje produkční domény a pro staging je nutné je všechny změnit.
 - Dlouhodobá anketa `async` má dosavadní význam. Úprava ji nepřevádí na domácí úkol a nemění historické bodování.
 - Nasadit frontend i backend společně až po testech a obnově zálohy podle DEPLOYMENT.md.
+
+## Aktualizace na 0.8.9
+
+Ze schématu 0.8.5 bez DDL. Přidává ověřený přenos předmětu v administraci; stávající obsah a QR zachová. Importuje pouze nové koncepty a vypíná jejich async ankety. Globální nastavení se nepřenáší. Návod: customer/10-PRENOS-OBSAHU.md, doklad nasazení: DEPLOYMENT-2026-10-05-0.8.9.md.
