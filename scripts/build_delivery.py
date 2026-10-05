@@ -40,7 +40,8 @@ for p in sorted((ROOT/f'runtime/handbooks-{VERSION}').iterdir()):
 for p in sorted((ROOT/'docs/licenses').iterdir()):common['licence/'+p.name]=p.read_bytes()
 for p in sorted((ROOT/'frontend/assets/vendor').glob('*')):
     if p.is_file() and p.suffix!='.js':common['licence/QRCode.js/'+p.name]=p.read_bytes()
-for p in sorted((ROOT/'docs/marketing').glob('*')):common['marketing/'+p.name]=p.read_bytes()
+for p in sorted((ROOT/'docs/marketing').rglob('*')):
+    if p.is_file():common['marketing/'+p.relative_to(ROOT/'docs/marketing').as_posix()]=p.read_bytes()
 for p in sorted((ROOT/'runtime/marketing').glob('*.png')):common['marketing/'+p.name]=p.read_bytes()
 common['marketing/TEXTY.md']=(ROOT/'docs/customer/08-MARKETINGOVE-PODKLADY.md').read_bytes()
 common['marketing/produktovy-list.pdf']=(ROOT/f'runtime/handbooks-{VERSION}/Hlasuj-{VERSION}-produktovy-list.pdf').read_bytes()
