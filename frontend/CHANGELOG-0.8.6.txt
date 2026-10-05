@@ -1,0 +1,22 @@
+MiloslavHub Live – changelog 0.8.6 (demo vrstva)
+================================================
+
+Added
+- Nové webové prezentační demo na /demo/.
+- Nová čistá relace při každém spuštění.
+- Připojení mobilu přes QR.
+- Synchronizace host/telefon pomocí krátkého pollingu.
+- Dva kvízy a jedna anonymní anketa.
+- Prezentační výsledky včetně grafu.
+- Samostatný mobilní režim „vyzkoušet na tomto zařízení“.
+- Automatická expirace demo dat po 15 minutách.
+
+Changed
+- MHL_DEMO_URL nově směřuje na /demo/ místo pevné testovací otázky.
+
+Security / privacy
+- Demo je izolováno od ostré hlasovací databáze.
+- Prezentační ovládání chrání náhodný presenter token.
+- Demo relace používají kryptograficky náhodné identifikátory.
+- Dočasná data se čistí po expiraci.
+- Do demo úložiště se neukládá IP adresa ani e-mail.

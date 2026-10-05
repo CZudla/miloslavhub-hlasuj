@@ -1,0 +1,13 @@
+V EXISTUJÍCÍM config.php ponechte všechny domény a technické hodnoty.
+Změňte pouze brandingové konstanty na:
+
+define('MHL_BRAND_NAME', 'Hlasuj');
+define('MHL_PRODUCT_NAME', 'Hlasuj by MiloslavHub');
+define('MHL_PRODUCT_TAGLINE', 'Interaktivní hlasování pro výuku');
+
+Doporučené kontaktní údaje:
+define('MHL_CONTACT_NAME', 'Miloslav Hub');
+define('MHL_CONTACT_EMAIL', 'miloslav@miloslavhub.cz');
+
+Demo:
+define('MHL_DEMO_URL', MHL_FRONTEND_BASE . '/demo/');

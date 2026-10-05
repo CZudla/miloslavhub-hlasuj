@@ -1,0 +1,10 @@
+Hlasuj by MiloslavHub – demo 0.8.6.16
+=========================================
+
+- Nová produktová značka Hlasuj by MiloslavHub.
+- Použití nového loga v hostitelské a mobilní hlavičce.
+- Přidán důvěryhodnostní údaj „Testováno ve vysokoškolské výuce na 100+ studentech.“
+- Zachovány opravy 0.8.6.15:
+  * přímé mobilní spuštění bez nutnosti skenovat vlastní QR,
+  * návrat starého/expirovaného odkazu na úvod dema,
+  * finální obrazovka se po skončení nezmění na chybovou.

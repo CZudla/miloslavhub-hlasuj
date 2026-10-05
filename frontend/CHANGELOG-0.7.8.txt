@@ -1,0 +1,21 @@
+Hlasuj by MiloslavHub – frontend 0.7.8
+=====================================
+
+Branding a marketing
+- Produkt přejmenován na „Hlasuj by MiloslavHub“.
+- Přidáno nové produktové logo a ikona.
+- Nový claim: „Zapojte publikum. Bez zdržování.“
+- Přidána sekce „Jiný přístup k interaktivnímu hlasování“.
+- Přidáno sdělení: „Testováno ve vysokoškolské výuce na 100+ studentech.“
+- Konkurenční pozice je formulována pozitivně bez nepodložených tvrzení o konkurenci.
+
+Demo
+- Aktualizováno na 0.8.6.16.
+- Mobilní přímé spuštění.
+- Reprezentativní ukončení a přesměrování expirované relace.
+- Nové logo a branding.
+
+Technicky
+- Cache-busting assets zvýšen na 0.7.8.
+- Produkční config.php se v balíčku nevyskytuje a nepřepisuje.
+- Backend API se touto aktualizací nemění.

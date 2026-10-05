@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /q/
+Disallow: /r/
+Disallow: /test/
+Disallow: /test-results/

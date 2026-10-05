@@ -1,0 +1,40 @@
+{
+  "verified_on": "2026-10-03 Europe/Prague",
+  "packages": [
+    {
+      "name": "Hlasuj-0.8.7-AUTORSKY.zip",
+      "bytes": 4668239,
+      "files": 140,
+      "verified": true
+    },
+    {
+      "name": "Hlasuj-0.8.7-ZAKAZNICKY.zip",
+      "bytes": 2701200,
+      "files": 69,
+      "verified": true
+    }
+  ],
+  "http": [
+    {
+      "url": "https://hlasuj.miloslavhub.cz/release.json",
+      "status": 200
+    },
+    {
+      "url": "https://hlasuj.miloslavhub.cz/",
+      "status": 200
+    },
+    {
+      "url": "https://hlasuj.miloslavhub.cz/privacy",
+      "status": 200
+    },
+    {
+      "url": "https://miloslavhub.cz/",
+      "status": 200
+    }
+  ],
+  "tracked_sources_unchanged": true,
+  "untracked_preserved_not_packaged": [
+    "docs/GPT-6-MIGRATION-PLAN.md"
+  ],
+  "local_cleanup": "Partial; recursive deletion was blocked by tool policy"
+}

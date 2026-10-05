@@ -1,0 +1,3 @@
+# Preserve the previously configured reasoning effort; tune only after evaluation.
+model = "gpt-6.1-sol"
+model_reasoning_effort = "high"

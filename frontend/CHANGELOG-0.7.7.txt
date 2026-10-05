@@ -1,0 +1,8 @@
+MiloslavHub Live frontend 0.7.7
+================================
+- horizontální výsledkové sloupce s počtem hlasů a procentem
+- čas každého hlasujícího v pořadí otázky na mobilu i projekci
+- označení času „od STARTU“
+- automatické odstranění prázdných ovládacích prvků
+- cache-busting app.css/app.js na 0.7.7
+- aktuální demo 0.8.6.13

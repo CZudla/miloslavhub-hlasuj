@@ -1,0 +1,227 @@
+{
+  "snapshot_date": "2026-09-28",
+  "source": "WinSCP saved session Hub; read-only FTP get",
+  "scope": "frontend excluding config.php, plugin files, WordPress version.php; no database or wp-config.php",
+  "plugin_file_version": "0.8.5",
+  "wordpress_file_version": "7.1.2",
+  "activation_not_verified": true,
+  "archive_frontend_differences": [],
+  "files": [
+    {
+      "path": "version.php",
+      "sha256": "c822935799e6f3b83129882554ccff48596cf98b4a5eb82b83d82fe15455894e"
+    },
+    {
+      "path": "hlasuj/.htaccess",
+      "sha256": "438a9fcde9a8a2615f4299410589e9b0340f6872b794c5d28fae89f64bb4debd"
+    },
+    {
+      "path": "hlasuj/CHANGELOG-0.7.7.txt",
+      "sha256": "4716e76e4a499b4351ae0de41214151adec478c3a878c523b9f7f4ba912d1a6e"
+    },
+    {
+      "path": "hlasuj/CHANGELOG-0.7.8.txt",
+      "sha256": "15444ffcd93be40cd837f17b87edce1e3b35b60a41d4a25dfb33bb13e7f69dfb"
+    },
+    {
+      "path": "hlasuj/CHANGELOG-0.7.9.txt",
+      "sha256": "0ce104c85144964d6f7a9f89669827b4b8d135df3ce97721bcbd282e3205c842"
+    },
+    {
+      "path": "hlasuj/CHANGELOG-0.8.6.1.txt",
+      "sha256": "8ec370a2d9edfc242c71e6e524b468e7313a5aa0795210c0e94194a774dddbdc"
+    },
+    {
+      "path": "hlasuj/CHANGELOG-0.8.6.txt",
+      "sha256": "1b4a5ef7a445b4ca317b368152ef98d60f5be8b6138e59f586344e9358a80ed8"
+    },
+    {
+      "path": "hlasuj/CHANGELOG-DEMO-0.8.6.16.txt",
+      "sha256": "f35bbe09f141235e28e92e4aaa7ef679172979a47513758203d8f953cbcecaf2"
+    },
+    {
+      "path": "hlasuj/config.example.php",
+      "sha256": "7988208aef5ec0b5de612e163aff92406c32976fa09fb2dd327455387502bc78"
+    },
+    {
+      "path": "hlasuj/index.php",
+      "sha256": "31877784181e6c624b64ce5be5b6be73028b9de3c7095313d56f8f2f5d7b790b"
+    },
+    {
+      "path": "hlasuj/LEGAL-GDPR-CHECKLIST.md",
+      "sha256": "f91cc01ead26930b56c6abcf553f0afff851a20a4493e725b65a3216e6a33edc"
+    },
+    {
+      "path": "hlasuj/manifest.json",
+      "sha256": "b6a0e8d5d261f205917c068125810022e973d9bf2a4bba53f8ed1c4d95e4a242"
+    },
+    {
+      "path": "hlasuj/README-INSTALL.txt",
+      "sha256": "cc9c6cdf7edc8f5442fb9e310280c12e396fb77e816754c263015217992c8086"
+    },
+    {
+      "path": "hlasuj/README.txt",
+      "sha256": "13da19560899ce9979d9c9966dfdfd878149a1ac65573a47b7546b7cf9eb5742"
+    },
+    {
+      "path": "hlasuj/robots.txt",
+      "sha256": "088ef0749c0c4c483fa376ae3dae22a4d16b8187dfdaab85dde5f10f98626860"
+    },
+    {
+      "path": "hlasuj/SECURITY.md",
+      "sha256": "2542646a20e461fd1754f8a179eb5cdeaee0f11969de0f18b64236ca50af6167"
+    },
+    {
+      "path": "hlasuj/UPRAVA-CONFIG-PRO-MILOSLAVHUB.txt",
+      "sha256": "0ebc495f5619eab963a78a13dbf39ef6a04ecfeb83dc0ebd5e749ebca0ab37e5"
+    },
+    {
+      "path": "miloslavhub-live/database-migration-0.3.0.sql",
+      "sha256": "b256f6cc4b7a9e45db6675448b6156c61bd92de521d227be9fe6144265c05f8a"
+    },
+    {
+      "path": "miloslavhub-live/database-migration-0.8.1-to-0.8.3.sql",
+      "sha256": "2a4c5bddf20e6be4fbde18ff1ace648ffead3db7be5b7ef8c7e59791f301fea3"
+    },
+    {
+      "path": "miloslavhub-live/database-migration-0.8.1-to-0.8.4.sql",
+      "sha256": "b49a981343f9bd02aa648a6d7b7a5c3cdaa4649b94e0660d526aec0716a550cc"
+    },
+    {
+      "path": "miloslavhub-live/database-migration-0.8.1-to-0.8.5.sql",
+      "sha256": "46ce8b5077b74722a0cf55643d4729ddbd3fb1f0a34d2cefc66e7b14c7e99a14"
+    },
+    {
+      "path": "miloslavhub-live/database-migration-0.8.2.sql",
+      "sha256": "cac65fae315875b6a6ba4204acc04254b28a8f1c57d73ea0953237fc109afd4e"
+    },
+    {
+      "path": "miloslavhub-live/database-migration-0.8.3.sql",
+      "sha256": "aed9020f2b4200d53b41f19035d2c5e069f317240cb66a42e73be04dd68285eb"
+    },
+    {
+      "path": "miloslavhub-live/database-migration-0.8.4.sql",
+      "sha256": "464a97ac518d1fbe8c9cc10c28ed6de0b02d772ae526bbd609704156bdfd3299"
+    },
+    {
+      "path": "miloslavhub-live/database-migration-0.8.5.sql",
+      "sha256": "3cfc369fa20c2c77853416099692cb3842c8f3ad8edb5e3d8dba3ed7b6c714c7"
+    },
+    {
+      "path": "miloslavhub-live/database-schema.sql",
+      "sha256": "14ceb7920f4ba497c63571c4850ed1e18bdf43ff7f0e2d07465a7152bd377638"
+    },
+    {
+      "path": "miloslavhub-live/miloslavhub-live.php",
+      "sha256": "65b12f6dd04578ff7e258bfa0b07cfa0df0627d5a6c9d7a78476a7ef78f9bb9d"
+    },
+    {
+      "path": "miloslavhub-live/README.md",
+      "sha256": "4703332967256e92672e6373e6e0670bab174e3e2658de30fe6388d4a4a515d1"
+    },
+    {
+      "path": "miloslavhub-live/assets/admin.css",
+      "sha256": "40cd0b15ed9bc0c9d589aa4d58e2df55b1ea11a22d35ea2ff7b1db366081f32f"
+    },
+    {
+      "path": "miloslavhub-live/assets/admin.js",
+      "sha256": "6391ffd8e3175350ccc9902669f8a872930393e7faa3bb54dc78a9e9e1847fd9"
+    },
+    {
+      "path": "miloslavhub-live/assets/miloslavhub-live-demo.pptx",
+      "sha256": "187e5ce56dbacc5e3f4175f189f6e763d8ea1c135871d6afc684ffd9793bdc33"
+    },
+    {
+      "path": "miloslavhub-live/includes/class-mhl-admin.php",
+      "sha256": "c5b5357d3a0bb80bde6cbf1298c37939b8a87fd66a6c1165d9d2ee188c49234e"
+    },
+    {
+      "path": "miloslavhub-live/includes/class-mhl-core.php",
+      "sha256": "608202e0796e8c41b6207718b20b1fda1c90c6722fe0f246e37ce75606ef8c1f"
+    },
+    {
+      "path": "miloslavhub-live/includes/class-mhl-db.php",
+      "sha256": "a2c66036d596b71efc5b7d9ce0d6333b1c41079f3761bd6a069452f347fca3bd"
+    },
+    {
+      "path": "miloslavhub-live/includes/class-mhl-install.php",
+      "sha256": "135da076d0a22983bf835e3b149f704032e4b435b63a006c0b194d198ed4fed4"
+    },
+    {
+      "path": "miloslavhub-live/includes/class-mhl-rest.php",
+      "sha256": "85835f8715f761ec2221ed3c714dffe30a64af184ca001b980b5647ccb38f6e2"
+    },
+    {
+      "path": "hlasuj/assets/app.css",
+      "sha256": "fb0252628ba26e6e36d40c1571b9dcdbc6c58ff23c12bc5e25ad4d2eedc004c7"
+    },
+    {
+      "path": "hlasuj/assets/app.js",
+      "sha256": "841989354df83c294716b42be99d980bc68691417f32aa3b19c783e4cd0a6fce"
+    },
+    {
+      "path": "hlasuj/assets/landing.css",
+      "sha256": "0b5336527daa5bd21cb1bff1c6f6894e6390b8d969dc3ae83fd1ed3f2bc653e3"
+    },
+    {
+      "path": "hlasuj/demo/api.php",
+      "sha256": "f733cba766a5393bdfb86cb5ed329e52c78d2eb3d22d25a12298fa6ac7039424"
+    },
+    {
+      "path": "hlasuj/demo/index.php",
+      "sha256": "cd1447b3a041dc5cfaa8b84fc20ab74aa3b84927ae1feadcb9aed2206bea08a1"
+    },
+    {
+      "path": "hlasuj/demo/lib.php",
+      "sha256": "529353f6a1d3a256a567ded44c14c8afaadfac1fa86ee902e54377a947384504"
+    },
+    {
+      "path": "hlasuj/demo/mobile.php",
+      "sha256": "2d2e0a378cb95dd3b0c6bf5a85f8c4004537fad2b9686735371817f7919467ea"
+    },
+    {
+      "path": "hlasuj/demo/assets/demo.css",
+      "sha256": "9c3273a3f4b52a897f3ba805dcca8c90879aec9369c7df603197bbbe6f178c55"
+    },
+    {
+      "path": "hlasuj/demo/assets/hlasuj-logo.png",
+      "sha256": "4897896de0db533877af30ba02a48fb90c22cbf6bb23df77e37fe85068dc8705"
+    },
+    {
+      "path": "hlasuj/demo/assets/THIRD-PARTY.txt",
+      "sha256": "0a4adc16c3627e796018d0ac4746e13e248b9213a9c18c5eb0e42675831dfb2c"
+    },
+    {
+      "path": "hlasuj/assets/brand/hlasuj-icon-512.png",
+      "sha256": "ca5cbd5d7685ada18b0bea5148c96b9fece6cececca71054f00361b1c7b8d8bb"
+    },
+    {
+      "path": "hlasuj/assets/brand/hlasuj-logo-original.png",
+      "sha256": "50c73378c0a5d6a4fe2c186bfe87fe5484e4ace36bd0ccb690bc41fb028751d6"
+    },
+    {
+      "path": "hlasuj/assets/brand/hlasuj-logo.png",
+      "sha256": "4897896de0db533877af30ba02a48fb90c22cbf6bb23df77e37fe85068dc8705"
+    },
+    {
+      "path": "hlasuj/assets/screenshots/mobile-join.png",
+      "sha256": "2ef025b497ee753a93affa11227e6a10b3c78eea03da056b7af41c80fabf1386"
+    },
+    {
+      "path": "hlasuj/assets/screenshots/mobile-leaderboard.png",
+      "sha256": "635e28c18fb5a262ffeeafd86218845670ebe8207855d4dcaa4f451c64f9907f"
+    },
+    {
+      "path": "hlasuj/assets/screenshots/mobile-results.png",
+      "sha256": "6b1545336a5687c4ff8a4003e0ee9f2fb1325d1807b516b8dec295a55727bf63"
+    },
+    {
+      "path": "hlasuj/assets/screenshots/mobile-vote.png",
+      "sha256": "39060b9041325c3a366aff6e518ae102e0ba29884205a222bdcc3832612d9923"
+    },
+    {
+      "path": "hlasuj/assets/screenshots/projection-results.png",
+      "sha256": "b673d3f9d34b316ae22058d2de569ea2525d1bfbf87ff3360f793ad51038a96e"
+    }
+  ]
+}

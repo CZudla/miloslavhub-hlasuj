@@ -1,0 +1,191 @@
+{
+  "product": "Hlasuj! by MiloslavHub",
+  "frontend_version": "0.8.7",
+  "backend_version": "0.8.7",
+  "schema_version": "0.8.5",
+  "status": "release-candidate",
+  "backend_changed": true,
+  "database_migration_required": false,
+  "files": [
+    {
+      "path": ".htaccess",
+      "size": 299,
+      "sha256": "438a9fcde9a8a2615f4299410589e9b0340f6872b794c5d28fae89f64bb4debd"
+    },
+    {
+      "path": "assets/app.css",
+      "size": 23878,
+      "sha256": "d2fa1eeb97edde798b261815b97c2d242d005573a13afda32f7801a9ccde1591"
+    },
+    {
+      "path": "assets/app.js",
+      "size": 43522,
+      "sha256": "82b4310a730133d0411377bf0b4bd2630577a61217c1f894d2abd8e2a53b0afa"
+    },
+    {
+      "path": "assets/brand/hlasuj-icon-512.png",
+      "size": 114011,
+      "sha256": "ca5cbd5d7685ada18b0bea5148c96b9fece6cececca71054f00361b1c7b8d8bb"
+    },
+    {
+      "path": "assets/brand/hlasuj-logo-original.png",
+      "size": 805801,
+      "sha256": "50c73378c0a5d6a4fe2c186bfe87fe5484e4ace36bd0ccb690bc41fb028751d6"
+    },
+    {
+      "path": "assets/brand/hlasuj-logo.png",
+      "size": 369957,
+      "sha256": "4897896de0db533877af30ba02a48fb90c22cbf6bb23df77e37fe85068dc8705"
+    },
+    {
+      "path": "assets/landing.css",
+      "size": 24817,
+      "sha256": "0b5336527daa5bd21cb1bff1c6f6894e6390b8d969dc3ae83fd1ed3f2bc653e3"
+    },
+    {
+      "path": "assets/screenshots/mobile-join.png",
+      "size": 42139,
+      "sha256": "2ef025b497ee753a93affa11227e6a10b3c78eea03da056b7af41c80fabf1386"
+    },
+    {
+      "path": "assets/screenshots/mobile-leaderboard.png",
+      "size": 52109,
+      "sha256": "635e28c18fb5a262ffeeafd86218845670ebe8207855d4dcaa4f451c64f9907f"
+    },
+    {
+      "path": "assets/screenshots/mobile-results.png",
+      "size": 84952,
+      "sha256": "6b1545336a5687c4ff8a4003e0ee9f2fb1325d1807b516b8dec295a55727bf63"
+    },
+    {
+      "path": "assets/screenshots/mobile-vote.png",
+      "size": 51976,
+      "sha256": "39060b9041325c3a366aff6e518ae102e0ba29884205a222bdcc3832612d9923"
+    },
+    {
+      "path": "assets/screenshots/projection-results.png",
+      "size": 98341,
+      "sha256": "b673d3f9d34b316ae22058d2de569ea2525d1bfbf87ff3360f793ad51038a96e"
+    },
+    {
+      "path": "assets/vendor/provenance.json",
+      "size": 418,
+      "sha256": "30503623511a8b974daf298dc639c98720e100e66172ac3d807822bbc648ef47"
+    },
+    {
+      "path": "assets/vendor/qrcode-LICENSE.txt",
+      "size": 1098,
+      "sha256": "aaa1f349028a59432eb00222b8ddfe4d2ccebdce04cf8348dcb8d41b7068107b"
+    },
+    {
+      "path": "assets/vendor/qrcode.min.js",
+      "size": 19927,
+      "sha256": "c541ef06327885a8415bca8df6071e14189b4855336def4f36db54bde8484f36"
+    },
+    {
+      "path": "CHANGELOG-0.7.7.txt",
+      "size": 365,
+      "sha256": "4716e76e4a499b4351ae0de41214151adec478c3a878c523b9f7f4ba912d1a6e"
+    },
+    {
+      "path": "CHANGELOG-0.7.8.txt",
+      "size": 838,
+      "sha256": "15444ffcd93be40cd837f17b87edce1e3b35b60a41d4a25dfb33bb13e7f69dfb"
+    },
+    {
+      "path": "CHANGELOG-0.7.9.txt",
+      "size": 1322,
+      "sha256": "0ce104c85144964d6f7a9f89669827b4b8d135df3ce97721bcbd282e3205c842"
+    },
+    {
+      "path": "CHANGELOG-0.8.6.1.txt",
+      "size": 493,
+      "sha256": "8ec370a2d9edfc242c71e6e524b468e7313a5aa0795210c0e94194a774dddbdc"
+    },
+    {
+      "path": "CHANGELOG-0.8.6.txt",
+      "size": 882,
+      "sha256": "1b4a5ef7a445b4ca317b368152ef98d60f5be8b6138e59f586344e9358a80ed8"
+    },
+    {
+      "path": "CHANGELOG-DEMO-0.8.6.16.txt",
+      "size": 515,
+      "sha256": "f35bbe09f141235e28e92e4aaa7ef679172979a47513758203d8f953cbcecaf2"
+    },
+    {
+      "path": "config.example.php",
+      "size": 632,
+      "sha256": "4006b11906a985d59a96ba9a539112103303262a2d2e933dfe8dda9807c9a1f8"
+    },
+    {
+      "path": "demo/api.php",
+      "size": 9992,
+      "sha256": "ba9dbb5c2a71222368aed8998ced6268091aee978ccd7e06a7e0597c96bf1845"
+    },
+    {
+      "path": "demo/assets/demo.css",
+      "size": 35236,
+      "sha256": "9c3273a3f4b52a897f3ba805dcca8c90879aec9369c7df603197bbbe6f178c55"
+    },
+    {
+      "path": "demo/assets/hlasuj-logo.png",
+      "size": 369957,
+      "sha256": "4897896de0db533877af30ba02a48fb90c22cbf6bb23df77e37fe85068dc8705"
+    },
+    {
+      "path": "demo/assets/THIRD-PARTY.txt",
+      "size": 255,
+      "sha256": "d77aca0cc05c35c561937c1a5c96b3bb2a307dc4ea725680f350f7b11bcce2d1"
+    },
+    {
+      "path": "demo/index.php",
+      "size": 28147,
+      "sha256": "3bc2604cbb066003d668104dec002560f7ef83eb9cd8e9710cd9760ec330b04a"
+    },
+    {
+      "path": "demo/lib.php",
+      "size": 28206,
+      "sha256": "b7b974a0fc36583ad8c82ff92823f570cdbc4186535a1626a11efe522f25e2e5"
+    },
+    {
+      "path": "demo/mobile.php",
+      "size": 28545,
+      "sha256": "7212863bb755b1751f10ccc53007a8eba78e4e0f5745ab47437fe4ac9eb581dd"
+    },
+    {
+      "path": "index.php",
+      "size": 39270,
+      "sha256": "c5b2a7b326d55702f5e127b15ce93cd33d80782f07bdb9fb50cc1fb5d8ac7b86"
+    },
+    {
+      "path": "LEGAL-GDPR-CHECKLIST.md",
+      "size": 1912,
+      "sha256": "f91cc01ead26930b56c6abcf553f0afff851a20a4493e725b65a3216e6a33edc"
+    },
+    {
+      "path": "README-INSTALL.txt",
+      "size": 1337,
+      "sha256": "b96974c1bbdd6beff33fa3ea0cf106014c9fdb33802cf2663e40f36cb0b7b90a"
+    },
+    {
+      "path": "README.txt",
+      "size": 622,
+      "sha256": "e2cd575bb2631b3e98dfd7c42f32423bd164fbb2d286db3fe972daa5fccd03cf"
+    },
+    {
+      "path": "robots.txt",
+      "size": 93,
+      "sha256": "088ef0749c0c4c483fa376ae3dae22a4d16b8187dfdaab85dde5f10f98626860"
+    },
+    {
+      "path": "SECURITY.md",
+      "size": 1396,
+      "sha256": "e34e4e37c41fe9b85186cd1163f4e22e45c179d082a67c6b91e0acf162168508"
+    },
+    {
+      "path": "UPRAVA-CONFIG-PRO-MILOSLAVHUB.txt",
+      "size": 472,
+      "sha256": "0ebc495f5619eab963a78a13dbf39ef6a04ecfeb83dc0ebd5e749ebca0ab37e5"
+    }
+  ]
+}

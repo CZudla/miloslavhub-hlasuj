@@ -1,0 +1,31 @@
+{
+  "checks": [
+    {
+      "archive": "Hlasuj-0.8.7-AUTORSKY.zip",
+      "crc": "passed",
+      "start_links": "passed",
+      "known_credential_scan": "passed",
+      "exact_deployed_files_checked": 0,
+      "release_metadata_values_match": true,
+      "files": 140
+    },
+    {
+      "archive": "Hlasuj-0.8.7-ZAKAZNICKY.zip",
+      "crc": "passed",
+      "start_links": "passed",
+      "known_credential_scan": "passed",
+      "exact_deployed_files_checked": 56,
+      "release_metadata_values_match": true,
+      "files": 69
+    }
+  ],
+  "git_clean": true,
+  "live_release": {
+    "product": "Hlasuj! by MiloslavHub",
+    "version": "0.8.7",
+    "schema_version": "0.8.5",
+    "git_commit": "40dce6213af07b01f4f9f2bf428786709979c109",
+    "database_migration_required": false
+  },
+  "release_json_note": "Package uses LF; server metadata uses CRLF; JSON values match"
+}

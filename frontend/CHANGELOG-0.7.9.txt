@@ -1,0 +1,27 @@
+Hlasuj by MiloslavHub – frontend 0.7.9
+=====================================
+
+Vizuální úpravy homepage
+- sjednocená sada jednobarevných SVG ikon místo směsi znaků a emoji,
+- kratší a čistší horní popisek bez rušivé čárky,
+- „slide“ nahrazen českým „snímek“,
+- jemnější typografie v sekci „Jiný přístup“,
+- profesionálnější blok „Testováno v praxi“,
+- větší a výraznější „Jak to funguje“,
+- sjednocené rozměry mobilních ukázek,
+- zvýrazněna projekční ukázka,
+- lepší typografické zalamování a nezalomitelné mezery,
+- sekce identit používá „osobní produktová identita autora“,
+- všechny identity lze kliknutím otevřít v modal ukázce,
+- Síň slávy má nenápadný odkaz na pravidla zveřejnění.
+
+Soukromí a právní UX
+- informace o soukromí je viditelná přímo před/ během hlasování,
+- jasně oddělená dobrovolnost zveřejnění v Síni slávy,
+- kompletně přepracovaná stránka „Soukromí a data“,
+- doplněny účely, retenční doby, technické ukládání, práva uživatele a kontakt na správce,
+- uvedeno, že konkrétní správce musí doplnit právní základ a další povinné informace podle nasazení.
+
+Technicky
+- cache-busting zvýšen na 0.7.9,
+- backend API a databáze se touto verzí nemění.

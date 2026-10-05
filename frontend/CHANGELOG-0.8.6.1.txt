@@ -1,0 +1,13 @@
+MiloslavHub Live – 0.8.6.1 hotfix
+==================================
+
+Fixed
+- Android Chrome: tlačítko Připojit se už nemůže splynout s bílým pozadím.
+- Přezdívka má jasný label, nápovědu a inline validaci.
+- Tlačítko zobrazuje průběh „Připojuji…“.
+- Mobilní úvod má srozumitelnější kroky 1–3.
+- URL pod QR už není viditelná standardně.
+
+Changed
+- Pod QR je pouze jasná instrukce.
+- Celá URL je schovaná pod „QR nejde načíst? Zobrazit adresu“.

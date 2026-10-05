@@ -1,0 +1,5 @@
+QRCode.js 1.0.0 — davidshimjs — MIT
+Vendored locally in /assets/vendor/qrcode.min.js.
+License: /assets/vendor/qrcode-LICENSE.txt
+Download sources and hashes: /assets/vendor/provenance.json
+No runtime CDN request. QR content stays in the browser.

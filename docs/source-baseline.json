@@ -1,0 +1,144 @@
+{
+  "archive": "C:\\Users\\mihu0334\\OneDrive - Univerzita Pardubice\\Pedagogika\\Výuka\\Plocha\\SOFTWARE\\HLASUJ\\2026-09-25\\Hlasuj-by-MiloslavHub-komplet-2026-09-25-v4.zip",
+  "archive_sha256": "da5687e0170dbe1b99d32391f67678d7d96dc7b150737d2b2ba1ba3d57371529",
+  "master_spec_sha256": "de470e6ae922d6cc5426db22cd20dff6c245817443c2c96368d1f4f183e93d15",
+  "files": [
+    {
+      "path": "frontend/.htaccess",
+      "sha256": "438a9fcde9a8a2615f4299410589e9b0340f6872b794c5d28fae89f64bb4debd"
+    },
+    {
+      "path": "frontend/CHANGELOG-0.7.7.txt",
+      "sha256": "4716e76e4a499b4351ae0de41214151adec478c3a878c523b9f7f4ba912d1a6e"
+    },
+    {
+      "path": "frontend/CHANGELOG-0.7.8.txt",
+      "sha256": "15444ffcd93be40cd837f17b87edce1e3b35b60a41d4a25dfb33bb13e7f69dfb"
+    },
+    {
+      "path": "frontend/CHANGELOG-0.7.9.txt",
+      "sha256": "0ce104c85144964d6f7a9f89669827b4b8d135df3ce97721bcbd282e3205c842"
+    },
+    {
+      "path": "frontend/CHANGELOG-0.8.6.1.txt",
+      "sha256": "8ec370a2d9edfc242c71e6e524b468e7313a5aa0795210c0e94194a774dddbdc"
+    },
+    {
+      "path": "frontend/CHANGELOG-0.8.6.txt",
+      "sha256": "1b4a5ef7a445b4ca317b368152ef98d60f5be8b6138e59f586344e9358a80ed8"
+    },
+    {
+      "path": "frontend/CHANGELOG-DEMO-0.8.6.16.txt",
+      "sha256": "f35bbe09f141235e28e92e4aaa7ef679172979a47513758203d8f953cbcecaf2"
+    },
+    {
+      "path": "frontend/LEGAL-GDPR-CHECKLIST.md",
+      "sha256": "f91cc01ead26930b56c6abcf553f0afff851a20a4493e725b65a3216e6a33edc"
+    },
+    {
+      "path": "frontend/README-INSTALL.txt",
+      "sha256": "cc9c6cdf7edc8f5442fb9e310280c12e396fb77e816754c263015217992c8086"
+    },
+    {
+      "path": "frontend/README.txt",
+      "sha256": "13da19560899ce9979d9c9966dfdfd878149a1ac65573a47b7546b7cf9eb5742"
+    },
+    {
+      "path": "frontend/SECURITY.md",
+      "sha256": "2542646a20e461fd1754f8a179eb5cdeaee0f11969de0f18b64236ca50af6167"
+    },
+    {
+      "path": "frontend/UPRAVA-CONFIG-PRO-MILOSLAVHUB.txt",
+      "sha256": "0ebc495f5619eab963a78a13dbf39ef6a04ecfeb83dc0ebd5e749ebca0ab37e5"
+    },
+    {
+      "path": "frontend/assets/app.css",
+      "sha256": "fb0252628ba26e6e36d40c1571b9dcdbc6c58ff23c12bc5e25ad4d2eedc004c7"
+    },
+    {
+      "path": "frontend/assets/app.js",
+      "sha256": "841989354df83c294716b42be99d980bc68691417f32aa3b19c783e4cd0a6fce"
+    },
+    {
+      "path": "frontend/assets/brand/hlasuj-icon-512.png",
+      "sha256": "ca5cbd5d7685ada18b0bea5148c96b9fece6cececca71054f00361b1c7b8d8bb"
+    },
+    {
+      "path": "frontend/assets/brand/hlasuj-logo-original.png",
+      "sha256": "50c73378c0a5d6a4fe2c186bfe87fe5484e4ace36bd0ccb690bc41fb028751d6"
+    },
+    {
+      "path": "frontend/assets/brand/hlasuj-logo.png",
+      "sha256": "4897896de0db533877af30ba02a48fb90c22cbf6bb23df77e37fe85068dc8705"
+    },
+    {
+      "path": "frontend/assets/landing.css",
+      "sha256": "0b5336527daa5bd21cb1bff1c6f6894e6390b8d969dc3ae83fd1ed3f2bc653e3"
+    },
+    {
+      "path": "frontend/assets/screenshots/mobile-join.png",
+      "sha256": "2ef025b497ee753a93affa11227e6a10b3c78eea03da056b7af41c80fabf1386"
+    },
+    {
+      "path": "frontend/assets/screenshots/mobile-leaderboard.png",
+      "sha256": "635e28c18fb5a262ffeeafd86218845670ebe8207855d4dcaa4f451c64f9907f"
+    },
+    {
+      "path": "frontend/assets/screenshots/mobile-results.png",
+      "sha256": "6b1545336a5687c4ff8a4003e0ee9f2fb1325d1807b516b8dec295a55727bf63"
+    },
+    {
+      "path": "frontend/assets/screenshots/mobile-vote.png",
+      "sha256": "39060b9041325c3a366aff6e518ae102e0ba29884205a222bdcc3832612d9923"
+    },
+    {
+      "path": "frontend/assets/screenshots/projection-results.png",
+      "sha256": "b673d3f9d34b316ae22058d2de569ea2525d1bfbf87ff3360f793ad51038a96e"
+    },
+    {
+      "path": "frontend/config.example.php",
+      "sha256": "7988208aef5ec0b5de612e163aff92406c32976fa09fb2dd327455387502bc78"
+    },
+    {
+      "path": "frontend/demo/api.php",
+      "sha256": "f733cba766a5393bdfb86cb5ed329e52c78d2eb3d22d25a12298fa6ac7039424"
+    },
+    {
+      "path": "frontend/demo/assets/THIRD-PARTY.txt",
+      "sha256": "0a4adc16c3627e796018d0ac4746e13e248b9213a9c18c5eb0e42675831dfb2c"
+    },
+    {
+      "path": "frontend/demo/assets/demo.css",
+      "sha256": "9c3273a3f4b52a897f3ba805dcca8c90879aec9369c7df603197bbbe6f178c55"
+    },
+    {
+      "path": "frontend/demo/assets/hlasuj-logo.png",
+      "sha256": "4897896de0db533877af30ba02a48fb90c22cbf6bb23df77e37fe85068dc8705"
+    },
+    {
+      "path": "frontend/demo/index.php",
+      "sha256": "cd1447b3a041dc5cfaa8b84fc20ab74aa3b84927ae1feadcb9aed2206bea08a1"
+    },
+    {
+      "path": "frontend/demo/lib.php",
+      "sha256": "529353f6a1d3a256a567ded44c14c8afaadfac1fa86ee902e54377a947384504"
+    },
+    {
+      "path": "frontend/demo/mobile.php",
+      "sha256": "2d2e0a378cb95dd3b0c6bf5a85f8c4004537fad2b9686735371817f7919467ea"
+    },
+    {
+      "path": "frontend/index.php",
+      "sha256": "31877784181e6c624b64ce5be5b6be73028b9de3c7095313d56f8f2f5d7b790b"
+    },
+    {
+      "path": "frontend/manifest.json",
+      "sha256": "b6a0e8d5d261f205917c068125810022e973d9bf2a4bba53f8ed1c4d95e4a242"
+    },
+    {
+      "path": "frontend/robots.txt",
+      "sha256": "088ef0749c0c4c483fa376ae3dae22a4d16b8187dfdaab85dde5f10f98626860"
+    }
+  ],
+  "production_verified": false
+}
