@@ -1,7 +1,8 @@
 {
   "product": "Hlasuj! by MiloslavHub",
-  "version": "0.8.8",
+  "version": "0.8.9",
   "schema_version": "0.8.5",
   "release_date": "2026-10-05",
+  "deployment_report": "docs/DEPLOYMENT-2026-10-05-0.8.9.md",
   "database_migration_required": false
 }

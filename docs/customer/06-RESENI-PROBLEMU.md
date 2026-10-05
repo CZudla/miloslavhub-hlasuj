@@ -1,6 +1,6 @@
 # Řešení problémů
 
-Hlasuj! by MiloslavHub · 0.8.8
+Hlasuj! by MiloslavHub · 0.8.9
 
 | Projev | Co ověřit | Další krok |
 |---|---|---|
@@ -17,7 +17,7 @@ Hlasuj! by MiloslavHub · 0.8.8
 | Projekce nefunguje | Správný odkaz, platný token, existující předmět | Znovu převzít odkaz z administrace |
 | CSV má špatnou diakritiku/sloupce | Import UTF-8 a oddělovač středník | Otevřít pomocí importu dat tabulkového editoru |
 | Demo skončilo | Patnáctiminutovou životnost | Spustit novou ukázku |
-| V galerii je starší vzhled | Označení historických obrázků | Pro aktuální chování použít dodané screenshoty a manuál 0.8.8 |
+| V galerii je starší vzhled | Označení historických obrázků | Pro aktuální chování použít dodané screenshoty a manuál 0.8.9 |
 
 ## Co poslat správci
 

@@ -87,6 +87,12 @@ for name in ['student-live.png','demo-intro.png']:
         with PILImage.open(source) as im:w,h=im.size
         scale=min(490/w,290/h)
         story.extend([Paragraph(name,styles['Small']),Image(str(source),width=w*scale,height=h*scale),Spacer(1,15)])
+transfer_shot=ROOT/'runtime/screenshots/content-transfer-preview.png'
+if transfer_shot.exists():
+    from PIL import Image as PILImage
+    with PILImage.open(transfer_shot) as im:w,h=im.size
+    scale=min(490/w,580/h)
+    story.extend([PageBreak(),Paragraph('Přenos obsahu: náhled před potvrzením',styles['Heading1']),Paragraph('Skutečná administrace WordPressu, syntetický předmět. Náhled nevytváří obsah; potvrzení vytvoří nové koncepty.',styles['BodyText']),Image(str(transfer_shot),width=w*scale,height=h*scale)])
 document(OUT/f'Hlasuj-{VERSION}-prirucky.pdf',story)
 
 product=f'''# Hlasuj! by MiloslavHub
@@ -101,6 +107,7 @@ Webové ankety a kvízy pro společnou výuku. Studenti otevřou QR kód v prohl
 - Trvalé odkazy otázek a připojení bez studentského účtu.
 - Projekci výsledků a volitelný soutěžní režim.
 - Dlouhodobé ankety a CSV export živých výsledků.
+- Přenos předmětu kolegovi pomocí JSON s náhledem importu.
 ## Vyzkoušejte ukázku
 hlasuj.miloslavhub.cz/demo/
 Navrženo učitelem pro učitele. Samostatný projekt MiloslavHub.

@@ -104,7 +104,7 @@ function e($value) {
             <link rel="dns-prefetch" href="//<?php echo e((string) ($apiParts['host'] ?? '')); ?>">
             <link rel="preconnect" href="<?php echo e($apiOrigin); ?>" crossorigin>
         <?php endif; ?>
-        <link rel="stylesheet" href="/assets/app.css?v=0.8.7">
+        <link rel="stylesheet" href="/assets/app.css?v=0.8.9">
     <?php endif; ?>
 </head>
 <body<?php echo $view === 'home' ? ' class="landing-page"' : ''; ?>>
@@ -483,7 +483,7 @@ function e($value) {
         </section>
     </main>
     <script src="/assets/vendor/qrcode.min.js" defer></script>
-    <script src="/assets/app.js?v=0.8.7" defer></script>
+    <script src="/assets/app.js?v=0.8.9" defer></script>
 <?php endif; ?>
 </body>
 </html>

@@ -1,4 +1,4 @@
-AKTUÁLNÍ VYDÁNÍ: 0.8.7. Kořenový README.md a docs/RELEASE-0.8.7.md uvádějí aktuální rozsah a ověření.
+AKTUÁLNÍ VYDÁNÍ: 0.8.9. Kořenový README.md a docs/RELEASE-0.8.9.md uvádějí aktuální rozsah a ověření.
 Frontend a plugin aktualizovat společně; config zachovat; schéma se nemění.
 
 Historie přípravy a předchozích verzí:

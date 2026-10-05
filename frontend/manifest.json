@@ -1,7 +1,7 @@
 {
   "product": "Hlasuj! by MiloslavHub",
-  "frontend_version": "0.8.8",
-  "backend_version": "0.8.8",
+  "frontend_version": "0.8.9",
+  "backend_version": "0.8.9",
   "schema_version": "0.8.5",
   "status": "release-candidate",
   "backend_changed": true,
@@ -140,7 +140,7 @@
     {
       "path": "demo/index.php",
       "size": 28147,
-      "sha256": "3bc2604cbb066003d668104dec002560f7ef83eb9cd8e9710cd9760ec330b04a"
+      "sha256": "a3b0b82f325056c2322d1e59cd61e2435a1a6fe4ccf7685042cb3f10c6a6571d"
     },
     {
       "path": "demo/lib.php",
@@ -150,12 +150,12 @@
     {
       "path": "demo/mobile.php",
       "size": 28545,
-      "sha256": "7212863bb755b1751f10ccc53007a8eba78e4e0f5745ab47437fe4ac9eb581dd"
+      "sha256": "27d481a3fa37bed2cc35265b810333c12185f8c92b17f6439703c02cb2ea3441"
     },
     {
       "path": "index.php",
       "size": 39270,
-      "sha256": "c5b2a7b326d55702f5e127b15ce93cd33d80782f07bdb9fb50cc1fb5d8ac7b86"
+      "sha256": "b93db34821930ada82bb26cfce13a071a445f81d97fee0db9e8a35b775a71e37"
     },
     {
       "path": "LEGAL-GDPR-CHECKLIST.md",
@@ -165,12 +165,12 @@
     {
       "path": "README-INSTALL.txt",
       "size": 1337,
-      "sha256": "b96974c1bbdd6beff33fa3ea0cf106014c9fdb33802cf2663e40f36cb0b7b90a"
+      "sha256": "69409246351f81da078b290ede3eb075f78684f0606696823d62f1a3938e4751"
     },
     {
       "path": "README.txt",
       "size": 622,
-      "sha256": "e2cd575bb2631b3e98dfd7c42f32423bd164fbb2d286db3fe972daa5fccd03cf"
+      "sha256": "432aa5be7c3c150a4f1fae8a9f5dd6fb7827c743c56481ec837e6440af9c66ad"
     },
     {
       "path": "robots.txt",
@@ -180,7 +180,7 @@
     {
       "path": "SECURITY.md",
       "size": 1396,
-      "sha256": "e34e4e37c41fe9b85186cd1163f4e22e45c179d082a67c6b91e0acf162168508"
+      "sha256": "eb3d348e27b0a4dbe45ffc18aad7f9fe116be5f0dab6dc1ccfa1d56e82dec87f"
     },
     {
       "path": "UPRAVA-CONFIG-PRO-MILOSLAVHUB.txt",

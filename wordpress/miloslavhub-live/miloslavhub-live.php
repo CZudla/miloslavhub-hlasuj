@@ -3,7 +3,7 @@
  * Plugin Name: Hlasuj! by MiloslavHub
  * Plugin URI: https://miloslavhub.cz/
  * Description: Živé hlasování pro přednášky: předměty, přednášky, banka otázek, stálé QR adresy, testovací režim, bodování, archiv a REST API pro hlasuj.miloslavhub.cz.
- * Version: 0.8.8
+ * Version: 0.8.9
  * Requires at least: 6.4
  * Requires PHP: 8.1
  * Author: Miloslav Hub
@@ -14,7 +14,7 @@
 
 if (!defined('ABSPATH')) { exit; }
 
-define('MHL_VERSION', '0.8.8');
+define('MHL_VERSION', '0.8.9');
 define('MHL_SCHEMA_VERSION', '0.8.5');
 define('MHL_FILE', __FILE__);
 define('MHL_DIR', plugin_dir_path(__FILE__));
@@ -27,6 +27,7 @@ require_once MHL_DIR . 'includes/class-mhl-admin.php';
 require_once MHL_DIR . 'includes/class-mhl-rest.php';
 require_once MHL_DIR . 'includes/class-mhl-ai.php';
 require_once MHL_DIR . 'includes/class-mhl-ai-admin.php';
+require_once MHL_DIR . 'includes/class-mhl-content-transfer.php';
 
 register_activation_hook(__FILE__, array('MHL_Install', 'activate'));
 
@@ -39,6 +40,7 @@ add_action('plugins_loaded', static function () {
     MHL_REST::init();
     MHL_AI::init();
     if (is_admin()) { MHL_AI_Admin::init(); }
+    if (is_admin()) { MHL_Content_Transfer::init(); }
 });
 
 add_action('admin_notices', static function () {

@@ -1,0 +1,80 @@
+{
+  "status": "passed",
+  "production_data_used": false,
+  "paid_api_calls": 0,
+  "external_http_blocked": true,
+  "test_database_max_connections": 500,
+  "wordpress-integration.php": {
+    "status": "passed",
+    "checks": 19,
+    "wordpress": "7.1.2",
+    "database": "11.4.9-MariaDB",
+    "production_data_used": false,
+    "concurrency_tested": false
+  },
+  "ai-wordpress-integration.php": {
+    "status": "passed",
+    "checks": 21,
+    "wordpress": "7.1.2",
+    "database": "11.4.9",
+    "provider": "pre_http_request fixture",
+    "paid_calls": 0
+  },
+  "content-wordpress-integration.php": {
+    "status": "passed",
+    "checks": 50,
+    "production_data_used": false,
+    "paid_api_calls": 0
+  },
+  "concurrency": {
+    "status": "passed",
+    "checks": 28,
+    "independent_processes": true,
+    "production_data_used": false,
+    "paid_api_calls": 0
+  },
+  "load": {
+    "status": "passed",
+    "scenarios": [
+      {
+        "students": 30,
+        "concurrent_workers": 30,
+        "status": "passed",
+        "votes": 30,
+        "burst_seconds": 1.179,
+        "handler_p50_ms": 1210.9,
+        "handler_p95_ms": 1397.4,
+        "handler_max_ms": 1871.2
+      },
+      {
+        "students": 100,
+        "concurrent_workers": 100,
+        "status": "passed",
+        "votes": 100,
+        "burst_seconds": 8.438,
+        "handler_p50_ms": 8731.5,
+        "handler_p95_ms": 9362.0,
+        "handler_max_ms": 9842.0
+      }
+    ],
+    "production_data_used": false,
+    "paid_api_calls": 0,
+    "transport": "independent PHP CLI processes using real REST callbacks and MariaDB",
+    "limits": "Local burst test; does not measure hosting HTTP workers, network or sustained polling"
+  },
+  "wordpress_admin_browser": {
+    "status": "passed",
+    "checks": 13,
+    "actual_wordpress_admin": true,
+    "external_requests_blocked": 7,
+    "paid_api_calls": 0
+  },
+  "browser_persistence": "passed",
+  "content_admin_browser": {
+    "status": "passed",
+    "checks": 11,
+    "actual_wordpress_admin": true,
+    "paid_api_calls": 0
+  },
+  "servers_stopped": true
+}

@@ -28,7 +28,7 @@ $joinUrl = '/demo/mobile.php?s=' . rawurlencode($sessionId);
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="robots" content="noindex,nofollow,noarchive">
     <title>Interaktivní demo – Hlasuj! by MiloslavHub</title>
-    <link rel="stylesheet" href="/demo/assets/demo.css?v=0.8.7">
+    <link rel="stylesheet" href="/demo/assets/demo.css?v=0.8.9">
 </head>
 <body class="demo-host">
 <div class="demo-shell">

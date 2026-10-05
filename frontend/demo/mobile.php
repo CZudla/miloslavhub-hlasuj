@@ -27,7 +27,7 @@ try {
     <meta name="robots" content="noindex,nofollow,noarchive">
     <meta name="theme-color" content="#0f62d8">
     <title>Demo hlasování – Hlasuj! by MiloslavHub</title>
-    <link rel="stylesheet" href="/demo/assets/demo.css?v=0.8.7">
+    <link rel="stylesheet" href="/demo/assets/demo.css?v=0.8.9">
 </head>
 <body class="demo-mobile">
 <main class="mobile-shell">

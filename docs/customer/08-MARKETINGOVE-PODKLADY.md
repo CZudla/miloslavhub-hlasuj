@@ -1,6 +1,6 @@
 # Marketingové podklady
 
-Hlasuj! by MiloslavHub · texty pro vydání 0.8.8
+Hlasuj! by MiloslavHub · texty pro vydání 0.8.9
 
 ## Hlavní sdělení
 
@@ -20,7 +20,7 @@ Připravte si otázky, vložte jejich odkazy do výuky a dejte studentům prosto
 
 Pro ověření porozumění poslouží kvíz se správnou odpovědí, pro názory a společné rozhodování anketa. Výsledky mohou navázat na diskusi, další vysvětlení nebo zopakování otázky. Kdo chce využít soutěž, může zapnout přezdívky, body a pořadí. Dlouhodobá anketa umožňuje sbírat odpovědi samostatným odkazem i mimo společnou hodinu.
 
-Hlasuj! by MiloslavHub vzniká jako samostatný projekt zaměřený na reálné potřeby výuky. Opravné vydání 0.8.8 chrání souběh odesílání odpovědí s učitelským uzavřením a opakováním otázky. Učitel dál řídí začátek hlasování; studenti se připojují přes trvalý odkaz nebo QR.
+Vydání 0.8.9 umožňuje předat předmět kolegovi jako otevřený JSON soubor. Import nejprve ukáže náhled a potom vytvoří nové koncepty se zachovaným pořadím a sdílenými otázkami. Výsledky a údaje vyučujících do souboru nepřidává. Učitel dál řídí začátek živého hlasování; studenti se připojují přes trvalý odkaz nebo QR.
 
 ## Pozvánka kolegům — návrh k použití
 
@@ -49,6 +49,6 @@ Text je připravený podklad; jeho vytvoření nikoho automaticky nekontaktuje.
 
 Používejte screenshoty označené verzí. Dodané aktuální snímky jsou z testovacího prostředí se syntetickými údaji. Staré obrázky v aplikační galerii jsou historické. Nevydávejte testovací data za skutečné zákaznické výsledky.
 
-Neuvádějte, že verze 0.8.8 obsahuje domácí úkoly, úplné česko-anglické UI, obsahový import/export nebo oddělené účty organizací. Neuvádějte zaručenou anonymitu, právní certifikaci, neomezenou kapacitu ani dostupnost se SLA. Cenu, rozsah podpory a obchodní licenci je třeba sjednat; tyto texty je nestanovují.
+Neuvádějte, že verze 0.8.9 obsahuje domácí úkoly, úplné česko-anglické UI nebo oddělené účty organizací. Přenos obsahu má konkrétní rozsah: předmět, přednášky, přiřazené otázky a podporovaná nastavení; výsledky, kategorie, soubory, externí odkazy, termíny a původní QR nejsou součástí. Neuvádějte zaručenou anonymitu, právní certifikaci, neomezenou kapacitu ani dostupnost se SLA. Cenu, rozsah podpory a obchodní licenci je třeba sjednat; tyto texty je nestanovují.
 
 Veřejné adresy v těchto vzorech patří projektu MiloslavHub. Pro zákaznickou instalaci je nahraďte jejími adresami. Před publikací doplňte skutečný kontakt a ověřte distribuční práva ke grafice.

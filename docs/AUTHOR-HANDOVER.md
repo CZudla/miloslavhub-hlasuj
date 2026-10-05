@@ -2,9 +2,9 @@
 
 ## Co je hotové v této iteraci
 
-Audit se strukturou A–M, zdrojový Git repozitář, opravná implementace 0.8.8, testy, ověřená obnova záloh, produkční nasazení, devět českých dokumentů pro zákazníka, společná PDF/HTML příručka, produktový list, marketingové texty a upravitelný banner. Dva výsledné ZIPy mají vlastní seznam souborů a kontrolní součty.
+Audit se strukturou A–M, zdrojový Git repozitář, přenos předmětu s náhledem a bezpečným importem konceptů v 0.8.9, testy, ověřená obnova záloh, produkční nasazení, deset českých dokumentů pro zákazníka, společná PDF/HTML příručka, produktový list, marketingové texty a upravitelný banner. Dva výsledné ZIPy mají vlastní seznam souborů a kontrolní součty.
 
-Za aktuální stav vydání považujte RELEASE-0.8.8.md a DEPLOYMENT-2026-10-05.md. AUDIT.md zachycuje výchozí audit a historické doklady. MASTER-SPEC.md a centrální registr jsou zadání směru; jejich přítomnost neznamená implementaci každého požadavku.
+Za aktuální stav vydání považujte RELEASE-0.8.9.md a DEPLOYMENT-2026-10-05-0.8.9.md. AUDIT.md zachycuje výchozí audit a historické doklady. MASTER-SPEC.md a centrální registr jsou zadání směru; jejich přítomnost neznamená implementaci každého požadavku.
 
 ## Autorský balíček
 
@@ -28,7 +28,7 @@ Navrhnout oprávnění a vlastnictví obsahu před více učiteli, omezit přís
 
 ### LATER
 
-Implementace domácích úkolů po schválení modelu, plné cs/en rozhraní, obsahový přenos mezi instalacemi, oddělené organizace, stabilní veřejné integrační API a sjednocení celé grafické galerie. Po každé etapě zopakovat potřebné testy a sladit verze webu, balíčků, dokumentace a marketingu.
+Implementace domácích úkolů po schválení modelu, plné cs/en rozhraní, rozšíření přenosu o kategorie, assets a výsledky, oddělené organizace, stabilní veřejné integrační API a sjednocení celé grafické galerie. Po každé etapě zopakovat potřebné testy a sladit verze webu, balíčků, dokumentace a marketingu.
 
 ## Co je potřeba od autora před další implementací
 

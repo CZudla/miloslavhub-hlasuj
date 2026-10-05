@@ -1,3 +1,11 @@
+# 0.8.9 · 2026-10-05
+
+- Přenos předmětu jako verzovaný JSON v1: ověřený export, náhled a potvrzení importu nových konceptů.
+- Zachované pořadí a sdílené otázky, nové QR, jednorázové potvrzení, serverová oprávnění a odstranění nových záznamů při zachycené chybě.
+- Editor zachovává přiřazené koncepty předmětu a otázek.
+- Deset zákaznických dokumentů, aktualizované PDF/HTML, reference formátu a marketing. Schéma 0.8.5 bez DDL; AI zůstává vypnutá.
+- 330 místních kontrol a samostatné dávky 30/100 hlasů. Rozsah a omezení: docs/RELEASE-0.8.9.md. Konkrétní nasazení: docs/DEPLOYMENT-2026-10-05-0.8.9.md.
+
 # Změny
 
 ## 0.8.8 — 2026-10-05 — souběh hlasování

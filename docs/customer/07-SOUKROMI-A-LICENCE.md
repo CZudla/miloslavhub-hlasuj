@@ -1,6 +1,6 @@
 # Soukromí a licence
 
-Hlasuj! by MiloslavHub · 0.8.8 · technické informace pro provozovatele
+Hlasuj! by MiloslavHub · 0.8.9 · technické informace pro provozovatele
 
 ## Jaká data vznikají
 

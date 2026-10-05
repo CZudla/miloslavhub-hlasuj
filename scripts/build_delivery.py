@@ -17,6 +17,8 @@ tests=json.loads((ROOT/'runtime/test-results.json').read_text(encoding='utf8'))
 qualification=json.loads((ROOT/'runtime/qualification.json').read_text(encoding='utf8'))
 assert tests['status']=='passed' and tests['browser']['status']=='passed' and qualification['wordpress_integration']['status']=='passed'
 assert qualification.get('version')==VERSION and qualification.get('integration',{}).get('load',{}).get('status')=='passed'
+assert qualification.get('integration',{}).get('content-wordpress-integration.php',{}).get('status')=='passed'
+assert qualification.get('integration',{}).get('content_admin_browser',{}).get('status')=='passed'
 tracked=[p.decode('utf8') for p in git('ls-files','-z').split(b'\0') if p and source_path(p.decode('utf8'))]
 sources={name:(ROOT/name).read_bytes() for name in tracked if source_path(name)}
 plugin_hash=hashlib.sha256(b''.join(n.encode()+b'\0'+sources[n] for n in sorted(sources) if n.startswith('wordpress/') and n.endswith('.php'))).hexdigest()
@@ -44,14 +46,16 @@ common['marketing/TEXTY.md']=(ROOT/'docs/customer/08-MARKETINGOVE-PODKLADY.md').
 common['marketing/produktovy-list.pdf']=(ROOT/f'runtime/handbooks-{VERSION}/Hlasuj-{VERSION}-produktovy-list.pdf').read_bytes()
 common['marketing/SCREENSHOTY.txt']=f'Aktuální snímky {VERSION} jsou z izolovaného testovacího prostředí se syntetickými daty. Nejde o živé zákaznické výsledky. Historická galerie uvnitř aplikace je označena samostatně.\n'.encode('utf8')
 for p in sorted((ROOT/'runtime/screenshots').glob('*.png')):common['marketing/screenshots/'+p.name]=p.read_bytes()
+integration=qualification['integration']
+check_count=sum(tests.get(k,{}).get('checks',0) for k in ['security_contracts','ai_contracts','ai_disabled','browser','ai_browser'])+tests['demo_http_checks']+sum(integration.get(k,{}).get('checks',0) for k in ['wordpress-integration.php','ai-wordpress-integration.php','content-wordpress-integration.php','concurrency','wordpress_admin_browser','content_admin_browser'])
 summary=f'''# Hlasuj! by MiloslavHub {VERSION}
 
 Nasazený aplikační commit: {deploy['application_commit']}.
 Commit předání zdrojů a dokumentace: {commit}.
 Schéma: {SCHEMA}, bez migrace pro přechod z 0.8.5.
-Ověření: 269 kontrol, včetně skutečné WordPress/DB integrace a souběhu; navíc místní souběžné dávky 30 a 100 hlasů. Hostingová kapacita a dlouhodobý polling tím nejsou prokázány.
+Ověření: {check_count} kontrol, včetně skutečné WordPress/DB integrace, přenosu obsahu, učitelské administrace a souběhu; navíc místní souběžné dávky 30 a 100 hlasů. Hostingová kapacita a dlouhodobý polling tím nejsou prokázány.
 Nasazeno 5. 10. 2026 na hlasuj.miloslavhub.cz. Stav původního nasazení nedokládá stav nové zákaznické instalace.
-Domácí úkoly, kompletní i18n, obsahový import/export a oddělené organizace zůstávají dalšími etapami.
+Přenos předmětu s náhledem a importem nových konceptů je dostupný ve formátu JSON v1. Rozsah a omezení popisuje příručka přenosu. Domácí úkoly, kompletní i18n a oddělené organizace zůstávají dalšími etapami.
 Licenční a obchodní podmínky vlastního frontendu a assets musí autor dokončit; plugin deklaruje GPL-2.0-or-later, QRCode.js MIT.
 '''
 common['VYDANI.md']=summary.encode('utf8')
@@ -59,7 +63,7 @@ author={**common,**{'zdroje/'+n:d for n,d in sources.items()}}
 author['hlasuj-history.bundle']=bundle.read_bytes()
 for p in ['test-results.json','qualification.json','deployment.json','delivery-secret-scan.json','cleanup.json']:
     author['overeni/'+p]=(ROOT/'runtime'/p).read_bytes()
-author['ZPRAVA-O-NASAZENI.md']=(ROOT/f'docs/DEPLOYMENT-{RELEASE["release_date"]}.md').read_bytes()
+author['ZPRAVA-O-NASAZENI.md']=(ROOT/RELEASE.get('deployment_report',f'docs/DEPLOYMENT-{RELEASE["release_date"]}.md')).read_bytes()
 author['PREDANI-AUTOROVI.md']=(ROOT/'docs/AUTHOR-HANDOVER.md').read_bytes()
 author['STAV-UKLIDU.md']=(ROOT/'docs/CLEANUP-STATUS.md').read_bytes()
 customer=dict(common)

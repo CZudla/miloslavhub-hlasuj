@@ -203,6 +203,20 @@ class MHL_Admin {
         $subject_id=MHL_Core::get_lecture_subject_id($post->ID); $selected=MHL_Core::get_lecture_question_ids($post->ID); $gam=(bool)get_post_meta($post->ID,'_mhl_gamification',true); $scope=get_post_meta($post->ID,'_mhl_score_scope',true)?:'subject';
         $materials=(string)get_post_meta($post->ID,'_mhl_materials_url',true); $assistant=(string)get_post_meta($post->ID,'_mhl_assistant_url',true); $show_live=(bool)get_post_meta($post->ID,'_mhl_show_live_results',true); $auto_qr=MHL_Core::lecture_auto_qr($post->ID);
         $subjects=get_posts(array('post_type'=>'mhl_subject','post_status'=>'publish','numberposts'=>-1,'orderby'=>'title','order'=>'ASC')); $questions=get_posts(array('post_type'=>'mhl_question','post_status'=>'publish','numberposts'=>-1,'orderby'=>'title','order'=>'ASC'));
+        // Keep already assigned drafts visible so reviewing an imported lecture cannot
+        // silently discard its unpublished subject or questions on ordinary save.
+        $known_subjects=array_column($subjects,'ID'); $known_questions=array_column($questions,'ID');
+        if($subject_id && !in_array($subject_id,$known_subjects,true)){
+            $assigned=get_post($subject_id);
+            if($assigned && $assigned->post_type==='mhl_subject' && in_array($assigned->post_status,array('draft','pending','private','future'),true) && current_user_can('edit_post',$subject_id)){$subjects[]=$assigned;}
+        }
+        $has_drafts=false;
+        foreach($selected as $qid){
+            if(in_array($qid,$known_questions,true)){continue;}
+            $assigned=get_post($qid);
+            if($assigned && $assigned->post_type==='mhl_question' && in_array($assigned->post_status,array('draft','pending','private','future'),true) && current_user_can('edit_post',$qid)){$questions[]=$assigned;$has_drafts=true;}
+        }
+        if($has_drafts){echo '<p class="description">'.esc_html__('Některé přiřazené otázky ještě nejsou zveřejněné. Před výukou zveřejněte otázky a předmět, potom přednášku. Uložení konceptu zachová jejich přiřazení.','miloslavhub-live').'</p>';}
         ?>
         <p><label><strong>Předmět * <?php echo self::help('Předmět představuje celý semestr nebo kurz. Každá přednáška patří právě jednomu předmětu a body se mezi různými předměty nepřenášejí.'); ?></strong> <select name="mhl_subject_id" required><option value="">— vyberte —</option><?php foreach($subjects as $s): ?><option value="<?php echo esc_attr($s->ID); ?>" <?php selected($subject_id,$s->ID); ?>><?php echo esc_html($s->post_title); ?></option><?php endforeach; ?></select></label></p>
         <p><label><input type="checkbox" name="mhl_gamification" value="1" <?php checked($gam); ?>> <strong>Soutěžní režim <?php echo self::help('Zapne přezdívky, body, měření rychlosti a výsledkové pořadí. Přezdívka se pamatuje pro celý předmět a používá se i v dalších přednáškách.'); ?></strong> – přezdívky, body a pořadí; výchozí součet je v rámci celého předmětu.</label></p>

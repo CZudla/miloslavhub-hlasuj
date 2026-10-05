@@ -1,0 +1,48 @@
+const {chromium}=require('playwright');
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const base=process.argv[2];
+if(!/^http:\/\/127\.0\.0\.1:\d+$/.test(base))throw new Error('Synthetic loopback site required');
+(async()=>{
+  const browser=await chromium.launch({channel:'msedge',headless:true});
+  const context=await browser.newContext();
+  await context.route('**/*',route=>new URL(route.request().url()).origin===base?route.continue():route.abort());
+  const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
+  let checks=0;const check=(ok,message)=>{assert(ok,message);checks++;};
+  try{
+    const denied=await context.request.post(base+'/wp-admin/admin-post.php',{form:{action:'mhl_export_content'}});
+    check(denied.status()!==200,'Anonymous download denied');
+    await page.goto(base+'/wp-login.php');
+    await page.locator('#user_login').fill(process.env.MHL_TEST_ADMIN_LOGIN);
+    await page.locator('#user_pass').fill(process.env.MHL_TEST_ADMIN_PASSWORD);
+    await Promise.all([page.waitForURL('**/wp-admin/**'),page.locator('#wp-submit').click()]);
+    const forbidden=await context.request.post(base+'/wp-admin/admin-post.php',{form:{action:'mhl_export_content',subject_id:'1'}});
+    check(forbidden.status()===403,'Authenticated download requires valid nonce');
+    await page.goto(base+'/wp-admin/admin.php?page=mhl-content-transfer');
+    check(await page.locator('h1').textContent()==='Přenést obsah','Teacher transfer page is available');
+    const option=page.locator('#mhl-transfer-subject option').filter({hasText:'Přenos: syntetický předmět'});
+    await page.locator('#mhl-transfer-subject').selectOption(await option.getAttribute('value'));
+    const downloadWait=page.waitForEvent('download');await page.getByRole('button',{name:'Stáhnout obsah'}).click();
+    const download=await downloadWait,json=fs.readFileSync(await download.path(),'utf8'),bundle=JSON.parse(json);
+    check(bundle.format_version===1&&bundle.questions.length===2,'Actual authenticated export returns portable content');
+    check(!json.includes('PRIVATE-'),'Downloaded content excludes private metadata');
+    await page.locator('#mhl-transfer-file').setInputFiles({name:'predmet.hlasuj.json',mimeType:'application/json',buffer:Buffer.from(json)});
+    await page.getByRole('button',{name:'Zobrazit náhled'}).click();await page.locator('#mhl-transfer-preview').waitFor();
+    check((await page.locator('#mhl-transfer-preview').textContent()).includes('Otázky: 2'),'Upload presents question counts before import');
+    const form=page.locator('#mhl-transfer-preview form');
+    const fields=await form.evaluate(el=>Object.fromEntries(new FormData(el)));
+    await page.screenshot({path:'runtime/screenshots/content-transfer-preview.png',fullPage:true});
+    await page.getByRole('button',{name:'Vytvořit nové koncepty'}).click();await page.locator('.notice-success').waitFor();
+    check(await page.getByRole('link',{name:'Otevřít nový předmět'}).isVisible(),'Confirmation creates new subject');
+    const editUrl=await page.getByRole('link',{name:'Otevřít nový předmět'}).getAttribute('href');
+    const repeated=await context.request.post(base+'/wp-admin/admin.php?page=mhl-content-transfer',{form:fields});
+    check((await repeated.text()).includes('byl již použit'),'Repeated form cannot duplicate imported records');
+    await page.goto(editUrl);check(await page.locator('#post_status').inputValue()==='draft','Imported subject stays draft');
+    await page.goto(base+'/wp-admin/admin.php?page=mhl-content-transfer');
+    await page.locator('#mhl-transfer-file').setInputFiles({name:'bad.json',mimeType:'application/json',buffer:Buffer.from('{"format":"wrong"}')});
+    await page.getByRole('button',{name:'Zobrazit náhled'}).click();await page.locator('.notice-error').waitFor();
+    check(await page.locator('#mhl-transfer-preview').count()===0,'Invalid upload offers no import confirmation');
+    check(errors.length===0,'Actual admin flow has no JavaScript errors');
+    process.stdout.write(JSON.stringify({status:'passed',checks,actual_wordpress_admin:true,paid_api_calls:0}));
+  }finally{await browser.close();}
+})().catch(e=>{console.error(e);process.exit(1);});

@@ -33,6 +33,8 @@ if qualification.get('tested_plugin_sha256') != plugin_hash:
     raise SystemExit('Plugin changed since WordPress integration test.')
 if qualification.get('version') != VERSION or qualification.get('integration',{}).get('concurrency',{}).get('status') != 'passed' or qualification.get('integration',{}).get('load',{}).get('status') != 'passed':
     raise SystemExit('Current release qualification including concurrency/load is required.')
+if any(qualification.get('integration',{}).get(k,{}).get('status') != 'passed' for k in ['content-wordpress-integration.php','content_admin_browser']):
+    raise SystemExit('Content transfer integration and real admin browser evidence are required.')
 if tests.get('status') != 'passed' or tests.get('browser',{}).get('status') != 'passed':
     raise SystemExit('Successful local tests including browser are required.')
 if tests.get('tested_source_sha256') != hashlib.sha256(b''.join(name.encode()+b'\0'+files[name] for name in sorted(files) if name.startswith(('frontend/','wordpress/','tests/')) and name!='frontend/manifest.json')).hexdigest():
