@@ -9,6 +9,7 @@ Výchozí kvalifikované vydání Hlasuj! je **0.8.9**, schéma **0.8.5**. Vývo
 ## Implementováno v této etapě
 
 - Načítací adaptér centrálního kontextu: stránkování, kontrola baseline, bezpečný Bearer transport, alternativně manifestem připnutý export. Živá autentizace čeká na strojový credential.
+- Po přijetí nových instrukcí načtena dovednost `miloslavhub-requirements` a primární workflow v2. Chráněný outbox mimo Git/OneDrive uchovává 26 pending operací, bez serverových receiptů; kontext v2 vrátil HTTP 404. V1 adaptér je označen jako starší referenční profil. [Předání centrální evidence](REQUIREMENTS-HANDOFF-2026-10-07.md).
 - HLS-022 rev. 1: editor vysvětlení, výchozí `teacher_only`, volby `show_after_close` a `hidden`. Veřejné výsledky mohou obsahovat vysvětlení pouze uzavřeného kvízu při explicitní volbě učitele. Student i projekce vykreslují text bezpečně.
 - HLS-023 rev. 1: samostatná soukromá poznámka učitele. Chybí v public API a projekci; autorizovaný učitelský obsahový export ji přenáší.
 - HLS-028/029 rev. 1, dílčí rozšíření: JSON v2 přenáší vysvětlení, pravidlo zobrazení a poznámku. V1 se stále importuje; chybějící vysvětlení má soukromý výchozí režim. Import zachovává náhled, koncepty a původní QR. Úplný ZIP s assets/výsledky tím není implementován.
@@ -47,7 +48,7 @@ Změny jsou připraveny ve větvi `feature/requirements-feedback` k revizi proti
 
 Testovací servery se ukončily. Automatická bezpečnostní kontrola odmítla příkaz pro odstranění šesti právě vytvořených syntetických prostředí s důvodem `blocked by policy`; odstranění se neprovedlo a nebylo obcházeno jiným nástrojem. Zůstávají `C:/mhl-feedback-20261007` a stejné názvy se suffixy `b`, `c`, `d`, `e`, `f`. Obsahují pouze tento lokální testovací WordPress, syntetické DB a lokální konfigurace. Nejsou v Git ani balíčcích. Historické distribuce, uživatelské podklady a produkční zálohy se neodstraňovaly.
 
-Repo používá nastavení `core.autocrlf=true`; runtime hash identifikuje přesné bajty testovaného pracovního checkoutu. Evidence proto doplňuje také přenositelný digest Git objektů zdrojů. Před novým sestavením na jiném OS je nutné znovu ověřit manifesty a testy po checkoutu; sjednocení pravidel konců řádků patří do přípravy dalšího vydání.
+Zdejší checkout používá nastavení `core.autocrlf=true`; runtime hash identifikuje přesné bajty testovaného pracovního checkoutu. Evidence proto doplňuje také přenositelný digest Git objektů zdrojů. Před novým sestavením na jiném OS je nutné znovu ověřit manifesty a testy po checkoutu; sjednocení pravidel konců řádků patří do přípravy dalšího vydání.
 
 ## Otevřené integrační podmínky
 

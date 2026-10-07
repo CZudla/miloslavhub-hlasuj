@@ -2,7 +2,8 @@
 
 ## Source of truth
 
-- Central REQUIREMENTS is the requirements authority. Read the available HLASUJ context with its baseline, SHA-256, IDs and revisions before implementation; see docs/REQUIREMENTS-INTEGRATION.md. An explicitly pinned export supports local work when a machine credential is unavailable, but does not prove current production state. Preserve unknown approval/verification states. Local specifications and GitHub are secondary copies, and code/tests establish actual behavior.
+- Use the miloslavhub-requirements skill before specification or implementation changes. REQUIREMENTS Private API v2 is the authority for requirements, decisions, revisions, implementation and verification. Read the paginated HLASUJ context including open requirements. If unavailable, disclose pending capture and use only dated reference copies; v1 is the older pinned-baseline profile. See docs/REQUIREMENTS-INTEGRATION.md and docs/REQUIREMENTS-HANDOFF-2026-10-07.md.
+- Capture scoped chat proposals with provenance and retain them in a protected outbox outside Git/OneDrive until API receipt. Record implementation links and actual passed/failed/error/skipped/inconclusive results. Never use human admin credentials or auto-review/apply/publish/revoke. Preserve unknown approval/verification states. GitHub is secondary; the separate Service Registry owns current operational versions. This workflow does not authorize unrelated work or deployment.
 - Read README.md and the relevant sections of docs/MASTER-SPEC.md before changing behavior. Follow docs/PRODUCT-PRINCIPLES.md.
 - docs/RELEASE-0.8.9.md and docs/DEPLOYMENT-2026-10-05-0.8.9.md describe the qualified baseline. Older notes in ARCHITECTURE.md and ITERATION-PLAN.md may describe an earlier state.
 - Planned features in MASTER-SPEC.md and ROADMAP.md are not evidence of implemented behavior. Trace behavior to code and tests.
