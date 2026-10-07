@@ -8,8 +8,8 @@ Výchozí kvalifikované vydání Hlasuj! je **0.8.9**, schéma **0.8.5**. Vývo
 
 ## Implementováno v této etapě
 
-- Načítací adaptér centrálního kontextu: stránkování, kontrola baseline, bezpečný Bearer transport, alternativně manifestem připnutý export. Živá autentizace čeká na strojový credential.
-- Po přijetí nových instrukcí načtena dovednost `miloslavhub-requirements` a primární workflow v2. Chráněný outbox mimo Git/OneDrive uchovává 26 pending operací, bez serverových receiptů; kontext v2 vrátil HTTP 404. V1 adaptér je označen jako starší referenční profil. [Předání centrální evidence](REQUIREMENTS-HANDOFF-2026-10-07.md).
+- Načítací adaptér staršího referenčního v1 profilu: stránkování, kontrola baseline, bezpečný Bearer transport, alternativně manifestem připnutý export. Primární workflow používá živé Private API v2.
+- Po přijetí nových instrukcí načtena dovednost `miloslavhub-requirements` a primární workflow v2. Po počátečním HTTP 404 uspělo autentizované čtení all/open, baseline 1.6.0, a odeslání chráněné fronty s oddělenými credentials. **27 sent, 0 pending, 0 blocked**, všechny receipty a přesná těla zpětně ověřeny. Z toho 26 původních operací a 1 výsledek skutečného živého ověření. Návrhy čekají na lidské posouzení; nebylo provedeno review/apply/publish/revoke. [Předání centrální evidence](REQUIREMENTS-HANDOFF-2026-10-07.md).
 - HLS-022 rev. 1: editor vysvětlení, výchozí `teacher_only`, volby `show_after_close` a `hidden`. Veřejné výsledky mohou obsahovat vysvětlení pouze uzavřeného kvízu při explicitní volbě učitele. Student i projekce vykreslují text bezpečně.
 - HLS-023 rev. 1: samostatná soukromá poznámka učitele. Chybí v public API a projekci; autorizovaný učitelský obsahový export ji přenáší.
 - HLS-028/029 rev. 1, dílčí rozšíření: JSON v2 přenáší vysvětlení, pravidlo zobrazení a poznámku. V1 se stále importuje; chybějící vysvětlení má soukromý výchozí režim. Import zachovává náhled, koncepty a původní QR. Úplný ZIP s assets/výsledky tím není implementován.
@@ -40,7 +40,7 @@ Závěrečný běh prošel: **192 regresních kontrol**, **230 integračních ko
 
 Předcházející neúspěchy zůstávají v evidenci: příliš široká unittest assertion, neúplná stará distribuce WordPressu, chybný typ nového fixture argumentu, skutečná chyba round trip vypnuté boolean volby a čekání prohlížečové assertion na skrytý pracovní canvas QR. Oprava boolean exportu rozlišuje uložené false od chybějícího nastavení. QR test ověřuje viditelný dekódovaný místní PNG. Závěrečné prostředí používá oficiální WordPress 7.1.2 s ověřeným součtem, MariaDB 11.4.9 a syntetická data; testovací servery byly ukončeny.
 
-Tato etapa neopakovala produkční restore, hostingovou zátěž ani placenou AI evaluaci. Předchozí doklady vydání 0.8.9 se nevydávají za kvalifikaci nového kódu. Živé autentizované REQUIREMENTS a v2 zápis mají v evidenci SKIP s důvodem; `central_submission=pending`.
+Tato etapa neopakovala produkční restore, hostingovou zátěž ani placenou AI evaluaci. Předchozí doklady vydání 0.8.9 se nevydávají za kvalifikaci nového kódu. Původní aplikační testovací zpráva uchovává tehdejší SKIP živého REQUIREMENTS a `central_submission=pending`. Následné skutečné čtení, doručení a zpětné ověření dokládá [samostatná evidence](test-evidence/2026-10-07-requirements-delivery.json). Historická zpráva se zpětně nepřepisuje na PASS.
 
 ## Publikace a úklid
 
@@ -52,8 +52,8 @@ Zdejší checkout používá nastavení `core.autocrlf=true`; runtime hash ident
 
 ## Otevřené integrační podmínky
 
-- Omezený strojový read/propose/verify credential REQUIREMENTS; žádný lidský administrátorský přístup AI.
-- Dokončený centrální kontrakt implementačních vazeb a PASS/FAIL/ERROR/SKIP; do té doby místní evidence se stavem centrálního odeslání pending.
+- Lidské posouzení 3 doručených návrhů a implementační/testové evidence v REQUIREMENTS; strojové připojení v2 a příslušné scoped credentials jsou nyní ověřené.
+- Vhodný centrální formát pro starší neúspěchy s chybějícím přesným commit/timestamp. Záznamy zůstávají uchované; chybějící údaje se nevymýšlejí.
 - Potvrzený AUTH/OIDC/MFA a ENTITLEMENTS/Organizations kontrakt, testovací klienti a izolovaný staging.
 - Právní potvrzení licence frontendu, obchodních podmínek a privacy podle skutečného provozu. Návrh v dokumentaci není právní schválení.
 

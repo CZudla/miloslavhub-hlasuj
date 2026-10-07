@@ -4,11 +4,11 @@ Stav 7. 10. 2026. REQUIREMENTS je autoritou požadavků, rozhodnutí, revizí a 
 
 ## Aktualizace podle nových projektových instrukcí
 
-Primárním integračním kontraktem je **Private API v2** a povinný postup určuje dovednost `miloslavhub-requirements`. Byly načteny její SKILL.md, INTEGRATION-GUIDE.md a CHAT-CAPTURE.md. GET `/api/v2/context/hlasuj` s úplnými selektory dne 7. 10. 2026 vrátil **HTTP 404**. Strojový credential rovněž není dostupný; živá dostupnost v2 ani aktuální generation nejsou potvrzené.
+Primárním integračním kontraktem je **Private API v2** a povinný postup určuje dovednost `miloslavhub-requirements`. Byly načteny její SKILL.md, INTEGRATION-GUIDE.md a CHAT-CAPTURE.md. Pozdější autentizované čtení dne 7. 10. 2026 potvrdilo živé OpenAPI 2.0.0 a kontext baseline **1.6.0**, SHA-256 `aa53c6696d6c5dc83e596bc397ecba722a8c2b1b44abfa8e958e673be4ad2bcf`. Načteny všechny stránky all (168 položek / 2 stránky) i open (149 / 2). Pole `central_generation` odpověď nevrací; jeho hodnota zůstává neznámá. Předchozí HTTP 404 zůstává historickým pokusem.
 
-Zachycení nových zadání a evidence proto používá chráněný lokální outbox mimo Git a OneDrive. Je připraveno **26 pending operací: 3 návrhy, 6 implementačních vazeb a 17 testových záznamů (15 passed, 2 skipped)**. API receiptů je 0. Starší neúspěchy z necommitnutých variant jsou zachované zvlášť s chybějícím commit/timestamp, které se nesmějí vymýšlet. Podrobný stav a pravidla následného odeslání: [REQUIREMENTS-HANDOFF-2026-10-07.md](REQUIREMENTS-HANDOFF-2026-10-07.md).
+Zachycení nových zadání a evidence používá chráněný lokální outbox mimo Git a OneDrive. Doručeno a zpětně ověřeno je **27 operací: 3 návrhy, 6 implementačních vazeb a 18 testových záznamů (16 passed, 2 skipped)**. Původních 26 položek doplnil skutečný výsledek živého integračního ověření. Lokální fronta: **27 sent, 0 pending, 0 blocked**. Vzdáleně čekají návrhy na posouzení a zprávy mají stav submitted; nic nebylo automaticky schváleno ani aplikováno. Starší neúspěchy z necommitnutých variant zůstávají zachované zvlášť s chybějícím commit/timestamp, které se nesmějí vymýšlet. Podrobnosti a receipty: [REQUIREMENTS-HANDOFF-2026-10-07.md](REQUIREMENTS-HANDOFF-2026-10-07.md).
 
-## Načtený podklad
+## Původní referenční podklad a historie
 
 Z chatu **REQUIREMENTS** (`01a10c57-9b1d-7cb0-b009-191bb991fb34`) byl dohledán aktivní projekt a jeho dokumentovaný Private API v1 kontrakt. Export `registry/requirements.json` baseline **1.5.0**, datum **2026-10-07**, byl přečten bez úprav. SHA-256 jeho bajtů odpovídá položce v manifestu REQUIREMENTS:
 
@@ -16,7 +16,7 @@ Z chatu **REQUIREMENTS** (`01a10c57-9b1d-7cb0-b009-191bb991fb34`) byl dohledán 
 
 Pro službu `hlasuj` obsahuje 168 položek: 149 mají approval_status=unknown, 19 approved. Původní požadavky HLS-001..075 a rozhodnutí DEC-001..019 jsou zachované. Další položky zahrnují zdrojové sekce specifikace; jejich počet se nesmí vydávat za počet samostatně ověřených funkcí. Importovaná tvrzení o dřívějším dokončení nejsou aktuální testy. Zdrojové varianty nejsou automaticky schválené nové revize.
 
-Živé anonymní GET na `/api/v1/context/HLASUJ`, `/api/v1/entries` a `/api/v1/baselines` vrátily HTTP 401. Kontrakt používá identifikátor služby `hlasuj` malými písmeny. Strojový credential nebyl poskytnut; živý autentizovaný kontext ani centrální zápis nebyly ověřeny. Export neprokazuje, že se provozní baseline od posledního nasazení nezměnila.
+Původní anonymní GET na `/api/v1/context/HLASUJ`, `/api/v1/entries` a `/api/v1/baselines` vrátily HTTP 401. Kontrakt používá identifikátor služby `hlasuj` malými písmeny. Při tomto prvním čtení nebyl credential dostupný. Následný živý v2 kontext uvedený výše tento referenční podklad aktualizoval: revize, text, akceptace a approval status všech 168 položek jsou shodné. Export sám živou dostupnost neprokazuje.
 
 ## Implementovaný v1 adaptér pro starší referenční profil
 
@@ -38,9 +38,9 @@ Výstup je pouze v ignorovaném `runtime/requirements/context.json`. Zůstávaj�
 
 ## Evidence a zápisy
 
-Načtený vydaný kontrakt v1 verification přijímá `passed/failed/inconclusive`. Nový dokumentovaný v2 přijímá `passed/failed/error/skipped/inconclusive` a implementační vazby. Místní rozpracovaný kód v2 není dokladem dostupnosti na produkční URL. Zdejší `requirements_context.py` zůstává čtenářem staršího v1 profilu; nepoužívá se jako živá centrální autorita pro nový workflow. V2 operace jsou připraveny přes připnutého klienta z dovednosti. ERROR a SKIP se nepřevádějí na PASS.
+Načtený vydaný kontrakt v1 verification přijímá `passed/failed/inconclusive`. Živě ověřené v2 OpenAPI přijímá `passed/failed/error/skipped/inconclusive` a implementační vazby. Zdejší `requirements_context.py` zůstává čtenářem staršího v1 profilu; nepoužívá se jako živá centrální autorita pro nový workflow. V2 operace byly doručeny připnutým klientem z dovednosti. ERROR a SKIP se nepřevádějí na PASS.
 
-Do zprovoznění v2 a omezeného credentialu zůstávají operace v chráněném outboxu. Sanitizovaná evidence v GitHubu je druhotný doklad. Zpráva uvádí `central_submission=pending`, ID/revizi, přesný kód/hash, prostředí a skutečný výsledek. Žádný lokální report netvrdí automatické verified v centrále. Novější revize se musí před odesláním znovu posoudit; HTTP 412 neopravuje automatický retry.
+Odesílání používá oddělené service-scoped read/propose a read/verify credentials z chráněných souborů přes `--credential-file`. Zachovává ID i přesná těla, kontroluje revizi, schéma, digest a serverový receipt. Zpětné čtení potvrdilo shodu všech 27 těl a `authoritative_applied=false`. Doručené řádky zůstávají v chráněné frontě jako evidence. Sanitizovaná evidence v GitHubu je druhotný doklad. Původní aplikační testovací zpráva zachovává svůj tehdejší `central_submission=pending`; aktuální doručení dokládá [samostatná evidence](test-evidence/2026-10-07-requirements-delivery.json). Žádný lokální report netvrdí automatické verified v centrále. Novější revize se musí před odesláním znovu posoudit; HTTP 412 neopravuje automatický retry.
 
 Návrhy nové specifikace patří do Proposal Inboxu. AI nepoužívá reviewer/admin credential a přímo nepřepisuje schválené definice. Hlasuj! zde nevytváří vlastní správu hesel, licence, entitlementy ani kopii autoritativní databáze REQUIREMENTS.
 

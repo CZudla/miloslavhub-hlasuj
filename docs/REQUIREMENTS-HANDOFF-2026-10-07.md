@@ -1,12 +1,13 @@
 # Předání centrálního workflow Hlasuj!
 
-Stav 7. 10. 2026 po načtení nových projektových instrukcí a dovednosti `miloslavhub-requirements`. Autoritou je REQUIREMENTS Private API v2; místní specifikace a GitHub jsou sekundární. Níže uvedené fronty nemění schválení, revizi ani ověření v centrále.
+Stav 7. 10. 2026, zpětně ověřeno v **17:00:41 UTC**. Autoritou je REQUIREMENTS Private API v2; místní specifikace a GitHub jsou sekundární. Všech **27 záznamů bylo doručeno a ověřeno zpětným čtením**, bez lidského schválení či aplikace změn. Sanitizované receipty a vazby jsou v [evidenci doručení](test-evidence/2026-10-07-requirements-delivery.json).
 
 ## Kontext a dostupnost
 
-- Referenční export: baseline **1.5.0**, 7. 10. 2026, SHA-256 `b2a1388394f1161eb1d0afef63480f12f4c295425a4f1d065a5a00bf6e97f351`. Neprokazuje aktuální centrální generation.
-- GET `/api/v2/context/hlasuj?mode=all&include=requirements,decisions,global,relationships,conflicts,baselines&limit=100` v 15:58:45 UTC vrátil **HTTP 404**. Odpověď nebyla uložena jako kontext. Strojový credential také chybí; absence credentialu sama nevysvětluje HTTP 404.
-- Poslední úspěšné načtení živého v2 kontextu: **žádné**. Aktuální generation: **neznámá**. Získané API receipty: **0**. Neproběhlo review/apply/publish/revoke.
+- Autentizované Private API v2 a jeho OpenAPI byly úspěšně načteny. Kontext HLASUJ má baseline **1.6.0**, SHA-256 `aa53c6696d6c5dc83e596bc397ecba722a8c2b1b44abfa8e958e673be4ad2bcf`: **168 položek ve 2 stránkách**, z toho 149 unknown a 19 approved. Režim open byl také načten kompletně: **149 položek ve 2 stránkách**.
+- Všech 168 položek bylo porovnáno s referenční baseline 1.5.0: text, akceptace, revize a approval status jsou shodné. Revize připravených operací zůstaly platné. Konkrétní `central_generation` kontext nevrací; její hodnota zůstává neznámá.
+- Dřívější pokus v 15:58:45 UTC vrátil **HTTP 404**, tehdy bez strojového credentialu. Tato historie zůstává zachována; pozdější autentizované čtení a zápis uspěly.
+- Získáno **27 API receiptů**, jejich těla ověřena přesnou shodou se vzdálenými záznamy. Stav 3 návrhů je pending a 24 implementačních/testových zpráv submitted. Všechny mají `authoritative_applied=false`. Neproběhlo review/apply/publish/revoke.
 - Čtečka `scripts/requirements_context.py` zachovává starší v1 profil. Nepovažovat její v1 či offline výstup za živou v2 autoritu.
 
 ## Chráněná fronta
@@ -21,18 +22,26 @@ Přesné bajty klienta jsou uložené vedle fronty pod adresářem podle tohoto 
 
 | Druh | Počet | Stav |
 |---|---:|---|
-| Návrhy změn s chat provenance | 3 | pending, bez proposal receipt |
-| Implementační vazby | 6 | pending, bez receipt |
-| Výsledky testů | 17 | pending: 15 passed, 2 skipped |
-| Celkem | **26** | 0 sent, 0 blocked |
+| Návrhy změn s chat provenance | 3 | sent; vzdáleně pending |
+| Implementační vazby | 6 | sent; vzdáleně submitted |
+| Výsledky testů | 18 | sent: 16 passed, 2 skipped; vzdáleně submitted |
+| Celkem | **27** | **27 sent, 0 pending, 0 blocked** v lokální frontě |
+
+Původní fronta obsahovala 26 operací. Osmnáctý testový záznam navíc zachycuje skutečně úspěšné živé ověření v2 pro `HLS-067` rev. 1. Oddělené read/propose a read/verify credentials byly použity pouze přes `--credential-file`. Odesílací fronty zachovaly původní ID, přesná těla a digesty; jejich stavy a receipty byly zapsány zpět do hlavní trvalé fronty. Před doručením vznikla chráněná SQLite záloha. Hodnoty credentials nejsou v Git, dokumentaci ani balíčcích.
 
 ### Návrhy k lidskému posouzení
 
-Všechny se vztahují ke skutečným existujícím klíčům z datované kopie, revize **1**:
+Všechny se vztahují ke skutečným existujícím klíčům, ověřeným v živém kontextu, revize **1**:
 
 - `hlasuj:requirement:HLS-067`: centrální workflow podle nové projektové instrukce, provenance, chráněný outbox a skutečná evidence.
 - `hlasuj:requirement:HLS-025`: pedagogický jazyk domácího zadání, samostatný postup bez live řízení, pokročilé volby v „Další nastavení“.
 - `hlasuj:requirement:HLS-073`: autorský a zákaznický balíček s dokumentací/manuály/referencí/marketingem, manifesty a vyloučením citlivých podkladů.
+
+| Klíč | Proposal receipt | Vzdálený stav |
+|---|---|---|
+| HLS-067 rev. 1 | `77a731b5341d6c887f7b2b0b0f78432a` | pending |
+| HLS-025 rev. 1 | `f38683918f8f6f9218ba5046eb112620` | pending |
+| HLS-073 rev. 1 | `08a35e441883216093d4608003e301ea` | pending |
 
 Provenance obsahuje channel `codex`, referenci tohoto chatu, skutečný scoped excerpt a jeho SHA-256. Protože platformový identifikátor původní zprávy není dostupný, `message_ref` je výslovně obsahová reference `content-sha256:...`; nevymýšlí se zprávové ID. Úplný chat se nekopíruje. Lidské zadání se nepovyšuje na centrální schválení.
 
@@ -50,12 +59,12 @@ Neúspěšné testy z dřívějších necommitnutých variant zůstávají v chr
 
 Samostatné ověření připnutého klienta mělo nejprve ERROR v nové testovací fixture: druhé SQLite připojení nebylo explicitně uzavřeno a Windows odmítl úklid dočasného souboru. Po opravě prošlo **6 syntetických unittest metod**: trvalé znovuotevření fronty, stejný idempotency key/tělo při retry, chybný receipt, porušený digest, zákaz admin/secrets/synchronizovaných cest a přesměrování. Nejde o test živého API. Tato první chyba je zachována zvlášť; její fixture není součástí aplikačního commitu.
 
-## Následné doručení
+## Provedené doručení a další práce
 
-1. Ověřit dostupnost v2 a získat credential omezený na `hlasuj` s příslušným read/propose/verify. Scopes nejsou dědičné; read token nesmí být použit k zápisu. Žádný lidský admin credential.
-2. Načíst všechny stránky kontextu, otevřené položky, generation a revize. Posoudit soulad pending těla s aktuální revizí; 412 není důvod pro slepé přepisování či retry.
-3. Odeslat odpovídající operace pomocí připnutého klienta; zachovat existující idempotency key a přesné tělo. Při oddělených propose/verify credentials rozdělit odesílání tak, aby žádný token neposílal operaci mimo svůj scope.
-4. Ověřit a uchovat serverové receipt a stavy. Receipt s pending/submitted není schválení, aplikace ani verified. Obyčejná AI nevolá review/apply/publish/revoke.
-5. Aktualizovat sanitizované předání o skutečné doručení a zbývající frontu. Selhání zachovat; frontu nemažte při úklidu ani ji nepřidávejte do zákaznických balíčků.
+1. Dokončeno: autentizované v2 OpenAPI, kompletní kontext all/open, kontrola revizí, schématu a digestů připravených těl.
+2. Dokončeno: doručení připnutým klientem s oddělenými credentials a původními idempotency keys; 27 sent, 0 pending/blocked. Nedocházelo k automatickému přepisování revizí.
+3. Dokončeno: zpětné čtení všech 27 záznamů a přesná shoda těl, uchování receiptů a sanitizované evidence. Receipt s pending/submitted není schválení, aplikace ani verified.
+4. Zbývá lidské posouzení návrhů a evidence v REQUIREMENTS. Obyčejná AI nevolá review/apply/publish/revoke.
+5. Zbývá vhodné centrální zachycení starších selhání s chybějícími metadaty. Místní záznamy a fronty uchovat mimo zákaznické balíčky. Před další implementací znovu načíst aktuální kontext; provozní verzi Hlasuj! toto doručení nemění.
 
 Tento workflow pokrývá tento zapojený chat a klienty. Netvrdí univerzální pozorování všech externích konverzací ani provozní verze jiných subsystémů; ty určuje samostatný Registr služeb.
