@@ -36,7 +36,8 @@ class MHL_Admin {
         $screen=get_current_screen(); $pt=$screen->post_type??'';
         if(strpos($hook,'mhl')===false && !in_array($pt,array('mhl_question','mhl_lecture','mhl_subject'),true)){return;}
         wp_enqueue_style('mhl-admin',MHL_URL.'assets/admin.css',array(),MHL_VERSION);
-        wp_enqueue_script('mhl-admin',MHL_URL.'assets/admin.js',array(),MHL_VERSION,true);
+        wp_enqueue_script('mhl-qrcode',MHL_URL.'assets/qrcode.min.js',array(),'1.0.0',true);
+        wp_enqueue_script('mhl-admin',MHL_URL.'assets/admin.js',array('mhl-qrcode'),MHL_VERSION,true);
     }
     public static function meta_boxes(): void {
         add_meta_box('mhl-subject-template','Brand a rozvržení předmětu',array(__CLASS__,'subject_template_box'),'mhl_subject','normal','high');
@@ -190,6 +191,24 @@ class MHL_Admin {
         <table class="widefat striped mhl-options-table"><thead><tr><th class="mhl-correct-col">Správná</th><th>Možnost</th><th>Text odpovědi</th></tr></thead><tbody>
         <?php foreach($options as $i=>$label): ?><tr><td class="mhl-correct-col"><input type="radio" name="mhl_correct_index" value="<?php echo esc_attr($i); ?>" <?php checked($correct!==null && $correct===$i); ?>></td><td><strong><?php echo esc_html(chr(65+$i)); ?></strong></td><td><input type="text" class="widefat" name="mhl_options[]" value="<?php echo esc_attr($label); ?>" placeholder="Odpověď <?php echo esc_attr(chr(65+$i)); ?>"></td></tr><?php endforeach; ?>
         </tbody></table>
+        <details class="mhl-quiz-only">
+          <summary><?php echo esc_html__('Vysvětlení správné odpovědi','miloslavhub-live'); ?></summary>
+          <p><label for="mhl-correct-explanation"><?php echo esc_html__('Vysvětlení','miloslavhub-live'); ?></label>
+          <textarea id="mhl-correct-explanation" name="mhl_correct_answer_explanation" class="widefat" rows="4" maxlength="4000"><?php echo esc_textarea((string)get_post_meta($post->ID,'_mhl_correct_answer_explanation',true)); ?></textarea></p>
+          <p><label for="mhl-explanation-mode"><?php echo esc_html__('Kdo uvidí vysvětlení?','miloslavhub-live'); ?></label>
+          <select id="mhl-explanation-mode" name="mhl_explanation_mode">
+          <?php foreach(array('teacher_only'=>__('Pouze já','miloslavhub-live'),'show_after_close'=>__('Studenti po ukončení hlasování','miloslavhub-live'),'hidden'=>__('Nezobrazovat studentům','miloslavhub-live')) as $value=>$label): ?>
+            <option value="<?php echo esc_attr($value); ?>" <?php selected(MHL_Core::question_explanation_mode($post->ID),$value); ?>><?php echo esc_html($label); ?></option>
+          <?php endforeach; ?>
+          </select></p>
+          <p class="description"><?php echo esc_html__('Výchozí volba je Pouze já. Před ukončením hlasování se vysvětlení studentům neposílá.','miloslavhub-live'); ?></p>
+        </details>
+        <details>
+          <summary><?php echo esc_html__('Moje poznámka k výuce','miloslavhub-live'); ?></summary>
+          <p><label for="mhl-teacher-note"><?php echo esc_html__('Soukromá poznámka','miloslavhub-live'); ?></label>
+          <textarea id="mhl-teacher-note" name="mhl_teacher_note" class="widefat" rows="4" maxlength="4000"><?php echo esc_textarea((string)get_post_meta($post->ID,'_mhl_teacher_note',true)); ?></textarea></p>
+          <p class="description"><?php echo esc_html__('Studenti ani projekce tuto poznámku neuvidí. Přenos obsahu pro kolegu ji obsahuje; před sdílením ji zkontrolujte.','miloslavhub-live'); ?></p>
+        </details>
         <?php
     }
     public static function question_rag_box(WP_Post $post): void {
@@ -319,6 +338,20 @@ class MHL_Admin {
 
     public static function save_question(int $id): void {
         if(!isset($_POST['mhl_question_nonce'])||!wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['mhl_question_nonce'])),'mhl_save_question')||!current_user_can('edit_post',$id)||wp_is_post_revision($id)){return;}
+        // Partial/older editors must not erase private notes or publish feedback.
+        foreach(array('correct_answer_explanation','teacher_note') as $field){
+            $key='mhl_'.$field;
+            if(isset($_POST[$key]) && is_string($_POST[$key])){
+                $text=sanitize_textarea_field(wp_unslash($_POST[$key]));
+                $text=substr($text,0,4000);
+                while($text!=='' && !preg_match('//u',$text)){$text=substr($text,0,-1);}
+                update_post_meta($id,'_mhl_'.$field,wp_slash($text));
+            }
+        }
+        if(isset($_POST['mhl_explanation_mode'])){
+            $explanation_mode=is_string($_POST['mhl_explanation_mode'])?sanitize_key($_POST['mhl_explanation_mode']):'';
+            update_post_meta($id,'_mhl_explanation_mode',in_array($explanation_mode,array('teacher_only','show_after_close','hidden'),true)?$explanation_mode:'teacher_only');
+        }
         $posted=isset($_POST['mhl_options'])?(array)$_POST['mhl_options']:array();
         $correct_original=isset($_POST['mhl_correct_index'])?(int)$_POST['mhl_correct_index']:-1;
         $opts=array(); $correct_new=null;

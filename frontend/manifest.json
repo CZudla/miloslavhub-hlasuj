@@ -14,13 +14,13 @@
     },
     {
       "path": "assets/app.css",
-      "size": 23878,
-      "sha256": "d2fa1eeb97edde798b261815b97c2d242d005573a13afda32f7801a9ccde1591"
+      "size": 24110,
+      "sha256": "e9d10fb641da3c8afcdae962c8ca9f72860913af2dc0b0f23d169aa34ae2df5a"
     },
     {
       "path": "assets/app.js",
-      "size": 43522,
-      "sha256": "82b4310a730133d0411377bf0b4bd2630577a61217c1f894d2abd8e2a53b0afa"
+      "size": 43859,
+      "sha256": "2662f28a6971a26fd9df2991ad9c164521b6a8ea406eee873f9f7ab01c09845f"
     },
     {
       "path": "assets/brand/hlasuj-icon-512.png",
@@ -154,8 +154,8 @@
     },
     {
       "path": "index.php",
-      "size": 39270,
-      "sha256": "b93db34821930ada82bb26cfce13a071a445f81d97fee0db9e8a35b775a71e37"
+      "size": 39359,
+      "sha256": "dbb44d7481e93a675a7a40a3dfd65cfba35869651be6a71cd0f33b6a2321f851"
     },
     {
       "path": "LEGAL-GDPR-CHECKLIST.md",

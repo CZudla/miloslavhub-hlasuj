@@ -2,9 +2,11 @@
 
 Připraveno 5. 10. 2026 podle skutečných funkcí vydání 0.8.9.
 
-**Stav: stránka na Facebooku nebyla vytvořena a žádný příspěvek nebyl zveřejněn.** Přístup přes browser-use i computer-use selhal ještě při inicializaci: `failed to write kernel assets: Systém nemůže nalézt uvedenou cestu. (os error 3)`. Reset prohlížečového nástroje a druhý nástroj chybu nevyřešily. Přihlášení, existenci podobné stránky, dostupnost uživatelského jména a aktuální kategorie Facebooku nebylo možné ověřit.
+**Aktuální stav:** stránka [Hlasuj by MiloslavHub](https://www.facebook.com/profile.php?id=61594920670483) byla vytvořena a má tři zveřejněné příspěvky, z nichž uvítací je připnutý. Publikace proběhla po výslovném souhlasu vlastníka. Podrobný stav včetně odkazu na příspěvky a nedokončeného krátkého uživatelského jména je v [záznamu publikace](PUBLICATION-2026-10-07.md).
 
-## Připravené nastavení
+Původní pokus 5. 10. skončil chybou inicializace nástrojů. Balíček z tohoto dne je historický návrh; jeho tehdejší označení „připraveno“ nepřepisuje pozdější skutečnou publikaci. Další kroky níže dokumentují původní postup a neslouží jako pokyn vytvořit duplicitní stránku.
+
+## Původně připravené nastavení
 
 - Název: **Hlasuj! by MiloslavHub**.
 - Navržené uživatelské jméno: **hlasuj.miloslavhub**. Dostupnost ověřit v rozhraní; nejde o rezervovanou adresu.
@@ -15,7 +17,7 @@ Připraveno 5. 10. 2026 podle skutečných funkcí vydání 0.8.9.
 
 Skript `scripts/build_facebook_kit.py` vytvoří kompletní ZIP a HTML náhled pod `outputs/facebook-2026-10-05/`, včetně samostatných TXT příspěvků, SVG/PNG a kontrolních součtů. Ověří veřejné demo a kontaktní e-mail na webu produktu. Upravovat lze JSON a skript; historické distribuční ZIPy aplikace zůstávají zachované.
 
-## Dokončení v přihlášeném Facebooku
+## Původní postup vytvoření (provedeno, neduplikovat)
 
 1. Obnovit funkční nástroj ovládání prohlížeče. Případné přihlášení nebo ověření účtu provádí uživatel.
 2. Ověřit, zda už existuje stránka stejného projektu, aby nevznikla nechtěná duplicita. Ověřit cílový spravující účet.

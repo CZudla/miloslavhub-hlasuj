@@ -466,6 +466,7 @@ function e($value) {
 <?php else: ?>
     <main id="mhl-app"
           data-view="<?php echo e($view); ?>"
+          data-explanation-label="<?php echo e('Vysvětlení správné odpovědi'); ?>"
           data-mode="<?php echo e($mode); ?>"
           data-lecture="<?php echo e($lecture); ?>"
           data-question="<?php echo e($question); ?>"

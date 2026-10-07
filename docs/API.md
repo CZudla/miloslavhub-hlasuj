@@ -1,5 +1,11 @@
 # API 0.8.7
 
+## Nevydané rozšíření výsledků — 7. 10. 2026
+
+GET `/results/{lecture}/{question}` má v aktuálním vývoji nové aditivní pole `correct_answer_explanation`: obyčejný text nebo `null`. Server jej vyplní pouze pro uzavřenou relaci kvízu, pokud učitel u otázky zvolil `show_after_close` a vysvětlení není prázdné. Výchozí `teacher_only`, `hidden`, neznámá volba, otevřená/neaktivní/přeskočená relace a anketa vracejí `null`. Klient musí text escapovat; nesmí jej vkládat jako HTML.
+
+Jde o stejné veřejné výsledky podle slugů jako dosud. Zveřejnění není omezeno na konkrétního účastníka. API otázky a aktuálního stavu vysvětlení neposílá. `teacher_note` se do veřejných výsledků, otázky ani projekce neposílá nikdy. Rozšíření nepřidává učitelské role, objektovou izolaci ani scopes pro externí integrace. Podrobnosti nastavení a přenosu jsou v [CONTENT-FORMAT.md](CONTENT-FORMAT.md); jde o nevydanou změnu nad 0.8.9.
+
 ## Lokální rozpracované rozšíření AI
 
 Nové routy POST `/ai/suggest` a `/ai/preference` jsou lokální vývojové rozšíření, ve výchozím stavu vypnuté a dosud nenasazené. Vyžadují přihlášeného správce, REST nonce a u návrhu oprávnění k příslušné otázce. Přesný kontrakt a testy jsou v [AI-PILOT.md](AI-PILOT.md). Následující popis nadále dokumentuje vydání 0.8.7.

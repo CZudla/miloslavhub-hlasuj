@@ -1,7 +1,9 @@
 """Local regressions. Uses synthetic data and loopback only; never touches production."""
 from pathlib import Path
-import argparse, hashlib, json, os, re, shutil, socket, subprocess, tempfile, time
+from datetime import datetime, timezone
+import argparse, hashlib, json, os, re, shutil, socket, subprocess, sys, tempfile, time
 import urllib.request, urllib.parse, urllib.error
+from source_fingerprint import source_sha256
 
 ROOT = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
@@ -9,6 +11,13 @@ parser.add_argument('--php', default=shutil.which('php') or 'C:/php84/php.exe')
 parser.add_argument('--browser', action='store_true')
 args = parser.parse_args()
 report = {'status': 'running', 'production_access': False, 'wordpress_database_integration': 'not run'}
+report['started_at'] = datetime.now(timezone.utc).isoformat()
+runtime = ROOT/'runtime'
+runtime.mkdir(exist_ok=True)
+# Invalidate the previous successful run before any new checks start.
+(runtime/'test-results.json').write_text(json.dumps(report, indent=2), encoding='utf8')
+tested_source = source_sha256(ROOT)
+adapter_sha = hashlib.sha256((ROOT/'scripts/requirements_context.py').read_bytes()).hexdigest()
 
 def run(command):
     result = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, encoding='utf8')
@@ -28,8 +37,8 @@ report['security_contracts'] = json.loads(run([args.php, str(ROOT/'tests/securit
 report['ai_contracts'] = json.loads(run([args.php, str(ROOT/'tests/ai.php')]))
 report['ai_disabled'] = json.loads(run([args.php, str(ROOT/'tests/ai.php'), 'disabled']))
 
-runtime = ROOT/'runtime'
-runtime.mkdir(exist_ok=True)
+run([sys.executable, str(ROOT/'tests/requirements_context.py')])
+report['requirements_context'] = 'passed'
 checks = 0
 def check(condition, message):
     global checks
@@ -121,9 +130,10 @@ with tempfile.TemporaryDirectory(prefix='regression-', dir=runtime) as temp:
         server.terminate(); server.wait(timeout=10); log.close()
         (runtime/'last-server.log').write_text((temp/'server.log').read_text(encoding='utf8'), encoding='utf8')
 
-sources=[]
-for folder in ['frontend','wordpress','tests']:
-    sources.extend(p for p in (ROOT/folder).rglob('*') if p.is_file() and p.name not in ('config.php','manifest.json') and '__pycache__' not in p.parts)
-report['tested_source_sha256']=hashlib.sha256(b''.join(p.relative_to(ROOT).as_posix().encode()+b'\0'+p.read_bytes() for p in sorted(sources,key=lambda p:p.relative_to(ROOT).as_posix()))).hexdigest()
+if source_sha256(ROOT) != tested_source or hashlib.sha256((ROOT/'scripts/requirements_context.py').read_bytes()).hexdigest() != adapter_sha:
+    raise AssertionError('Source changed during tests; rerun against stable inputs.')
+report['tested_source_sha256'] = tested_source
+report['requirements_context_script_sha256'] = adapter_sha
+report['finished_at'] = datetime.now(timezone.utc).isoformat()
 (runtime/'test-results.json').write_text(json.dumps(report, indent=2), encoding='utf8')
 print(json.dumps(report, indent=2))

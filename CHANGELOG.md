@@ -1,3 +1,12 @@
+# UNRELEASED · 2026-10-07
+
+- Načtení HLASUJ kontextu z centrálního REQUIREMENTS: bezpečné read-only API v1 nebo export s explicitním SHA-256; zachování ID/revizí a schvalovacích stavů, bez zápisu do centrály.
+- Vysvětlení správné odpovědi: soukromé ve výchozím stavu, zveřejnění pouze po uzavření kvízu na přání učitele. Samostatné soukromé poznámky nejsou v public API ani projekci.
+- Obsahový JSON v2 přenáší vysvětlení, režim zveřejnění a poznámku; starší v1 zůstává importovatelný. Export rozlišuje uloženou vypnutou boolean volbu od chybějící hodnoty.
+- Administrační QR se vykresluje místně, bez odesílání adres externímu generátoru; licence a původ knihovny jsou přiloženy.
+- Příručka učitele, reference formátu, integrační dokumentace a plán dokončení. Přesná testovací evidence je v docs/DEVELOPMENT-2026-10-07.md.
+- Bez SQL migrací a bez nasazení této etapy. Release metadata zatím zůstávají 0.8.9; nejde o dokončení celého systému.
+
 # 0.8.9 · 2026-10-05
 
 - Přenos předmětu jako verzovaný JSON v1: ověřený export, náhled a potvrzení importu nových konceptů.

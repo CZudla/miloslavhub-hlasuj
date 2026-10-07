@@ -1,0 +1,12 @@
+[
+  {
+    "file": "qrcode.min.js",
+    "source": "https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js",
+    "sha256": "c541ef06327885a8415bca8df6071e14189b4855336def4f36db54bde8484f36"
+  },
+  {
+    "file": "qrcode-LICENSE.txt",
+    "source": "https://raw.githubusercontent.com/davidshimjs/qrcodejs/master/LICENSE",
+    "sha256": "aaa1f349028a59432eb00222b8ddfe4d2ccebdce04cf8348dcb8d41b7068107b"
+  }
+]

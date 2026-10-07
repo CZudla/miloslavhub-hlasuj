@@ -14,9 +14,13 @@
 
   document.querySelectorAll('.mhl-qr[data-qr]').forEach((box) => {
     const url = box.dataset.qr || ''; if (!url) return;
-    const size = Number(box.dataset.size || 220);
-    const img = document.createElement('img'); img.width = size; img.height = size; img.alt = 'QR kód pro hlasování'; img.loading = 'lazy';
-    img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=' + (size*2) + 'x' + (size*2) + '&margin=12&data=' + encodeURIComponent(url); box.appendChild(img);
+    const size = Math.max(100,Math.min(512,Number(box.dataset.size)||220));
+    box.setAttribute('role','img'); box.setAttribute('aria-label','QR kód pro hlasování');
+    try {
+      if(typeof QRCode!=='function'){box.textContent=url;return;}
+      new QRCode(box,{text:url,width:size,height:size,correctLevel:QRCode.CorrectLevel.M});
+      box.dataset.qrReady='1';
+    }catch(_){box.textContent=url;}
   });
   document.querySelectorAll('.mhl-copy[data-copy]').forEach((button) => button.addEventListener('click', async () => {
     const value = button.dataset.copy || '';

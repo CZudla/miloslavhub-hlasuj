@@ -73,7 +73,7 @@ try {
     foreach (array('version','unknown','duplicate','dangling','duplicate_ref','index','type','deep','large','unreferenced','html','id','range','options') as $case) {
         $bad=$bundle;
         switch($case) {
-            case 'version': $bad['format_version']=2; break;
+            case 'version': $bad['format_version']=999; break;
             case 'unknown': $bad['subject']['settings']['projection_token']='secret'; break;
             case 'duplicate': $bad['questions'][]=$bad['questions'][0]; break;
             case 'dangling': $bad['lectures'][0]['question_ids'][]='q999'; break;

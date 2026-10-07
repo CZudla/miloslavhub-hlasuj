@@ -4,6 +4,7 @@ Use unpacked local runtimes. No downloads, production data or paid provider requ
 The destination must not exist; on Windows use a short path outside OneDrive.
 """
 import argparse
+from datetime import datetime, timezone
 import json
 import os
 from pathlib import Path
@@ -14,6 +15,7 @@ import subprocess
 import sys
 import time
 import urllib.request
+from source_fingerprint import source_sha256
 
 parser=argparse.ArgumentParser()
 parser.add_argument('--root',type=Path,required=True)
@@ -26,13 +28,16 @@ args=parser.parse_args()
 repo=Path(__file__).resolve().parents[1]
 root=args.root.resolve();source=args.wordpress_source.resolve();database=args.mariadb_dir.resolve()
 if root.exists():raise RuntimeError('Refusing to overwrite or reuse an existing integration directory')
-if not (source/'wp-includes/version.php').is_file():raise RuntimeError('Unpacked WordPress required')
+if not all((source/name).is_file() for name in ['wp-includes/version.php','wp-load.php','wp-settings.php','wp-login.php']):raise RuntimeError('Complete unpacked WordPress required (version, load, settings and login files)')
 if not (database/'bin/mariadbd.exe').is_file():raise RuntimeError('Unpacked Windows MariaDB required')
 root.mkdir(parents=True);site=root/'wordpress';data=root/'synthetic-data'
 hidden=getattr(subprocess,'CREATE_NO_WINDOW',0)
 php=[args.php,'-d','extension=mysqli']
 report={'status':'running','production_data_used':False,'paid_api_calls':0,'external_http_blocked':True}
+report['started_at']=datetime.now(timezone.utc).isoformat()
+tested_source=source_sha256(repo)
 runtime=repo/'runtime';runtime.mkdir(exist_ok=True)
+(runtime/'local-integration-results.json').write_text(json.dumps(report,indent=2),encoding='utf8')
 def run(command,**kwargs):
     result=subprocess.run([str(v) for v in command],capture_output=True,creationflags=hidden,**kwargs)
     if result.returncode:raise RuntimeError(result.stdout.decode('utf8','replace')+result.stderr.decode('utf8','replace'))
@@ -85,7 +90,7 @@ try:
     run(mysql,input=b'CREATE DATABASE integration_wp CHARACTER SET utf8mb4; CREATE DATABASE integration_votes CHARACTER SET utf8mb4;')
     if args.load:run(mysql,input=b'SET GLOBAL max_connections=500;')
     run(mysql,input=b'USE integration_votes;\n'+(repo/'wordpress/miloslavhub-live/database-schema.sql').read_bytes())
-    for name in ['wordpress-integration.php','ai-wordpress-integration.php','content-wordpress-integration.php']:
+    for name in ['wordpress-integration.php','ai-wordpress-integration.php','content-wordpress-integration.php','feedback-wordpress-integration.php']:
         result=json.loads(run(php+[repo/'tests'/name],env=env));report[name]=result;print(name,json.dumps(result),flush=True)
     result=json.loads(run([sys.executable,repo/'tests/concurrency.py','--php',args.php],env=env))
     report['concurrency']=result;print('concurrency',json.dumps(result),flush=True)
@@ -107,12 +112,21 @@ try:
         report['browser_persistence']='passed'
         result=json.loads(run(['node',repo/'tests/content-wordpress-browser.cjs',base],env=env))
         report['content_admin_browser']=result;print('content_admin_browser',json.dumps(result),flush=True)
+        result=json.loads(run(['node',repo/'tests/feedback-wordpress-browser.cjs',base,str(report['feedback-wordpress-integration.php']['question_id'])],env=env))
+        report['feedback_admin_browser']=result;print('feedback_admin_browser',json.dumps(result),flush=True)
+    if source_sha256(repo)!=tested_source:raise RuntimeError('Source changed during integration; rerun against stable inputs')
+    report['tested_source_sha256']=tested_source
     report['status']='passed'
+except Exception as error:
+    report['status']='error'
+    report['error_type']=type(error).__name__
+    raise
 finally:
     if web is not None:web.terminate();web.wait(timeout=10)
     if web_log is not None:web_log.close()
     try:run([database/'bin/mariadb-admin.exe',f'--defaults-file={client}','shutdown']);server.wait(timeout=20)
     except Exception:server.terminate();server.wait(timeout=10)
     log.close();report['servers_stopped']=True
+    report['finished_at']=datetime.now(timezone.utc).isoformat()
     (runtime/'local-integration-results.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf8')
     print('Local servers stopped.',flush=True)

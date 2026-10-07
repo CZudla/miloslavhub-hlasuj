@@ -1,0 +1,241 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-07T15:43:04.057230+00:00",
+  "implementation_state": "unreleased development based on 0.8.9",
+  "base_commit": "30e1b3de37f19300aa243788f014f0fab0f187ca",
+  "central_submission": "pending",
+  "requirements_baseline": {
+    "registry_version": "1.5.0",
+    "snapshot_sha256": "b2a1388394f1161eb1d0afef63480f12f4c295425a4f1d065a5a00bf6e97f351",
+    "source": "pinned-release-export",
+    "live_api_verified": false
+  },
+  "requirement_links": [
+    {
+      "key": "hlasuj:requirement:HLS-022",
+      "entry_revision": 1,
+      "approval_status_as_read": "unknown",
+      "local_coverage": "implemented",
+      "authoritative_status_changed": false
+    },
+    {
+      "key": "hlasuj:requirement:HLS-023",
+      "entry_revision": 1,
+      "approval_status_as_read": "unknown",
+      "local_coverage": "implemented",
+      "authoritative_status_changed": false
+    },
+    {
+      "key": "hlasuj:requirement:HLS-026",
+      "entry_revision": 1,
+      "approval_status_as_read": "unknown",
+      "local_coverage": "partial",
+      "authoritative_status_changed": false
+    },
+    {
+      "key": "hlasuj:requirement:HLS-028",
+      "entry_revision": 1,
+      "approval_status_as_read": "unknown",
+      "local_coverage": "partial",
+      "authoritative_status_changed": false
+    },
+    {
+      "key": "hlasuj:requirement:HLS-029",
+      "entry_revision": 1,
+      "approval_status_as_read": "unknown",
+      "local_coverage": "partial",
+      "authoritative_status_changed": false
+    },
+    {
+      "key": "hlasuj:requirement:HLS-062",
+      "entry_revision": 1,
+      "approval_status_as_read": "unknown",
+      "local_coverage": "partial",
+      "authoritative_status_changed": false
+    }
+  ],
+  "regression": {
+    "status": "passed",
+    "production_access": false,
+    "wordpress_database_integration": "not run",
+    "started_at": "2026-10-07T15:37:24.035013+00:00",
+    "php_lint": "passed",
+    "javascript_lint": "passed",
+    "security_contracts": {
+      "suite": "security-contracts",
+      "checks": 51,
+      "status": "passed"
+    },
+    "ai_contracts": {
+      "status": "passed",
+      "checks": 93,
+      "provider": "in-memory double",
+      "paid_calls": 0
+    },
+    "ai_disabled": {
+      "status": "passed",
+      "checks": 3
+    },
+    "requirements_context": "passed",
+    "demo_http_checks": 18,
+    "browser": {
+      "status": "passed",
+      "checks": 15,
+      "screenshots": 3,
+      "backend": "synthetic HTTP fixtures; demo PHP real",
+      "external_requests": 0
+    },
+    "ai_browser": {
+      "status": "passed",
+      "checks": 12,
+      "external_requests": 0,
+      "provider": "synthetic HTTP fixture"
+    },
+    "tested_source_sha256": "c4466300d540c4a885ad6290601d4031c2a3e326aae7c75df4a4df56f59abcc6",
+    "requirements_context_script_sha256": "3ad7aaccc903403eb966817bfd71e54b367081419bebd20f04b386921f74f590",
+    "finished_at": "2026-10-07T15:40:52.190337+00:00"
+  },
+  "integration": {
+    "status": "passed",
+    "production_data_used": false,
+    "paid_api_calls": 0,
+    "external_http_blocked": true,
+    "started_at": "2026-10-07T15:37:13.274861+00:00",
+    "wordpress-integration.php": {
+      "status": "passed",
+      "checks": 19,
+      "wordpress": "7.1.2",
+      "database": "11.4.9-MariaDB",
+      "production_data_used": false,
+      "concurrency_tested": false
+    },
+    "ai-wordpress-integration.php": {
+      "status": "passed",
+      "checks": 21,
+      "wordpress": "7.1.2",
+      "database": "11.4.9",
+      "provider": "pre_http_request fixture",
+      "paid_calls": 0
+    },
+    "content-wordpress-integration.php": {
+      "status": "passed",
+      "checks": 50,
+      "production_data_used": false,
+      "paid_api_calls": 0
+    },
+    "feedback-wordpress-integration.php": {
+      "status": "passed",
+      "checks": 80,
+      "question_id": 27,
+      "actual_wordpress_database": true,
+      "production_data_used": false
+    },
+    "concurrency": {
+      "status": "passed",
+      "checks": 28,
+      "independent_processes": true,
+      "production_data_used": false,
+      "paid_api_calls": 0
+    },
+    "wordpress_admin_browser": {
+      "status": "passed",
+      "checks": 13,
+      "actual_wordpress_admin": true,
+      "external_requests_blocked": 7,
+      "paid_api_calls": 0
+    },
+    "browser_persistence": "passed",
+    "content_admin_browser": {
+      "status": "passed",
+      "checks": 11,
+      "actual_wordpress_admin": true,
+      "paid_api_calls": 0
+    },
+    "feedback_admin_browser": {
+      "status": "passed",
+      "checks": 8,
+      "actual_wordpress_admin": true,
+      "external_qr_requests": 0
+    },
+    "tested_source_sha256": "c4466300d540c4a885ad6290601d4031c2a3e326aae7c75df4a4df56f59abcc6",
+    "servers_stopped": true,
+    "finished_at": "2026-10-07T15:41:26.343945+00:00"
+  },
+  "requirements_context_unittest_methods": 15,
+  "environments": {
+    "wordpress": "7.1.2",
+    "mariadb": "11.4.9",
+    "php": "8.4.25",
+    "browser": "Edge via Playwright"
+  },
+  "wordpress_download": {
+    "url": "https://wordpress.org/wordpress-7.1.2.zip",
+    "sha256": "8fc96c59a78b7219e4a130222b7fadb51b03e503e8b0123beaa7e28961c21ce2",
+    "official_sha1_checked": true
+  },
+  "preceding_attempts": [
+    {
+      "test_id": "requirements-context-initial",
+      "result": "FAIL",
+      "reason": "Overbroad fixture assertion also matched the source name; corrected and rerun."
+    },
+    {
+      "test_id": "local-integration-a",
+      "result": "ERROR",
+      "reason": "Incomplete old WordPress distribution lacked wp-load.php; preflight strengthened and official distribution downloaded."
+    },
+    {
+      "test_id": "local-integration-b",
+      "result": "ERROR",
+      "reason": "New fixture passed an integer instead of bool to activate_question; corrected."
+    },
+    {
+      "test_id": "local-integration-c",
+      "result": "FAIL",
+      "reason": "Round trip changed an explicitly false WordPress boolean to its true default; production code fixed to distinguish stored false from missing metadata."
+    },
+    {
+      "test_id": "local-integration-d",
+      "result": "ERROR",
+      "reason": "QR assertion waited for hidden working canvas; corrected to verify the visible decoded local PNG."
+    },
+    {
+      "test_id": "local-integration-e",
+      "result": "PASS",
+      "scope": "Intermediate 74 feedback checks and 8 browser checks; superseded by final stable-source run."
+    }
+  ],
+  "unperformed": [
+    {
+      "test_id": "requirements-live-authenticated",
+      "result": "SKIP",
+      "reason": "Scoped machine credential unavailable; no successful live authentication claimed."
+    },
+    {
+      "test_id": "requirements-v2-write",
+      "result": "SKIP",
+      "reason": "New central contract under development; no submission performed."
+    },
+    {
+      "test_id": "production-deployment-this-stage",
+      "result": "SKIP",
+      "reason": "This source is unreleased; new release/restore qualification not performed."
+    },
+    {
+      "test_id": "hosting-capacity",
+      "result": "SKIP",
+      "reason": "Local fixtures do not measure hosting capacity."
+    }
+  ],
+  "production_data_used": false,
+  "production_application_changed": false,
+  "sql_migrations_run": false,
+  "paid_ai_calls": 0,
+  "ai_provider": "synthetic fixtures",
+  "git_source_objects_sha256": "c3c8d58ca5db51f46176a9269cfb80521a9ca55921d1668ad38d18e921c2244a",
+  "cleanup": {
+    "servers_stopped": true,
+    "temporary_directories_removed": false,
+    "reason": "Automatic safety policy rejected Remove-Item; no retry or bypass."
+  }
+}

@@ -157,6 +157,19 @@ class MHL_Core {
     }
     public static function question_type(int $question_id): string { return self::question_correct_index($question_id)!==null?'quiz':'poll'; }
 
+    public static function question_explanation_mode(int $question_id): string {
+        $mode=(string)get_post_meta($question_id,'_mhl_explanation_mode',true);
+        return in_array($mode,array('teacher_only','show_after_close','hidden'),true)?$mode:'teacher_only';
+    }
+
+    /** Public allowlist: teacher notes never enter a student/projection payload. */
+    public static function public_explanation(int $question_id, ?object $session): ?string {
+        if (!$session || $session->status!=='closed' || self::question_type($question_id)!=='quiz'
+            || self::question_explanation_mode($question_id)!=='show_after_close') { return null; }
+        $text=(string)get_post_meta($question_id,'_mhl_correct_answer_explanation',true);
+        return trim($text)===''?null:$text;
+    }
+
 
     /** Dlouhodobá anketa běžící mimo živou přednášku. */
     public static function question_async_enabled(int $question_id): bool {

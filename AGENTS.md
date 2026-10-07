@@ -2,6 +2,7 @@
 
 ## Source of truth
 
+- Central REQUIREMENTS is the requirements authority. Read the available HLASUJ context with its baseline, SHA-256, IDs and revisions before implementation; see docs/REQUIREMENTS-INTEGRATION.md. An explicitly pinned export supports local work when a machine credential is unavailable, but does not prove current production state. Preserve unknown approval/verification states. Local specifications and GitHub are secondary copies, and code/tests establish actual behavior.
 - Read README.md and the relevant sections of docs/MASTER-SPEC.md before changing behavior. Follow docs/PRODUCT-PRINCIPLES.md.
 - docs/RELEASE-0.8.9.md and docs/DEPLOYMENT-2026-10-05-0.8.9.md describe the qualified baseline. Older notes in ARCHITECTURE.md and ITERATION-PLAN.md may describe an earlier state.
 - Planned features in MASTER-SPEC.md and ROADMAP.md are not evidence of implemented behavior. Trace behavior to code and tests.

@@ -24,7 +24,7 @@ if(!/^http:\/\/127\.0\.0\.1:\d+$/.test(base))throw new Error('Synthetic loopback
     await page.locator('#mhl-transfer-subject').selectOption(await option.getAttribute('value'));
     const downloadWait=page.waitForEvent('download');await page.getByRole('button',{name:'Stáhnout obsah'}).click();
     const download=await downloadWait,json=fs.readFileSync(await download.path(),'utf8'),bundle=JSON.parse(json);
-    check(bundle.format_version===1&&bundle.questions.length===2,'Actual authenticated export returns portable content');
+    check(bundle.format_version===2&&bundle.questions.length===2,'Actual authenticated export returns portable content v2');
     check(!json.includes('PRIVATE-'),'Downloaded content excludes private metadata');
     await page.locator('#mhl-transfer-file').setInputFiles({name:'predmet.hlasuj.json',mimeType:'application/json',buffer:Buffer.from(json)});
     await page.getByRole('button',{name:'Zobrazit náhled'}).click();await page.locator('#mhl-transfer-preview').waitFor();

@@ -6,6 +6,10 @@ Projekt používá [CZudla/miloslavhub-hlasuj](https://github.com/CZudla/milosla
 
 **0.8.9 — přenos předmětu s náhledem a importem nových konceptů.**
 
+### Následný vývoj — nevydané změny z 7. 10. 2026
+
+Vývoj zahrnuje vysvětlení odpovědí s výchozím soukromým režimem, poznámky učitele, obsahový JSON v2 se zpětným importem v1 a místní QR v administraci. Tyto změny zatím nejsou kvalifikovaným vydáním ani nasazením. [Stav a plán dokončení celého systému](docs/DEVELOPMENT-2026-10-07.md), [příručka vysvětlení a poznámek](docs/customer/11-VYSVETLENI-A-POZNAMKY.md), [napojení na centrální REQUIREMENTS](docs/REQUIREMENTS-INTEGRATION.md). Verze v release metadatech stále označuje výchozí vydání 0.8.9.
+
 Vývojová migrace GPT‑6 a vypnutý AI pilot: [stav migrace](docs/GPT-6-MIGRATION-STATUS.md), [popis pilotu a testů](docs/AI-PILOT.md). AI je standardně vypnutá. Rozsah vydání dokládá RELEASE-0.8.9.md; konkrétní nasazení je doloženo samostatnou zprávou DEPLOYMENT-2026-10-05-0.8.9.md.
 
 Rozsah, provedená ověření a zbývající omezení jsou v docs/RELEASE-0.8.9.md. Stav konkrétního nasazení dokládá samostatná deployment zpráva; sestavení ZIPu samo nasazení nepotvrzuje.
@@ -33,7 +37,7 @@ Node musí mít dostupný balíček `playwright` (případně přes `NODE_PATH`)
 
 Začněte [auditem](docs/AUDIT.md), [plánem iterace](docs/ITERATION-PLAN.md), [architekturou](docs/ARCHITECTURE.md) a [změnami](CHANGELOG.md). Před provozem čtěte [SECURITY](docs/SECURITY.md), [PRIVACY](docs/PRIVACY.md), [DEPLOYMENT](docs/DEPLOYMENT.md) a [UPGRADE](docs/UPGRADE.md).
 
-Historické changelogy a README uvnitř komponent dokumentují předchozí verze. Aktuální stav určují tento README, kořenový CHANGELOG a dokumenty v `docs/`. Hlavní požadavky jsou v `docs/MASTER-SPEC.md`; uvedené budoucí funkce nejsou automaticky implementované.
+Historické changelogy a README uvnitř komponent dokumentují předchozí verze. Aktuální stav určují tento README, kořenový CHANGELOG a dokumenty v `docs/`. Autoritou požadavků je centrální REQUIREMENTS; [postup čtení a připnutá baseline](docs/REQUIREMENTS-INTEGRATION.md). `docs/MASTER-SPEC.md` je místní podklad. Budoucí funkce nejsou automaticky implementované ani ověřené.
 
 ## Sestavení opravného vydání
 
@@ -51,6 +55,6 @@ Sestavení odmítne nečistý checkout, citlivé názvy souborů, zastaralý fro
 
 ## Přenos obsahu
 
-Menu **Živé hlasování → Přenést obsah** exportuje předmět, přednášky a jejich otázky jako otevřený JSON v1. Import nejprve ukáže náhled a po potvrzení vytvoří nové koncepty. Stávající obsah a QR zachovává. [Postup učitele](docs/customer/10-PRENOS-OBSAHU.md), [technický formát a hranice](docs/CONTENT-FORMAT.md). Přenos vyžaduje oprávnění správce, platné nonces a potvrzení náhledu; výsledky, údaje lidí, kategorie, soubory a externí URL nejsou součástí.
+Menu **Živé hlasování → Přenést obsah** exportuje předmět, přednášky a jejich otázky jako otevřený JSON. Vydání 0.8.9 používá v1; tento nevydaný vývoj exportuje v2 s vysvětleními a soukromými poznámkami a importuje v1 i v2. Import nejprve ukáže náhled a po potvrzení vytvoří nové koncepty. Stávající obsah a QR zachovává. [Postup učitele](docs/customer/10-PRENOS-OBSAHU.md), [technický formát a hranice](docs/CONTENT-FORMAT.md). Přenos vyžaduje oprávnění správce, platné nonces a potvrzení náhledu; výsledky, účty, kategorie, soubory a externí URL nejsou součástí. Vlastní texty včetně poznámek zkontrolujte před sdílením kvůli osobním údajům.
 
 Přenos navíc ověřuje 	ests/content-wordpress-integration.php (50 kontrol na skutečném WordPressu/MariaDB) a 	ests/content-wordpress-browser.cjs (11 kontrol přihlášené administrace v Edge). Souhrn: [testy přenosu a celé integrace](docs/test-evidence/2026-10-05-content-transfer.json).

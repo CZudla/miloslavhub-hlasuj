@@ -8,7 +8,7 @@ if(!/^http:\/\/127\.0\.0\.1:\d+$/.test(base))throw new Error('Browser tests requ
   const browser=await chromium.launch({channel:'msedge',headless:true});
   const context=await browser.newContext({viewport:{width:390,height:844}});
   const calls=[],external=[],errors=[];
-  let status='waiting', needsNickname=false;
+  let status='waiting', needsNickname=false, explanation=null, questionMode='quiz';
   const q=()=>({title:'Která odpověď je správná?',status,session_id:10,lecture_slug:'lesson',question_slug:'question',subject_slug:'subject',options:[{index:0,code:'A',label:'První odpověď',count:1,percent:100}],gamification:{enabled:needsNickname,join_nickname_required:needsNickname},share_url:base+'/q/lesson/question'});
   await context.route('**/*',async route=>{
     const url=new URL(route.request().url());
@@ -18,7 +18,7 @@ if(!/^http:\/\/127\.0\.0\.1:\d+$/.test(base))throw new Error('Browser tests requ
     let payload=q();
     if(url.pathname.endsWith('/join'))payload={question:q()};
     if(url.pathname.endsWith('/current'))payload={...q(),question_slug:['joining','open'].includes(status)?'question':null};
-    if(url.pathname.includes('/results/'))payload={...q(),total:1,mode:'quiz',participant_result:{points:900,option_code:'A',hall_of_fame:{enabled:true,eligible:true,visibility:'unset',rank:1,limit:10}}};
+    if(url.pathname.includes('/results/'))payload={...q(),total:1,mode:questionMode,correct_answer_explanation:explanation,participant_result:{points:900,option_code:'A',hall_of_fame:{enabled:true,eligible:true,visibility:'unset',rank:1,limit:10}}};
     if(url.pathname.includes('/projection/'))payload={status:'waiting',subject_title:'Testovací předmět'};
     await route.fulfill({json:payload});
   });
@@ -61,6 +61,18 @@ if(!/^http:\/\/127\.0\.0\.1:\d+$/.test(base))throw new Error('Browser tests requ
   await page.getByRole('button',{name:'Zůstat anonymní'}).click();
   await page.getByText('V Síni slávy zůstanete anonymní.').waitFor();
   assert.equal(calls.filter(x=>x.path.endsWith('/privacy/hall-opt-in')).length,2,'Hall buttons did not call API');
+  explanation='<img src=x onerror=alert(1)> Bezpečné vysvětlení.\nDruhý řádek.';
+  await page.reload();
+  await page.locator('.answer-explanation').waitFor();
+  assert((await page.locator('.answer-explanation').innerText()).includes(explanation),'Feedback text must remain literal');
+  assert.equal(await page.locator('.answer-explanation img').count(),0,'Explanation cannot execute markup');
+  await page.screenshot({path:path.resolve('runtime/screenshots/student-feedback.png'),fullPage:true});
+  await page.goto(base+'/r/lesson/question');
+  await page.locator('.answer-explanation').waitFor();
+  status='open'; await page.reload(); await page.locator('.waiting-results').waitFor();
+  assert.equal(await page.locator('.answer-explanation').count(),0,'Open question cannot display injected feedback');
+  status='closed'; questionMode='poll'; await page.reload(); await page.locator('.results-head').waitFor();
+  assert.equal(await page.locator('.answer-explanation').count(),0,'Poll cannot display quiz explanation');
   await page.goto(base+'/project/subject/abc123');
   await page.getByRole('heading',{name:'Čekáme na další otázku'}).waitFor();
   assert(calls.some(x=>x.path==='/test-api/projection/subject/abc123'),'Projection used wrong API path');
@@ -73,5 +85,5 @@ if(!/^http:\/\/127\.0\.0\.1:\d+$/.test(base))throw new Error('Browser tests requ
   assert.equal(external.length,0,'Local test attempted external request: '+external);
   assert.deepEqual(errors,[],'Browser runtime errors');
   await browser.close();
-  console.log(JSON.stringify({status:'passed',checks:11,screenshots:2,backend:'synthetic HTTP fixtures; demo PHP real',external_requests:external.length}));
+  console.log(JSON.stringify({status:'passed',checks:15,screenshots:3,backend:'synthetic HTTP fixtures; demo PHP real',external_requests:external.length}));
 })().catch(e=>{console.error(e);process.exit(1);});

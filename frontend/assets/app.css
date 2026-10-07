@@ -265,3 +265,4 @@ button:empty,a.button:empty{display:none!important}
 /* QR quiet zone is local and kept white in every theme. */
 .local-qr{display:inline-block;padding:16px;background:#fff;max-width:100%;box-sizing:border-box}
 .local-qr canvas,.local-qr img{max-width:100%;height:auto}
+.answer-explanation{margin:1rem 0;padding:1rem;border:1px solid var(--accent);border-radius:12px}.answer-explanation h2{margin:0 0 .5rem;font-size:1.15rem}.answer-explanation p{white-space:pre-wrap;overflow-wrap:anywhere;margin:0}
