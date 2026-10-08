@@ -23,6 +23,14 @@ První nová browser fixture čekala na neexistující `#app` místo `#mhl-app` 
 
 Mezilehlá regrese a integrace prošly, poté závěrečná kontrola našla druhou cestu starého bodování v simulaci Testovací laboratoře. Po opravě a doplnění testů obě závěrečné sady prošly: **200 regresních kontrol, 292 integračních kontrol a 15 unittest metod referenčního adaptéru**. Z toho 60 serverových/DB kontrol anket, 8 frontendových kontrol neutrálního zobrazení a 10 kontrol editoru. Oba běhy mají shodný hash `152356a12e733c9f9bf4b22f6f87fd5d1e745774b65400e5520406f29bb71257`. Mezilehlé výsledky zůstávají místně zachované a nevydávají se za test konečného kódu.
 
+## GitHub a centrální evidence
+
+Zdrojový commit `6e19e9725dd2bd6358d9ab5836e919475e1d5f9b` je v [draft PR #1](https://github.com/CZudla/miloslavhub-hlasuj/pull/1). Kontrola 18 zamýšlených souborů na známé produkční hodnoty a tokenové vzory měla 0 nálezů; samostatně se porovnaly i scoped credentials REQUIREMENTS. Jde o omezený scan, nikoli úplnou záruku správy tajemství.
+
+Do REQUIREMENTS bylo doručeno a přesně zpětně ověřeno **8 nových záznamů**: implementační zpráva HLS-018 rev. 1, 5 passed důkazů HLS-018 rev. 1 a po jednom skipped pro hostingovou kapacitu HLS-062 rev. 1 a produkční nasazení HLS-065 rev. 1. Vzdálený stav je submitted a `authoritative_applied=false`. Review/apply/publish/revoke nebylo voláno. [Receipty a vazby](test-evidence/2026-10-08-poll-delivery.json).
+
+Trvalá chráněná fronta má včetně předchozí etapy **35 sent, 0 pending, 0 blocked**. Počáteční necommitnutý fixture ERROR je zachován zvlášť s přiznaným chybějícím commit, čeká na vhodný centrální formát a není vydáván za doručený testový záznam. Pozdější dokumentační commit nemění testované zdroje.
+
 ## Kompatibilita a zbývající práce
 
 Bez SQL migrace, přepočtu historie nebo nasazení Hlasuj!. Historické globálně propojené bodované ankety zůstávají v DB a celkových součtech. Vlastní odpověď staré ankety nemusí být dohledatelná novým klíčem relace; souhrn hlasů zůstává. Změna typu otázky během běhu stále používá aktuální metadata, bez snapshotu. Případné změny historie vyžadují samostatné rozhodnutí a zálohu.

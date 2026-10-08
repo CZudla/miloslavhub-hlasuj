@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "verified_at": "2026-10-08T07:02:44.503880+00:00",
+  "source_commit": "6e19e9725dd2bd6358d9ab5836e919475e1d5f9b",
+  "pr": "https://github.com/CZudla/miloslavhub-hlasuj/pull/1",
+  "stage_submissions": 8,
+  "stage_implementation_reports": 1,
+  "stage_verification": {
+    "passed": 5,
+    "skipped": 2
+  },
+  "cumulative_outbox_counts": {
+    "sent": 35,
+    "pending": 0,
+    "blocked": 0,
+    "sending": 0
+  },
+  "authoritative_review_apply_publish_revoke_called": false,
+  "production_application_changed": false,
+  "pending_historical_capture": "One initial uncommitted browser fixture ERROR retained with source hash; exact commit unavailable, not assigned to final repaired commit.",
+  "records": [
+    {
+      "id": "18c371a53162401182b847ab90ee9269",
+      "path": "/api/v2/entries/hlasuj%3Arequirement%3AHLS-018/implementation",
+      "receipt": "7de596691ac5370d38e2e01eb46d9b88",
+      "remote_status": "submitted",
+      "authoritative_applied": false,
+      "body_match": true,
+      "body_digest": "cf1e905e59060d7bfc2f12e7eaa5539d211143cd139f5ef666768452bf967132",
+      "submission": {
+        "commit": "6e19e9725dd2bd6358d9ab5836e919475e1d5f9b",
+        "deployment_ref": null,
+        "entry_revision": 1,
+        "pr_ref": "https://github.com/CZudla/miloslavhub-hlasuj/pull/1",
+        "release": null,
+        "repository": "CZudla/miloslavhub-hlasuj",
+        "status": "implemented",
+        "summary": "Unreleased neutral poll handling for new live/test/async votes and Test Lab simulation: zero points, null correctness, no stored/required answer nickname, session-scoped own result, neutral student/projection UI and prior-score explanation. Legacy metadata and historical votes retained; no SQL migration or production deployment. Customer guide and compatibility reference included."
+      }
+    },
+    {
+      "id": "83b00ce19ec148bbbc0f17b1284da50d",
+      "path": "/api/v2/entries/hlasuj%3Arequirement%3AHLS-018/verification",
+      "receipt": "c419166275da9e2e41eb862717952e0b",
+      "remote_status": "submitted",
+      "authoritative_applied": false,
+      "body_match": true,
+      "body_digest": "ad294a389d8229102a82ac7b43aa0d19c99819f98e7317d423279a1157ce0d79",
+      "submission": {
+        "artifact_ref": "docs/test-evidence/2026-10-08-poll.json",
+        "commit": "6e19e9725dd2bd6358d9ab5836e919475e1d5f9b",
+        "entry_revision": 1,
+        "environment": "Synthetic loopback WordPress 7.1.2 / MariaDB 11.4.9 / PHP 8.4.25; 60 poll and Test Lab checks",
+        "executed_at": "2026-10-08T06:56:47.647287+00:00",
+        "result": "passed",
+        "test_id": "neutral-poll-wordpress-60-2026-10-08"
+      }
+    },
+    {
+      "id": "b2805e8491ab4aa896db4c3ba59d85dd",
+      "path": "/api/v2/entries/hlasuj%3Arequirement%3AHLS-018/verification",
+      "receipt": "6bf2f7526a6aff96198bd94f9c5476eb",
+      "remote_status": "submitted",
+      "authoritative_applied": false,
+      "body_match": true,
+      "body_digest": "28d878606b887b9ef3df4401938e925eb7969a79a508c32ca288179d15267fcb",
+      "submission": {
+        "artifact_ref": "docs/test-evidence/2026-10-08-poll.json",
+        "commit": "6e19e9725dd2bd6358d9ab5836e919475e1d5f9b",
+        "entry_revision": 1,
+        "environment": "Edge/Playwright synthetic HTTP fixtures; 8 defensive poll rendering checks",
+        "executed_at": "2026-10-08T06:56:19.982994+00:00",
+        "result": "passed",
+        "test_id": "neutral-poll-frontend-8-2026-10-08"
+      }
+    },
+    {
+      "id": "27ae9682e22a4e738f089b2b98150588",
+      "path": "/api/v2/entries/hlasuj%3Arequirement%3AHLS-018/verification",
+      "receipt": "ebfdf8cb515c73eb5ff29272b8f17fe4",
+      "remote_status": "submitted",
+      "authoritative_applied": false,
+      "body_match": true,
+      "body_digest": "33d020e1ae91d6f4e5a109a3067c8452d5dd5f5b8c39dbaf45f5f8911c9a97db",
+      "submission": {
+        "artifact_ref": "docs/test-evidence/2026-10-08-poll.json",
+        "commit": "6e19e9725dd2bd6358d9ab5836e919475e1d5f9b",
+        "entry_revision": 1,
+        "environment": "Local synthetic regression: PHP/JS syntax, 200 checks and 15 REQUIREMENTS reader unittest methods; no production or paid AI",
+        "executed_at": "2026-10-08T06:56:19.982994+00:00",
+        "result": "passed",
+        "test_id": "neutral-poll-regression-200-2026-10-08"
+      }
+    },
+    {
+      "id": "c598828e37de4a21835421d37ef0067f",
+      "path": "/api/v2/entries/hlasuj%3Arequirement%3AHLS-018/verification",
+      "receipt": "bf43e234079c4598dde9b44043e27d55",
+      "remote_status": "submitted",
+      "authoritative_applied": false,
+      "body_match": true,
+      "body_digest": "8a95969b37fd90a1a229fd8c4174eb6e6ff692a11772f6c4efa14f20a6ecfc61",
+      "submission": {
+        "artifact_ref": "docs/test-evidence/2026-10-08-poll.json",
+        "commit": "6e19e9725dd2bd6358d9ab5836e919475e1d5f9b",
+        "entry_revision": 1,
+        "environment": "Local synthetic WordPress/MariaDB/Edge integration and concurrency; 292 checks; no production data or paid AI",
+        "executed_at": "2026-10-08T06:56:47.647287+00:00",
+        "result": "passed",
+        "test_id": "neutral-poll-integration-292-2026-10-08"
+      }
+    },
+    {
+      "id": "c2acb585166946d9823af953178a139a",
+      "path": "/api/v2/entries/hlasuj%3Arequirement%3AHLS-018/verification",
+      "receipt": "7f52c8ad14ea114d79adb892a810db1a",
+      "remote_status": "submitted",
+      "authoritative_applied": false,
+      "body_match": true,
+      "body_digest": "961eda0f27e42b8f00851e184e94bb206e970d80f89e443e642f465cccc2d6eb",
+      "submission": {
+        "artifact_ref": "docs/test-evidence/2026-10-08-poll.json",
+        "commit": "6e19e9725dd2bd6358d9ab5836e919475e1d5f9b",
+        "entry_revision": 1,
+        "environment": "Actual authenticated synthetic WordPress administration in Edge; 10 feedback/editor/QR checks including neutral poll controls",
+        "executed_at": "2026-10-08T06:56:47.647287+00:00",
+        "result": "passed",
+        "test_id": "neutral-poll-editor-10-2026-10-08"
+      }
+    },
+    {
+      "id": "db58e678e6704f738036cfdbcd4394d9",
+      "path": "/api/v2/entries/hlasuj%3Arequirement%3AHLS-062/verification",
+      "receipt": "aa85711a994cc92b4d89552c0392c1c5",
+      "remote_status": "submitted",
+      "authoritative_applied": false,
+      "body_match": true,
+      "body_digest": "b317dffc84b613a5fbc11a2dc8c4f099d2e2821e178e5080731fe41cb6b8dcf7",
+      "submission": {
+        "artifact_ref": "docs/test-evidence/2026-10-08-poll.json",
+        "commit": "6e19e9725dd2bd6358d9ab5836e919475e1d5f9b",
+        "entry_revision": 1,
+        "environment": "Not run: local fixtures do not measure production hosting capacity",
+        "executed_at": "2026-10-08T06:58:09.058933+00:00",
+        "result": "skipped",
+        "test_id": "neutral-poll-hosting-capacity-2026-10-08"
+      }
+    },
+    {
+      "id": "fe50790f49604306a95a90f02272d58f",
+      "path": "/api/v2/entries/hlasuj%3Arequirement%3AHLS-065/verification",
+      "receipt": "e6d81123f957fd71e76cf8cc76fad076",
+      "remote_status": "submitted",
+      "authoritative_applied": false,
+      "body_match": true,
+      "body_digest": "2434e9a3cfde2e82039d819f74580e09401c6a7113924e23f44e3d91326e5d42",
+      "submission": {
+        "artifact_ref": "docs/test-evidence/2026-10-08-poll.json",
+        "commit": "6e19e9725dd2bd6358d9ab5836e919475e1d5f9b",
+        "entry_revision": 1,
+        "environment": "Not run: unreleased source; production backup/restore/deployment qualification not repeated",
+        "executed_at": "2026-10-08T06:58:09.058933+00:00",
+        "result": "skipped",
+        "test_id": "neutral-poll-production-deployment-2026-10-08"
+      }
+    }
+  ]
+}
