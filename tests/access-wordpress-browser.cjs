@@ -8,7 +8,11 @@ if(!/^http:\/\/127\.0\.0\.1:\d+$/.test(base)||!password||!fixture.a)throw new Er
   const context=await browser.newContext();await context.route('**/*',route=>new URL(route.request().url()).origin===base?route.continue():(external.push(new URL(route.request().url()).hostname),route.abort()));
   const page=await context.newPage();page.on('pageerror',error=>errors.push(page.url()+': '+error.stack));
   await page.goto(base+'/wp-login.php');await page.locator('#user_login').fill('acl-'+name);await page.locator('#user_pass').fill(password);
-  await Promise.all([page.waitForURL('**/wp-admin/**'),page.locator('#wp-submit').click()]);return {context,page};
+  await Promise.all([page.waitForURL('**/wp-admin/**'),page.locator('#wp-submit').click()]);
+  // WordPress sends these restricted accounts to profile.php. Its beforeunload
+  // handler assumes the ready callback initialized $form; finish ready before navigating.
+  await page.evaluate(()=>new Promise(resolve=>jQuery(()=>resolve())));
+  return {context,page};
  }
  try {
   let {context,page}=await login('a');

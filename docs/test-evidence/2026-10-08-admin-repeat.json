@@ -1,0 +1,38 @@
+{
+  "status": "error",
+  "started_at": "2026-10-08T11:58:20.855093+00:00",
+  "source_commit": "63e1f0d1cb4a8e21952059c5c4a2cb4184f9aecb",
+  "tested_source_sha256": "46c0eb56d460b8c5a7f531ea1f70c8a2ff4242c325dd04b578c9666c563b345c",
+  "production_access": false,
+  "runs": [
+    {
+      "status": "passed",
+      "checks": 26,
+      "accounts": 3,
+      "organizations": 2,
+      "external_requests_blocked": 13,
+      "backend": "real isolated WordPress and MariaDB",
+      "attempt": 1
+    },
+    {
+      "status": "passed",
+      "checks": 26,
+      "accounts": 3,
+      "organizations": 2,
+      "external_requests_blocked": 13,
+      "backend": "real isolated WordPress and MariaDB",
+      "attempt": 2
+    },
+    {
+      "attempt": 3,
+      "status": "error",
+      "stack": "AssertionError [ERR_ASSERTION]: No management JavaScript errors: http://127.0.0.1:PORT/wp-admin/profile.php: TypeError: Cannot read properties of undefined (reading 'serialize')\n    at http://127.0.0.1:PORT/wp-admin/js/user-profile.min.js?ver=7.1.2:2:7661\n    at dispatch (http://127.0.0.1:PORT/wp-admin/load-scripts.php?c=1&load%5Bchunk_0%5D=jquery-core,jquery-migrate,utils,zxcvbn-async&ver=7.1.2:2:40035)\n    at v.handle (http://127.0.0.1:PORT/wp-admin/load-scripts.php?c=1&load%5Bchunk_0%5D=jquery-core,jquery-migrate,utils,zxcvbn-async&ver=7.1.2:2:38006)\n    at check ([repository]\\tests\\access-wordpress-browser.cjs:6:29)\n    at [repository]\\tests\\access-wordpress-browser.cjs:67:3 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '==',\n  diff: 'simple'\n}\n"
+    }
+  ],
+  "servers_stopped": true,
+  "finished_at": "2026-10-08T12:04:11.636652+00:00",
+  "limitations": [
+    "Repeated sequential browser checks on a synthetic instance; not production or upstream AUTH/licence qualification.",
+    "A passing rerun does not establish the root cause or removal of an earlier intermittent serialize error."
+  ]
+}

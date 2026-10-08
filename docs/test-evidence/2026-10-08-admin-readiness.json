@@ -1,0 +1,273 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-08T12:18:52.422369+00:00",
+  "source_base_commit": "63e1f0d1cb4a8e21952059c5c4a2cb4184f9aecb",
+  "source_commit": null,
+  "tested_source_sha256": "b4c163ce5bdb3253ae026fd0018679126570f7be2839233678f1ccf13f9a1251",
+  "status": "passed",
+  "production_access": false,
+  "regression": {
+    "status": "passed",
+    "production_access": false,
+    "wordpress_database_integration": "not run",
+    "started_at": "2026-10-08T12:05:54.558978+00:00",
+    "browser_suite": "all",
+    "php_lint": "passed",
+    "javascript_lint": "passed",
+    "security_contracts": {
+      "suite": "security-contracts",
+      "checks": 51,
+      "status": "passed"
+    },
+    "ai_contracts": {
+      "status": "passed",
+      "checks": 93,
+      "provider": "in-memory double",
+      "paid_calls": 0
+    },
+    "ai_disabled": {
+      "status": "passed",
+      "checks": 3
+    },
+    "i18n_php": {
+      "status": "passed",
+      "checks": 12,
+      "marked_ui_literals_audited": 805
+    },
+    "i18n_javascript": {
+      "status": "passed",
+      "checks": 18,
+      "catalog_messages": 997,
+      "scope": "UI literals, locale formatting and dynamic content boundary"
+    },
+    "requirements_context": "passed",
+    "demo_http_checks": 18,
+    "browser": {
+      "status": "passed",
+      "checks": 23,
+      "neutral_poll_checks": 8,
+      "screenshots": 3,
+      "backend": "synthetic HTTP fixtures; demo PHP real",
+      "external_requests": 0
+    },
+    "ai_browser": {
+      "status": "passed",
+      "checks": 12,
+      "external_requests": 0,
+      "provider": "synthetic HTTP fixture"
+    },
+    "i18n_browser": {
+      "status": "passed",
+      "checks": 28,
+      "external_requests": 0,
+      "backend": "synthetic HTTP fixtures; marketing and demo PHP real"
+    },
+    "tested_source_sha256": "b4c163ce5bdb3253ae026fd0018679126570f7be2839233678f1ccf13f9a1251",
+    "requirements_context_script_sha256": "3ad7aaccc903403eb966817bfd71e54b367081419bebd20f04b386921f74f590",
+    "finished_at": "2026-10-08T12:11:08.025040+00:00"
+  },
+  "integration": {
+    "status": "passed",
+    "production_data_used": false,
+    "paid_api_calls": 0,
+    "external_http_blocked": true,
+    "started_at": "2026-10-08T12:05:56.163535+00:00",
+    "tested_source_sha256": "b4c163ce5bdb3253ae026fd0018679126570f7be2839233678f1ccf13f9a1251",
+    "test_database_max_connections": 500,
+    "wordpress-integration.php": {
+      "status": "passed",
+      "checks": 19,
+      "wordpress": "7.1.2",
+      "database": "11.4.9-MariaDB",
+      "production_data_used": false,
+      "concurrency_tested": false
+    },
+    "ai-wordpress-integration.php": {
+      "status": "passed",
+      "checks": 21,
+      "wordpress": "7.1.2",
+      "database": "11.4.9",
+      "provider": "pre_http_request fixture",
+      "paid_calls": 0
+    },
+    "content-wordpress-integration.php": {
+      "status": "passed",
+      "checks": 50,
+      "production_data_used": false,
+      "paid_api_calls": 0
+    },
+    "feedback-wordpress-integration.php": {
+      "status": "passed",
+      "checks": 80,
+      "question_id": 27,
+      "actual_wordpress_database": true,
+      "production_data_used": false
+    },
+    "poll-wordpress-integration.php": {
+      "status": "passed",
+      "checks": 60,
+      "actual_wordpress_database": true,
+      "production_data_used": false
+    },
+    "access-wordpress-integration.php": {
+      "status": "passed",
+      "checks": 130,
+      "synthetic_data": true,
+      "organizations": 2,
+      "accounts": 5,
+      "production_access": false,
+      "browser_fixture": {
+        "users": {
+          "a": 5,
+          "b": 6,
+          "c": 7,
+          "viewer": 8,
+          "manager": 9
+        },
+        "a": {
+          "subject": 44,
+          "lecture": 45,
+          "question": 46
+        },
+        "b": {
+          "subject": 47,
+          "lecture": 48,
+          "question": 49
+        },
+        "c": {
+          "subject": 50,
+          "lecture": 51,
+          "question": 52
+        },
+        "run_id": 8
+      }
+    },
+    "concurrency": {
+      "status": "passed",
+      "checks": 28,
+      "independent_processes": true,
+      "production_data_used": false,
+      "paid_api_calls": 0
+    },
+    "load": {
+      "status": "passed",
+      "scenarios": [
+        {
+          "students": 30,
+          "concurrent_workers": 30,
+          "status": "passed",
+          "votes": 30,
+          "burst_seconds": 2.728,
+          "handler_p50_ms": 2977.0,
+          "handler_p95_ms": 3761.0,
+          "handler_max_ms": 4136.1
+        },
+        {
+          "students": 100,
+          "concurrent_workers": 100,
+          "status": "passed",
+          "votes": 100,
+          "burst_seconds": 13.57,
+          "handler_p50_ms": 14520.8,
+          "handler_p95_ms": 15724.5,
+          "handler_max_ms": 16250.2
+        }
+      ],
+      "production_data_used": false,
+      "paid_api_calls": 0,
+      "transport": "independent PHP CLI processes using real REST callbacks and MariaDB",
+      "limits": "Local burst test; does not measure hosting HTTP workers, network or sustained polling"
+    },
+    "wordpress_admin_browser": {
+      "status": "passed",
+      "checks": 15,
+      "actual_wordpress_admin": true,
+      "external_requests_blocked": 7,
+      "paid_api_calls": 0
+    },
+    "browser_persistence": "passed",
+    "content_admin_browser": {
+      "status": "passed",
+      "checks": 11,
+      "actual_wordpress_admin": true,
+      "paid_api_calls": 0
+    },
+    "feedback_admin_browser": {
+      "status": "passed",
+      "checks": 10,
+      "actual_wordpress_admin": true,
+      "external_qr_requests": 0
+    },
+    "access_admin_browser": {
+      "status": "passed",
+      "checks": 26,
+      "accounts": 3,
+      "organizations": 2,
+      "external_requests_blocked": 13,
+      "backend": "real isolated WordPress and MariaDB"
+    },
+    "servers_stopped": true,
+    "finished_at": "2026-10-08T12:15:04.495431+00:00"
+  },
+  "admin_browser_repeat": {
+    "status": "passed",
+    "started_at": "2026-10-08T12:05:55.241971+00:00",
+    "tested_source_sha256": "b4c163ce5bdb3253ae026fd0018679126570f7be2839233678f1ccf13f9a1251",
+    "production_access": false,
+    "runs": [
+      {
+        "status": "passed",
+        "checks": 26,
+        "accounts": 3,
+        "organizations": 2,
+        "external_requests_blocked": 13,
+        "backend": "real isolated WordPress and MariaDB",
+        "attempt": 1
+      },
+      {
+        "status": "passed",
+        "checks": 26,
+        "accounts": 3,
+        "organizations": 2,
+        "external_requests_blocked": 13,
+        "backend": "real isolated WordPress and MariaDB",
+        "attempt": 2
+      },
+      {
+        "status": "passed",
+        "checks": 26,
+        "accounts": 3,
+        "organizations": 2,
+        "external_requests_blocked": 13,
+        "backend": "real isolated WordPress and MariaDB",
+        "attempt": 3
+      }
+    ],
+    "servers_stopped": true,
+    "finished_at": "2026-10-08T12:14:27.961456+00:00",
+    "source_base_commit": "63e1f0d1cb4a8e21952059c5c4a2cb4184f9aecb",
+    "source_commit": null,
+    "source_binding": "Working tree tested; exact Git index hash must match before publishing and reporting implementation commit.",
+    "limitations": [
+      "Sequential repeats on the same synthetic instance, fresh browser contexts; not production or live AUTH/licence qualification."
+    ]
+  },
+  "regression_checks": 258,
+  "integration_checks": 450,
+  "repeat_checks": 78,
+  "requirements_context_unittest_methods": 15,
+  "prior_error_artifact": "2026-10-08-admin-repeat.json",
+  "diagnosis": {
+    "wordpress_version": "7.1.2",
+    "script": "wp-admin/js/user-profile.js",
+    "initialization_lines": "575-576",
+    "beforeunload_lines": "600-605",
+    "observation": "The profile beforeunload callback serializes $form, which is initialized in a deferred jQuery ready callback. The fixture navigated immediately after login URL/load without waiting for that callback.",
+    "correction": "Await a jQuery ready callback after login before the fixture navigates. No JavaScript error suppression, arbitrary sleep or WordPress core modification."
+  },
+  "limits": [
+    "Current changes after initial implementation affect only test readiness; application features remain the same.",
+    "Local fixture repetition does not guarantee every WordPress core/browser navigation path.",
+    "Central AUTH, licence quota, hosting qualification, production deployment and final packages remain skipped for the previously recorded reasons."
+  ]
+}
