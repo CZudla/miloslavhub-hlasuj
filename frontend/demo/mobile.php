@@ -20,46 +20,50 @@ try {
 }
 ?>
 <!doctype html>
-<html lang="cs">
+<html lang="<?php echo mhl_ui_language(); ?>">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
     <meta name="robots" content="noindex,nofollow,noarchive">
     <meta name="theme-color" content="#0f62d8">
-    <title>Demo hlasování – Hlasuj! by MiloslavHub</title>
+    <title><?php echo mhl_ui_html('Demo hlasování – Hlasuj! by MiloslavHub'); ?></title>
     <link rel="stylesheet" href="/demo/assets/demo.css?v=0.8.9">
+    <?php mhl_ui_bootstrap(); ?>
 </head>
 <body class="demo-mobile">
 <main class="mobile-shell">
     <header class="mobile-brand">
         <img class="mobile-brand-logo" src="/demo/assets/hlasuj-logo.png" alt="Hlasuj! by MiloslavHub">
-        <span>Interaktivní demo</span>
+        <span><?php echo mhl_ui_html('Interaktivní demo'); ?></span>
     </header>
 
     <section id="mobile-screen" class="mobile-screen">
         <?php if (isset($error)): ?>
             <div class="mobile-card">
-                <h1>Demo není dostupné</h1>
+                <h1><?php echo mhl_ui_html('Demo není dostupné'); ?></h1>
                 <p><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
-                <a class="mobile-primary anchor-button" href="/">Zpět</a>
+                <a class="mobile-primary anchor-button" href="/"><?php echo mhl_ui_html('Zpět'); ?></a>
             </div>
         <?php else: ?>
             <div class="mobile-card">
-                <div class="mobile-loading">Načítám demo…</div>
+                <div class="mobile-loading"><?php echo mhl_ui_html('Načítám demo…'); ?></div>
             </div>
         <?php endif; ?>
     </section>
 </main>
 
 <?php if (!isset($error)): ?>
-<script>
+<script>{
+const tr=globalThis.MHLUI?.text||(v=>v),ui=globalThis.MHLUI?.html||((p,...v)=>p.reduce((o,s,i)=>o+s+(i<v.length?v[i]:''),''));
+const num=globalThis.MHLUI?.number||((v,d=0)=>Number(v).toLocaleString(document.documentElement.lang==='en'?'en-US':'cs-CZ',{minimumFractionDigits:d,maximumFractionDigits:d}));
+
 (() => {
     'use strict';
 
     const session = <?php echo json_encode($sessionId, JSON_UNESCAPED_SLASHES); ?>;
     const screen = document.getElementById('mobile-screen');
 
-    const storageKey = `mhlDemoParticipant:${session}`;
+    const storageKey = ui`mhlDemoParticipant:${session}`;
     let participant = localStorage.getItem(storageKey);
 
     if (!participant || !/^[a-f0-9]{32}$/.test(participant)) {
@@ -69,7 +73,7 @@ try {
         localStorage.setItem(storageKey, participant);
     }
 
-    let joined = localStorage.getItem(`${storageKey}:joined`) === '1';
+    let joined = localStorage.getItem(ui`${storageKey}:joined`) === '1';
     let state = null;
     let sending = false;
     let pollingStopped = false;
@@ -83,7 +87,7 @@ try {
         .replaceAll("'", '&#039;');
 
     function renderJoin() {
-        screen.innerHTML = `
+        screen.innerHTML = ui`
             <div class="mobile-card join-mobile-card">
                 <div class="mobile-step"><b>1</b><span>Připojení k ukázce</span></div>
 
@@ -138,8 +142,8 @@ try {
         // Klávesnici neotevíráme automaticky; uživatel klepne do pole sám.
     }
 
-    function renderWaiting(message = 'Jste připojeni') {
-        screen.innerHTML = `
+    function renderWaiting(message = tr('Jste připojeni')) {
+        screen.innerHTML = ui`
             <div class="mobile-card waiting-card">
                 <div class="connected-dot"><i></i></div>
                 <span class="mobile-kicker">PŘIPOJENO</span>
@@ -157,7 +161,7 @@ try {
         const startsAt = Number(state.question_starts_at || 0);
 
         if (startsAt > nowSeconds) {
-            screen.innerHTML = `
+            screen.innerHTML = ui`
                 <div class="mobile-card prestart-card">
                     <span class="mobile-kicker">PŘIPRAVTE SE</span>
                     <h1>Otázka začne za</h1>
@@ -171,7 +175,7 @@ try {
 
         if (answered) {
             const answerText = q.options?.[answered] || answered;
-            screen.innerHTML = `
+            screen.innerHTML = ui`
                 <div class="mobile-card answer-saved-card">
                     <div class="mobile-result-topline">
                         <span class="mobile-kicker">ODPOVĚĎ ULOŽENA</span>
@@ -189,15 +193,15 @@ try {
             return;
         }
 
-        const options = Object.entries(q.options).map(([key, value]) => `
+        const options = Object.entries(q.options).map(([key, value]) => ui`
             <button class="answer-button" data-answer="${esc(key)}" type="button">
                 <span>${esc(key)}</span><strong>${esc(value)}</strong>
             </button>`).join('');
 
-        screen.innerHTML = `
+        screen.innerHTML = ui`
             <div class="mobile-card question-card-polished">
                 <div class="mobile-result-topline">
-                    <span class="mobile-kicker">${q.kind === 'poll' ? 'ANONYMNÍ ANKETA' : 'KVÍZ'}</span>
+                    <span class="mobile-kicker">${q.kind === 'poll' ? tr('ANONYMNÍ ANKETA') : tr('KVÍZ')}</span>
                     <div class="mobile-timer"><span>Zbývá</span><strong data-question-countdown>—</strong></div>
                 </div>
                 <h1>${esc(q.title)}</h1>
@@ -220,18 +224,18 @@ try {
         const me = state.leaderboard.find(row => row.is_me);
         const top = state.leaderboard.slice(0, 3);
 
-        let rows = top.map(row => `
+        let rows = top.map(row => ui`
             <div class="mini-rank-row ${row.is_me ? 'me' : ''}">
                 <b>${Number(row.rank)}.</b>
                 <span>${esc(row.nickname)}</span>
                 <strong>${Number(row.score)} b.</strong>
-                <em>${Number(row.response_time_ms || 0) > 0 ? `${(Number(row.response_time_ms) / 1000).toFixed(1).replace('.', ',')} s` : '—'}</em>
-                ${row.synthetic ? '<small>demo</small>' : '<small>vy</small>'}
+                <em>${Number(row.response_time_ms || 0) > 0 ? ui`${num(Number(row.response_time_ms) / 1000,1)} s` : '—'}</em>
+                ${row.synthetic ? '<small>demo</small>' : ui`<small>vy</small>`}
             </div>
         `).join('');
 
         if (me && Number(me.rank) > 3) {
-            rows += `
+            rows += ui`
                 <div class="mini-rank-separator">…</div>
                 <div class="mini-rank-row me">
                     <b>${Number(me.rank)}.</b>
@@ -242,7 +246,7 @@ try {
             `;
         }
 
-        return `
+        return ui`
             <div class="mini-ranking">
                 <div class="mini-ranking-head">
                     <strong>Průběžné pořadí</strong>
@@ -266,17 +270,17 @@ try {
             const percent = Number(result.percent || 0);
             const count = Number(result.count || 0);
 
-            return `
+            return ui`
                 <div class="mobile-result vote-chart-row ${correct ? 'correct' : ''} ${mine ? 'mine' : ''}">
                     <div class="vote-chart-head mobile-vote-chart-head">
                         <span class="option-key">${esc(key)}</span>
                         <strong>${esc(value)}</strong>
                         <span class="vote-chart-stats">
-                            <b>${count}</b> ${count === 1 ? 'hlas' : (count >= 2 && count <= 4 ? 'hlasy' : 'hlasů')}
-                            <em>${percent.toLocaleString('cs-CZ')} %</em>
+                            <b>${count}</b> ${count === 1 ? tr('hlas') : (count >= 2 && count <= 4 ? tr('hlasy') : tr('hlasů'))}
+                            <em>${num(percent, Number.isInteger(percent) ? 0 : 1)} %</em>
                         </span>
                     </div>
-                    <div class="vote-chart-track" role="img" aria-label="${esc(value)}: ${percent.toLocaleString('cs-CZ')} procent">
+                    <div class="vote-chart-track" role="img" aria-label="${esc(value)}: ${num(percent, Number.isInteger(percent) ? 0 : 1)} procent">
                         <i style="width:${Math.max(0, Math.min(100, percent))}%"></i>
                     </div>
                 </div>
@@ -284,21 +288,21 @@ try {
         }).join('');
 
         const verdict = q.kind === 'quiz'
-            ? (my === null ? 'Čas vypršel.' : (my === state.correct ? 'Správně.' : 'Tentokrát ne.'))
-            : 'Výsledky ankety';
+            ? (my === null ? tr('Čas vypršel.') : (my === state.correct ? tr('Správně.') : tr('Tentokrát ne.')))
+            : tr('Výsledky ankety');
 
-        screen.innerHTML = `
+        screen.innerHTML = ui`
             <div class="mobile-card results-card-polished">
                 <div class="mobile-result-topline">
                     <span class="mobile-kicker">VÝSLEDKY</span>
-                    <div class="mobile-timer result-timer"><span>${Number(state.stage) === 6 ? 'Žebříček za' : 'Další za'}</span><strong data-result-countdown>—</strong></div>
+                    <div class="mobile-timer result-timer"><span>${Number(state.stage) === 6 ? tr('Žebříček za') : tr('Další za')}</span><strong data-result-countdown>—</strong></div>
                 </div>
                 <h1>${esc(verdict)}</h1>
                 <p>${esc(q.title)}</p>
                 <div class="mobile-results">${rows}</div>
-                ${state.explanation ? `<p class="mobile-explanation">${esc(state.explanation)}</p>` : ''}
+                ${state.explanation ? ui`<p class="mobile-explanation">${esc(state.explanation)}</p>` : ''}
 
-                ${q.kind === 'quiz' ? `
+                ${q.kind === 'quiz' ? ui`
                     <div class="score-panel">
                         <div>
                             <span>Za tuto otázku</span>
@@ -310,13 +314,13 @@ try {
                         </div>
                         <div>
                             <span>Čas hlasování</span>
-                            <strong>${my === null ? '—' : `${Number(state.my_answer_time || 0).toLocaleString('cs-CZ', {minimumFractionDigits:1, maximumFractionDigits:1})} s`}</strong>
+                            <strong>${my === null ? '—' : ui`${num(Number(state.my_answer_time || 0), 1)} s`}</strong>
                         </div>
                         <div class="rank-emphasis">
                             <span>Průběžné pořadí</span>
                             <strong>${Number(state.my_rank || 0)}. / ${Number(state.rank_total || 18)}</strong>
                         </div>
-                        <small>${my === null ? 'Tentokrát jste neodpověděl(a) v časovém limitu.' : `Čas ukazuje, za kolik sekund od spuštění otázky byl hlas odeslán.`}</small>
+                        <small>${my === null ? tr('Tentokrát jste neodpověděl(a) v časovém limitu.') : ui`Čas ukazuje, za kolik sekund od spuštění otázky byl hlas odeslán.`}</small>
                     </div>
 
                     ${rankingPreview()}
@@ -329,8 +333,8 @@ try {
 
                 <small class="auto-next-note">
                     ${Number(state.stage) === 6
-                        ? 'Za několik sekund se zobrazí demo žebříček.'
-                        : 'Po zobrazení průběžného pořadí se automaticky načte další otázka.'}
+                        ? tr('Za několik sekund se zobrazí demo žebříček.')
+                        : tr('Po zobrazení průběžného pořadí se automaticky načte další otázka.')}
                 </small>
             </div>
         `;
@@ -342,30 +346,30 @@ try {
             return '';
         }
 
-        return state.leaderboard.slice(0, limit).map(row => `
+        return state.leaderboard.slice(0, limit).map(row => ui`
             <div class="hall-row ${row.is_me ? 'me' : ''}">
                 <b>${Number(row.rank)}.</b>
                 <span>${esc(row.nickname)}</span>
                 <strong>${Number(row.score)} b.</strong>
-                ${row.synthetic ? '<small>demo</small>' : '<small>vy</small>'}
+                ${row.synthetic ? '<small>demo</small>' : ui`<small>vy</small>`}
             </div>
         `).join('');
     }
 
     function finalBadgeText() {
         const rank = Number(state.my_rank || 0);
-        if (rank === 1) return 'Skvělé – v demu jste první.';
-        if (rank <= 3) return 'Výborně – jste na demo pódiu.';
-        if (rank <= 10) return 'Patříte do demo Top 10.';
-        return 'V ostrém režimu byste tentokrát byli mimo Top 10.';
+        if (rank === 1) return tr('Skvělé – v demu jste první.');
+        if (rank <= 3) return tr('Výborně – jste na demo pódiu.');
+        if (rank <= 10) return tr('Patříte do demo Top 10.');
+        return tr('V ostrém režimu byste tentokrát byli mimo Top 10.');
     }
 
     function renderHallOfFame() {
         const inviteCopy = Number(state.my_rank || 999) <= 10
-            ? 'V ostrém systému byste se nyní mohl(a) rozhodnout, jak se v Síni slávy zobrazíte.'
-            : 'Pro účely dema můžete i mimo Top 10 vyzkoušet, jak vypadá závěrečný krok se Síní slávy.';
+            ? tr('V ostrém systému byste se nyní mohl(a) rozhodnout, jak se v Síni slávy zobrazíte.')
+            : tr('Pro účely dema můžete i mimo Top 10 vyzkoušet, jak vypadá závěrečný krok se Síní slávy.');
 
-        screen.innerHTML = `
+        screen.innerHTML = ui`
             <div class="mobile-card hall-card polished-hall-card">
                 <span class="mobile-kicker">FIKTIVNÍ SÍŇ SLÁVY</span>
                 <h1>Finální pořadí</h1>
@@ -389,7 +393,7 @@ try {
                     <p>${inviteCopy}</p>
 
                     <button class="hall-choice primary" data-hall="nickname" type="button">
-                        <span>Zapsat jako <b>${esc(state.nickname || 'přezdívka')}</b></span>
+                        <span>Zapsat jako <b>${esc(state.nickname || tr('přezdívka'))}</b></span>
                         <strong>→</strong>
                     </button>
 
@@ -422,12 +426,12 @@ try {
         }
 
         const choiceText = {
-            nickname: `V ostrém systému byste byl(a) zapsán(a) jako „${esc(state.nickname || 'přezdívka')}“.`,
-            anonymous: 'V ostrém systému byste byl(a) v Síni slávy anonymně.',
-            skip: 'Zvolil(a) jste, že v Síni slávy být nechcete.'
+            nickname: ui`V ostrém systému byste byl(a) zapsán(a) jako „${esc(state.nickname || tr('přezdívka'))}“.`,
+            anonymous: tr('V ostrém systému byste byl(a) v Síni slávy anonymně.'),
+            skip: tr('Zvolil(a) jste, že v Síni slávy být nechcete.')
         }[state.hall_choice] || '';
 
-        screen.innerHTML = `
+        screen.innerHTML = ui`
             <div class="mobile-card finish-mobile-card polished-finish-card">
                 <div class="finish-check">✓</div>
                 <span class="mobile-kicker">DEMO DOKONČENO</span>
@@ -486,7 +490,7 @@ try {
     }
 
     function formatTenths(ms) {
-        return `${Math.max(0, ms / 1000).toFixed(1).replace('.', ',')} s`;
+        return ui`${num(Math.max(0, ms / 1000),1)} s`;
     }
 
     function tickTimers() {
@@ -500,19 +504,19 @@ try {
 
         document.querySelectorAll('[data-question-countdown]').forEach(el => {
             const deadline = Number(state?.question_ends_at || 0) * 1000;
-            el.textContent = deadline > 0 ? formatTenths(deadline - now) : '0,0 s';
+            el.textContent = deadline > 0 ? formatTenths(deadline - now) : `${num(0,1)} s`;
         });
         document.querySelectorAll('[data-question-progress]').forEach(el => {
             const deadline = Number(state?.question_ends_at || 0) * 1000;
             const duration = Number(state?.question_duration_seconds || 10) * 1000;
             const left = Math.max(0, deadline - now);
             const percent = duration > 0 ? Math.max(0, Math.min(100, (left / duration) * 100)) : 0;
-            el.style.width = `${percent}%`;
+            el.style.width = ui`${percent}%`;
             el.classList.toggle('urgent', left <= 3000);
         });
         document.querySelectorAll('[data-result-countdown]').forEach(el => {
             const deadline = Number(state?.auto_advance_at || 0) * 1000;
-            el.textContent = deadline > 0 ? `${Math.max(0, Math.ceil((deadline - now) / 1000))} s` : '0 s';
+            el.textContent = deadline > 0 ? ui`${Math.max(0, Math.ceil((deadline - now) / 1000))} s` : '0 s';
         });
     }
 
@@ -549,14 +553,14 @@ try {
         errorBox.textContent = '';
 
         if (!nickname) {
-            errorBox.textContent = 'Nejdříve zadejte přezdívku.';
+            errorBox.textContent = tr('Nejdříve zadejte přezdívku.');
             input.focus();
             return;
         }
 
         sending = true;
         button.disabled = true;
-        button.querySelector('span').textContent = 'Připojuji…';
+        button.querySelector('span').textContent = tr('Připojuji…');
 
         try {
             const body = new URLSearchParams({
@@ -574,17 +578,17 @@ try {
 
             const data = await response.json();
             if (!response.ok || data.status !== 'ok') {
-                throw new Error(data.message || 'Připojení se nepodařilo.');
+                throw new Error(data.message || tr('Připojení se nepodařilo.'));
             }
 
             joined = true;
-            localStorage.setItem(`${storageKey}:joined`, '1');
+            localStorage.setItem(ui`${storageKey}:joined`, '1');
             state = data;
             render();
         } catch (error) {
-            errorBox.textContent = error.message || 'Připojení se nepodařilo.';
+            errorBox.textContent = error.message || tr('Připojení se nepodařilo.');
             button.disabled = false;
-            button.querySelector('span').textContent = 'Připojit se';
+            button.querySelector('span').textContent = tr('Připojit se');
         } finally {
             sending = false;
         }
@@ -614,7 +618,7 @@ try {
 
             const data = await response.json();
             if (!response.ok || data.status !== 'ok') {
-                throw new Error(data.message || 'Odpověď se nepodařilo uložit.');
+                throw new Error(data.message || tr('Odpověď se nepodařilo uložit.'));
             }
 
             state = data;
@@ -650,7 +654,7 @@ try {
 
             const data = await response.json();
             if (!response.ok || data.status !== 'ok') {
-                throw new Error(data.message || 'Volbu se nepodařilo uložit.');
+                throw new Error(data.message || tr('Volbu se nepodařilo uložit.'));
             }
 
             state = data;
@@ -672,7 +676,7 @@ try {
 
         try {
             const response = await fetch(
-                `/demo/api.php?action=state&s=${encodeURIComponent(session)}&p=${encodeURIComponent(participant)}`,
+                ui`/demo/api.php?action=state&s=${encodeURIComponent(session)}&p=${encodeURIComponent(participant)}`,
                 {cache: 'no-store'}
             );
 
@@ -703,7 +707,8 @@ try {
     pollTimer = setInterval(poll, 750);
     setInterval(tickTimers, 100);
 })();
-</script>
+
+}</script>
 <?php endif; ?>
 </body>
 </html>

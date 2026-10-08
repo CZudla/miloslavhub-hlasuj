@@ -26,6 +26,8 @@ if(!/^http:\/\/127\.0\.0\.1:\d+$/.test(base)||!qid)throw new Error('Synthetic lo
     await page.locator('#user_pass').fill(process.env.MHL_TEST_ADMIN_PASSWORD);
     await Promise.all([page.waitForURL('**/wp-admin/**'),page.locator('#wp-submit').click()]);
     await page.goto(edit);await panel.waitFor();check(await panel.isVisible(),'Actual WordPress metabox is visible');
+    check(await page.locator('input[name="mhl_options[]"]').first().inputValue()==='První odpověď','Editor preserves stored option bytes before AI use');
+    check(await page.locator('input[name="mhl_options[]"]').first().getAttribute('placeholder')==='Odpověď A','Option placeholder stays separate from teacher content');
     await page.locator('[data-ai-preview]').click();
     check(suggestions===0,'Preview performs no suggestion request');
     check((await page.locator('[data-ai-source]').textContent()).includes('První odpověď'),'Preview uses real option inputs');

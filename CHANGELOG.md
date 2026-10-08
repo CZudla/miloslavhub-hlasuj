@@ -1,3 +1,24 @@
+# UNRELEASED · 2026-10-08
+
+- Místní organizace a samostatné učitelské účty, vlastnictví a sdílení předmětů/přednášek/otázek, serverové oprávnění editace, řízení výuky a výsledků. Správce organizace nezískává správu WordPressu; převod vlastníka zachovává QR.
+- Český/anglický katalog ovládání pro frontend, marketing, demo, WordPress editor a zprávy API. Vlastní obsah zůstává v původním jazyce. Přepnutí jazyka nepřiděluje oprávnění.
+- Výpočet unikátních účtů s právy k výuce za celou organizaci podle potvrzeného zadání. Živé AUTH/licence a souběžná externí kvóta zůstávají integrační podmínkou; tato etapa je neprohlašuje za dokončené.
+- [Reference](docs/ORGANIZATIONS-I18N-REFERENCE.md), český a anglický manuál. Domácí úkoly jsou mimo aktuální rozsah.
+
+- Neutrální anketa v live/test/async: žádné nové soutěžní body, povinná přezdívka ani hodnocení správnosti, i při starém nastavení bodů za účast. Historická data se nepřepočítávají.
+- Editor již nenabízí body za anketu. Starší obsahové soubory v1/v2 se nadále přenášejí beze ztráty metadat; historické `poll_points` neovlivňuje nové hlasy.
+- Studentské výsledky a projekce potlačují soutěžní zvýraznění ankety a vysvětlují původ dřívějšího celkového pořadí. Příručka a reference: docs/customer/12-ANKETY.md a docs/NEUTRAL-POLLS-REFERENCE.md.
+- Živé centrální REQUIREMENTS v2 ověřeno; evidence předchozí etapy byla doručena s receipty. Podrobnosti: docs/REQUIREMENTS-HANDOFF-2026-10-07.md.
+
+## Předchozí nevydaná etapa · 2026-10-07
+
+- Načtení HLASUJ kontextu z centrálního REQUIREMENTS: bezpečné read-only API v1 nebo export s explicitním SHA-256; zachování ID/revizí a schvalovacích stavů, bez zápisu do centrály.
+- Vysvětlení správné odpovědi: soukromé ve výchozím stavu, zveřejnění pouze po uzavření kvízu na přání učitele. Samostatné soukromé poznámky nejsou v public API ani projekci.
+- Obsahový JSON v2 přenáší vysvětlení, režim zveřejnění a poznámku; starší v1 zůstává importovatelný. Export rozlišuje uloženou vypnutou boolean volbu od chybějící hodnoty.
+- Administrační QR se vykresluje místně, bez odesílání adres externímu generátoru; licence a původ knihovny jsou přiloženy.
+- Příručka učitele, reference formátu, integrační dokumentace a plán dokončení. Přesná testovací evidence je v docs/DEVELOPMENT-2026-10-07.md.
+- Bez SQL migrací a bez nasazení této etapy. Release metadata zatím zůstávají 0.8.9; nejde o dokončení celého systému.
+
 # 0.8.9 · 2026-10-05
 
 - Přenos předmětu jako verzovaný JSON v1: ověřený export, náhled a potvrzení importu nových konceptů.

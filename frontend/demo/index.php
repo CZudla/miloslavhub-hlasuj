@@ -10,7 +10,7 @@ try {
 } catch (Throwable $e) {
     http_response_code(500);
     echo '<!doctype html><meta charset="utf-8"><title>Demo – chyba</title>';
-    echo '<p style="font-family:sans-serif;padding:40px">Demo nelze spustit: '
+    echo mhl_ui_text('<p style="font-family:sans-serif;padding:40px">Demo nelze spustit: ')
         . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8')
         . '</p>';
     exit;
@@ -22,20 +22,21 @@ $presenterToken = (string)$session['presenter_token'];
 $joinUrl = '/demo/mobile.php?s=' . rawurlencode($sessionId);
 ?>
 <!doctype html>
-<html lang="cs">
+<html lang="<?php echo mhl_ui_language(); ?>">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="robots" content="noindex,nofollow,noarchive">
-    <title>Interaktivní demo – Hlasuj! by MiloslavHub</title>
+    <title><?php echo mhl_ui_html('Interaktivní demo – Hlasuj! by MiloslavHub'); ?></title>
     <link rel="stylesheet" href="/demo/assets/demo.css?v=0.8.9">
+    <?php mhl_ui_bootstrap(); ?>
 </head>
 <body class="demo-host">
 <div class="demo-shell">
     <header class="demo-topbar">
         <a class="demo-brand demo-brand-logo" href="/"><img src="/demo/assets/hlasuj-logo.png" alt="Hlasuj! by MiloslavHub"></a>
         <div class="demo-status">
-            <span id="participant-pill">0 připojených</span>
+            <span id="participant-pill"><?php echo mhl_ui_html('0 připojených'); ?></span>
             <span id="expiry-pill">15:00</span>
         </div>
     </header>
@@ -46,21 +47,24 @@ $joinUrl = '/demo/mobile.php?s=' . rawurlencode($sessionId);
 
     <footer class="demo-controls">
         <div class="demo-control-left">
-            <a class="demo-link" href="/">← Domů</a>
+            <a class="demo-link" href="/"><?php echo mhl_ui_html('← Domů'); ?></a>
             <a class="demo-link" target="_blank" rel="noopener"
-               href="<?php echo htmlspecialchars($joinUrl, ENT_QUOTES, 'UTF-8'); ?>">
+               href="<?php echo htmlspecialchars($joinUrl, ENT_QUOTES, 'UTF-8'); ?>"><?php echo mhl_ui_html('
                Vyzkoušet na tomto zařízení
-            </a>
+            '); ?></a>
         </div>
         <div class="demo-control-right">
-            <span id="step-label">Úvod</span>
-            <button id="next-button" class="demo-primary" type="button">Začít první otázku →</button>
+            <span id="step-label"><?php echo mhl_ui_html('Úvod'); ?></span>
+            <button id="next-button" class="demo-primary" type="button"><?php echo mhl_ui_html('Začít první otázku →'); ?></button>
         </div>
     </footer>
 </div>
 
 <script src="/assets/vendor/qrcode.min.js"></script>
-<script>
+<script>{
+const tr=globalThis.MHLUI?.text||(v=>v),ui=globalThis.MHLUI?.html||((p,...v)=>p.reduce((o,s,i)=>o+s+(i<v.length?v[i]:''),''));
+const num=globalThis.MHLUI?.number||((v,d=0)=>Number(v).toLocaleString(document.documentElement.lang==='en'?'en-US':'cs-CZ',{minimumFractionDigits:d,maximumFractionDigits:d}));
+
 (() => {
     'use strict';
 
@@ -126,11 +130,11 @@ $joinUrl = '/demo/mobile.php?s=' . rawurlencode($sessionId);
                     }
                 }
 
-                cells.push(`<i class="${on ? 'on' : ''}"></i>`);
+                cells.push(ui`<i class="${on ? 'on' : ''}"></i>`);
             }
         }
 
-        return `<div class="fake-qr-grid" aria-hidden="true">${cells.join('')}</div>`;
+        return ui`<div class="fake-qr-grid" aria-hidden="true">${cells.join('')}</div>`;
     }
 
     function renderRealQr(target) {
@@ -145,7 +149,7 @@ $joinUrl = '/demo/mobile.php?s=' . rawurlencode($sessionId);
                 correctLevel: QRCode.CorrectLevel.M
             });
         } else {
-            target.innerHTML = `
+            target.innerHTML = ui`
                 <div class="qr-fallback">
                     QR knihovna se nenačetla.<br>
                     <a href="${esc(joinUrl)}">Otevřít připojení přímo</a>
@@ -196,20 +200,20 @@ $joinUrl = '/demo/mobile.php?s=' . rawurlencode($sessionId);
 
             const count = result ? Number(result.count || 0) : 0;
 
-            return `
+            return ui`
                 <div class="result-row vote-chart-row ${isCorrect ? 'correct' : ''}">
                     <div class="vote-chart-head">
                         <span class="option-key">${esc(key)}</span>
                         <strong>${esc(value)}</strong>
-                        ${results ? `
+                        ${results ? ui`
                             <span class="vote-chart-stats">
-                                <b>${count}</b> ${count === 1 ? 'hlas' : (count >= 2 && count <= 4 ? 'hlasy' : 'hlasů')}
-                                <em>${percent.toLocaleString('cs-CZ')} %</em>
+                                <b>${count}</b> ${count === 1 ? tr('hlas') : (count >= 2 && count <= 4 ? tr('hlasy') : tr('hlasů'))}
+                                <em>${num(percent, Number.isInteger(percent) ? 0 : 1)} %</em>
                             </span>
                         ` : ''}
                     </div>
-                    ${results ? `
-                        <div class="vote-chart-track" role="img" aria-label="${esc(value)}: ${percent.toLocaleString('cs-CZ')} procent">
+                    ${results ? ui`
+                        <div class="vote-chart-track" role="img" aria-label="${esc(value)}: ${num(percent, Number.isInteger(percent) ? 0 : 1)} procent">
                             <i style="width:${Math.max(0, Math.min(100, percent))}%"></i>
                         </div>
                     ` : ''}
@@ -220,13 +224,13 @@ $joinUrl = '/demo/mobile.php?s=' . rawurlencode($sessionId);
 
     function finalLeaderboard(limit = 10) {
         if (!Array.isArray(state.leaderboard) || !state.leaderboard.length) {
-            return '<div class="host-demo-note">Žebříček ještě není dostupný.</div>';
+            return tr('<div class="host-demo-note">Žebříček ještě není dostupný.</div>');
         }
 
-        return `
+        return ui`
             <div class="host-final-board">
                 <strong>Fiktivní Síň slávy</strong>
-                ${state.leaderboard.slice(0, limit).map(row => `
+                ${state.leaderboard.slice(0, limit).map(row => ui`
                     <div class="host-rank-row ${row.is_me ? 'me' : ''}">
                         <b>${Number(row.rank)}.</b>
                         <span>${esc(row.nickname)}</span>
@@ -239,7 +243,7 @@ $joinUrl = '/demo/mobile.php?s=' . rawurlencode($sessionId);
 
     function renderIntro() {
         if (isMobileDemoDevice) {
-            screen.innerHTML = `
+            screen.innerHTML = ui`
                 <div class="intro-grid mobile-demo-intro">
                     <div class="intro-copy mobile-intro-copy">
                         <span class="demo-kicker">INTERAKTIVNÍ PREZENTAČNÍ DEMO</span>
@@ -248,7 +252,7 @@ $joinUrl = '/demo/mobile.php?s=' . rawurlencode($sessionId);
                             Na mobilu není potřeba skenovat QR kód.
                             Klepněte na kartu a připojíte se rovnou jako student do této demo relace.
                         </p>
-                        ${returnedFromEndedSession ? `
+                        ${returnedFromEndedSession ? ui`
                             <div class="demo-return-note">
                                 Předchozí ukázka skončila. Níže můžete rovnou spustit novou.
                             </div>
@@ -258,6 +262,7 @@ $joinUrl = '/demo/mobile.php?s=' . rawurlencode($sessionId);
                             <span>2. Zadejte přezdívku</span>
                             <span>3. První otázka se spustí sama</span>
                         </div>
+                        <p class="host-demo-note">Ukázka obsahuje 17 fiktivních respondentů. Připojit se mohou i další skuteční účastníci.</p>
                         <div class="demo-tested-note">Testováno ve vysokoškolské výuce na 100+ studentech.</div>
 
                     </div>
@@ -301,7 +306,7 @@ $joinUrl = '/demo/mobile.php?s=' . rawurlencode($sessionId);
             return;
         }
 
-        screen.innerHTML = `
+        screen.innerHTML = ui`
             <div class="intro-grid">
                 <div class="intro-copy">
                     <span class="demo-kicker">INTERAKTIVNÍ PREZENTAČNÍ DEMO</span>
@@ -315,6 +320,7 @@ $joinUrl = '/demo/mobile.php?s=' . rawurlencode($sessionId);
                         <span>2. První otázka se spustí sama</span>
                         <span>3. Výsledky a další otázky navazují samy</span>
                     </div>
+                        <p class="host-demo-note">Ukázka obsahuje 17 fiktivních respondentů. Připojit se mohou i další skuteční účastníci.</p>
                         <div class="demo-tested-note">Testováno ve vysokoškolské výuce na 100+ studentech.</div>
 
                 </div>
@@ -341,7 +347,7 @@ $joinUrl = '/demo/mobile.php?s=' . rawurlencode($sessionId);
         const startsAt = Number(state.question_starts_at || 0);
 
         if (startsAt > nowSeconds) {
-            screen.innerHTML = `
+            screen.innerHTML = ui`
                 <div class="finish-card host-prestart-card">
                     <span class="demo-kicker">PŘIPRAVTE SE</span>
                     <h1>Otázka začne za <span data-prestart-countdown>2</span>…</h1>
@@ -352,11 +358,11 @@ $joinUrl = '/demo/mobile.php?s=' . rawurlencode($sessionId);
             return;
         }
 
-        screen.innerHTML = `
+        screen.innerHTML = ui`
             <div class="question-layout">
                 <div class="question-main">
                     <div class="host-question-head">
-                        <span class="demo-kicker">${q.kind === 'poll' ? 'ANONYMNÍ ANKETA' : 'KVÍZ'}</span>
+                        <span class="demo-kicker">${q.kind === 'poll' ? tr('ANONYMNÍ ANKETA') : tr('KVÍZ')}</span>
                         <div class="host-countdown"><span>Zbývá</span><strong data-question-countdown>—</strong></div>
                     </div>
                     <h1>${esc(q.title)}</h1>
@@ -378,14 +384,14 @@ $joinUrl = '/demo/mobile.php?s=' . rawurlencode($sessionId);
         const q = state.question;
 
         const hostRanking = q.kind === 'quiz' && Array.isArray(state.leaderboard)
-            ? `
+            ? ui`
                 <div class="host-ranking">
                     <strong>Průběžné pořadí</strong>
-                    ${state.leaderboard.slice(0, 5).map(row => `
+                    ${state.leaderboard.slice(0, 5).map(row => ui`
                         <div class="host-rank-row ${row.is_me ? 'me' : ''}">
                             <b>${Number(row.rank)}.</b>
                             <span>${esc(row.nickname)}</span>
-                            <em>${Number(row.score)} b. · ${Number(row.response_time_ms || 0) > 0 ? `${(Number(row.response_time_ms) / 1000).toFixed(1).replace('.', ',')} s` : '—'}</em>
+                            <em>${Number(row.score)} b. · ${Number(row.response_time_ms || 0) > 0 ? ui`${num(Number(row.response_time_ms) / 1000,1)} s` : '—'}</em>
                         </div>
                     `).join('')}
                     <small>17 účastníků je fiktivních; skutečný návštěvník je zvýrazněn.</small>
@@ -393,23 +399,23 @@ $joinUrl = '/demo/mobile.php?s=' . rawurlencode($sessionId);
             `
             : '';
 
-        screen.innerHTML = `
+        screen.innerHTML = ui`
             <div class="question-layout results-layout">
                 <div class="question-main">
                     <div class="host-question-head">
-                        <span class="demo-kicker">${q.kind === 'poll' ? 'VÝSLEDKY ANKETY' : 'VÝSLEDKY KVÍZU'}</span>
-                        <div class="host-countdown result"><span>${Number(state.stage) === 6 ? 'Síň slávy za' : 'Další otázka za'}</span><strong data-result-countdown>—</strong></div>
+                        <span class="demo-kicker">${q.kind === 'poll' ? tr('VÝSLEDKY ANKETY') : tr('VÝSLEDKY KVÍZU')}</span>
+                        <div class="host-countdown result"><span>${Number(state.stage) === 6 ? tr('Síň slávy za') : tr('Další otázka za')}</span><strong data-result-countdown>—</strong></div>
                     </div>
                     <h1>${esc(q.title)}</h1>
                     <div class="option-list">
                         ${optionRows(q, state.results, state.correct)}
                     </div>
-                    ${state.explanation ? `<p class="explanation">${esc(state.explanation)}</p>` : ''}
+                    ${state.explanation ? ui`<p class="explanation">${esc(state.explanation)}</p>` : ''}
                 </div>
                 <aside class="live-card result-summary">
                     <span>Celkem hlasů</span>
                     <strong>${Number(state.answer_count || 0)}</strong>
-                    <small>${q.kind === 'poll' ? 'bez správné odpovědi' : 'správná odpověď je zvýrazněna'}</small>
+                    <small>${q.kind === 'poll' ? tr('bez správné odpovědi') : tr('správná odpověď je zvýrazněna')}</small>
                     <div class="host-demo-note">17 respondentů je fiktivních – pouze pro ukázku.</div>
                     ${hostRanking}
                 </aside>
@@ -419,7 +425,7 @@ $joinUrl = '/demo/mobile.php?s=' . rawurlencode($sessionId);
 
     function renderHall() {
         const hallSummary = state.hall_summary || {};
-        screen.innerHTML = `
+        screen.innerHTML = ui`
             <div class="finish-card host-hall-card polished-host-hall">
                 <span class="demo-kicker">FIKTIVNÍ SÍŇ SLÁVY</span>
                 <h1>Na mobilu teď probíhá<br>závěrečná volba.</h1>
@@ -443,16 +449,16 @@ $joinUrl = '/demo/mobile.php?s=' . rawurlencode($sessionId);
     function renderFinish() {
         const hallSummary = state.hall_summary || {};
 
-        let hallChoiceText = 'Volba Síně slávy nebyla dokončena.';
+        let hallChoiceText = tr('Volba Síně slávy nebyla dokončena.');
         if (Number(hallSummary.nickname || 0) > 0) {
-            hallChoiceText = 'Zvolený způsob zápisu: pod přezdívkou.';
+            hallChoiceText = tr('Zvolený způsob zápisu: pod přezdívkou.');
         } else if (Number(hallSummary.anonymous || 0) > 0) {
-            hallChoiceText = 'Zvolený způsob zápisu: anonymně.';
+            hallChoiceText = tr('Zvolený způsob zápisu: anonymně.');
         } else if (Number(hallSummary.skip || 0) > 0) {
-            hallChoiceText = 'Účastník zvolil, že se do Síně slávy nezapíše.';
+            hallChoiceText = tr('Účastník zvolil, že se do Síně slávy nezapíše.');
         }
 
-        screen.innerHTML = `
+        screen.innerHTML = ui`
             <div class="finish-card polished-host-finish">
                 <span class="demo-kicker">HOTOVO</span>
                 <h1>Takto může vypadat<br>interaktivní část přednášky.</h1>
@@ -488,15 +494,15 @@ $joinUrl = '/demo/mobile.php?s=' . rawurlencode($sessionId);
     function updateControls() {
         const stage = Number(state.stage || 0);
         const labels = [
-            'Úvod',
-            'Otázka 1',
-            'Výsledky 1',
-            'Otázka 2',
-            'Výsledky 2',
-            'Anketa',
-            'Výsledky ankety',
-            'Síň slávy',
-            'Dokončeno'
+            tr('Úvod'),
+            tr('Otázka 1'),
+            tr('Výsledky 1'),
+            tr('Otázka 2'),
+            tr('Výsledky 2'),
+            tr('Anketa'),
+            tr('Výsledky ankety'),
+            tr('Síň slávy'),
+            tr('Dokončeno')
         ];
 
         stepLabel.textContent = labels[stage] || 'Demo';
@@ -515,13 +521,13 @@ $joinUrl = '/demo/mobile.php?s=' . rawurlencode($sessionId);
         }
 
         if (stage === 0) {
-            nextButton.textContent = 'Čekám na připojení mobilu…';
+            nextButton.textContent = tr('Čekám na připojení mobilu…');
             nextButton.disabled = true;
             nextButton.onclick = null;
         } else if ([1,3,5,7].includes(stage)) {
             nextButton.textContent = stage === 7
-                ? 'Dokončete volbu na mobilu'
-                : 'Odpovězte na mobilu';
+                ? tr('Dokončete volbu na mobilu')
+                : tr('Odpovězte na mobilu');
             nextButton.disabled = true;
             nextButton.onclick = null;
         } else if ([2,4,6].includes(stage)) {
@@ -529,19 +535,19 @@ $joinUrl = '/demo/mobile.php?s=' . rawurlencode($sessionId);
                 ? Math.max(0, Number(state.auto_advance_at) - Math.floor(Date.now()/1000))
                 : 0;
             nextButton.textContent = stage === 6
-                ? `Žebříček za ${seconds} s`
-                : `Další otázka za ${seconds} s`;
+                ? ui`Žebříček za ${seconds} s`
+                : ui`Další otázka za ${seconds} s`;
             nextButton.disabled = true;
             nextButton.onclick = null;
         } else {
-            nextButton.textContent = 'Spustit nové demo';
+            nextButton.textContent = tr('Spustit nové demo');
             nextButton.disabled = false;
             nextButton.onclick = () => { window.location.href = '/demo/'; };
         }
     }
 
     function formatTenths(ms) {
-        return `${Math.max(0, ms / 1000).toFixed(1).replace('.', ',')} s`;
+        return ui`${num(Math.max(0, ms / 1000),1)} s`;
     }
 
     function tickTimers() {
@@ -555,19 +561,19 @@ $joinUrl = '/demo/mobile.php?s=' . rawurlencode($sessionId);
 
         document.querySelectorAll('[data-question-countdown]').forEach(el => {
             const deadline = Number(state?.question_ends_at || 0) * 1000;
-            el.textContent = deadline > 0 ? formatTenths(deadline - now) : '0,0 s';
+            el.textContent = deadline > 0 ? formatTenths(deadline - now) : `${num(0,1)} s`;
         });
         document.querySelectorAll('[data-question-progress]').forEach(el => {
             const deadline = Number(state?.question_ends_at || 0) * 1000;
             const duration = Number(state?.question_duration_seconds || 10) * 1000;
             const left = Math.max(0, deadline - now);
             const percent = duration > 0 ? Math.max(0, Math.min(100, (left / duration) * 100)) : 0;
-            el.style.width = `${percent}%`;
+            el.style.width = ui`${percent}%`;
             el.classList.toggle('urgent', left <= 3000);
         });
         document.querySelectorAll('[data-result-countdown]').forEach(el => {
             const deadline = Number(state?.auto_advance_at || 0) * 1000;
-            el.textContent = deadline > 0 ? `${Math.max(0, Math.ceil((deadline - now) / 1000))} s` : '0 s';
+            el.textContent = deadline > 0 ? ui`${Math.max(0, Math.ceil((deadline - now) / 1000))} s` : '0 s';
         });
     }
 
@@ -575,13 +581,13 @@ $joinUrl = '/demo/mobile.php?s=' . rawurlencode($sessionId);
         if (!state) return;
 
         participantPill.textContent = Number(state.stage || 0) > 0
-            ? `${Number(state.real_participant_count || 0)} skutečný + ${Number(state.synthetic_participant_count || 0)} demo`
-            : `${Number(state.real_participant_count || 0)} připojených`;
+            ? ui`${Number(state.real_participant_count || 0)} skutečný + ${Number(state.synthetic_participant_count || 0)} demo`
+            : ui`${Number(state.real_participant_count || 0)} připojených`;
 
         const sec = Math.max(0, Number(state.seconds_left || 0));
         const mm = String(Math.floor(sec / 60)).padStart(2, '0');
         const ss = String(sec % 60).padStart(2, '0');
-        expiryPill.textContent = `${mm}:${ss}`;
+        expiryPill.textContent = ui`${mm}:${ss}`;
 
         if (state.stage === 0) renderIntro();
         else if ([1, 3, 5].includes(Number(state.stage))) renderQuestion();
@@ -596,19 +602,19 @@ $joinUrl = '/demo/mobile.php?s=' . rawurlencode($sessionId);
     async function fetchState() {
         try {
             const response = await fetch(
-                `/demo/api.php?action=state&s=${encodeURIComponent(session)}`,
+                ui`/demo/api.php?action=state&s=${encodeURIComponent(session)}`,
                 { cache: 'no-store' }
             );
             const data = await response.json();
 
             if (!response.ok || data.status !== 'ok') {
-                throw new Error(data.message || data.error || 'Demo se nepodařilo načíst.');
+                throw new Error(data.message || data.error || tr('Demo se nepodařilo načíst.'));
             }
 
             state = data;
             render();
         } catch (error) {
-            screen.innerHTML = `
+            screen.innerHTML = ui`
                 <div class="finish-card error-card">
                     <h1>Demo se nepodařilo načíst.</h1>
                     <p>${esc(error.message)}</p>
@@ -638,7 +644,7 @@ $joinUrl = '/demo/mobile.php?s=' . rawurlencode($sessionId);
             const data = await response.json();
 
             if (!response.ok || data.status !== 'ok') {
-                throw new Error(data.message || 'Přechod se nepodařil.');
+                throw new Error(data.message || tr('Přechod se nepodařil.'));
             }
 
             state = data;
@@ -655,6 +661,7 @@ $joinUrl = '/demo/mobile.php?s=' . rawurlencode($sessionId);
     setInterval(fetchState, 750);
     setInterval(tickTimers, 100);
 })();
-</script>
+
+}</script>
 </body>
 </html>

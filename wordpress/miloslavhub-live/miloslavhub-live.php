@@ -22,6 +22,8 @@ define('MHL_URL', plugin_dir_url(__FILE__));
 
 require_once MHL_DIR . 'includes/class-mhl-db.php';
 require_once MHL_DIR . 'includes/class-mhl-install.php';
+require_once MHL_DIR . 'includes/class-mhl-i18n.php';
+require_once MHL_DIR . 'includes/class-mhl-access.php';
 require_once MHL_DIR . 'includes/class-mhl-core.php';
 require_once MHL_DIR . 'includes/class-mhl-admin.php';
 require_once MHL_DIR . 'includes/class-mhl-rest.php';
@@ -35,6 +37,8 @@ add_action('plugins_loaded', static function () {
     if (MHL_DB::configured() && get_option('mhl_external_db_schema_version') !== MHL_SCHEMA_VERSION) {
         MHL_DB::mark_schema_if_ready();
     }
+    MHL_I18n::init();
+    MHL_Access::init();
     MHL_Core::init();
     if (is_admin()) { MHL_Admin::init(); }
     MHL_REST::init();

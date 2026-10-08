@@ -1,4 +1,20 @@
-# API 0.8.7
+# API — kvalifikovaná baseline a nevydaný vývoj
+
+## Oprávnění a jazyk ve vývoji — 8. 10. 2026
+
+Namespace zůstává `mhl/v1`. Nový místní model `MHL_Access` kontroluje oprávnění k objektu pro řízení výuky, export a editaci. Historická tabulka a věta o neimplementované roli níže dokumentují 0.8.7; nejsou popisem nové vývojové větve. REST požadavky mohou předávat `ui_lang` pro vlastní zprávy cs/en, což nemění identitu ani oprávnění. [Reference organizací a i18n](ORGANIZATIONS-I18N-REFERENCE.md).
+
+Veřejné studentské a výsledkové cesty zachovávají dosavadní veřejné chování. Nové ACL administrace z nich nedělá soukromé rozhraní. Centrální AUTH, licenční entitlement, oddělené integrační scopes, rate limiting a kvalifikované veřejné OpenAPI nejsou tímto dokumentem prohlášené za dokončené. [Stav testů a integrací](DEVELOPMENT-ORGANIZATIONS-I18N-2026-10-08.md), [index dokumentace](INDEX.md).
+
+## Nevydaná změna anket — 8. 10. 2026
+
+REST namespace zůstává `mhl/v1`. Anketní `/vote` v live/test/async ukládá nula bodů, `is_correct=null` a prázdnou přezdívku i při historickém `_mhl_poll_points>0`. Question payload má pro anketu `gamification.nickname_required=false` a `join_nickname_required=false`; gamification může zůstat enabled kvůli dřívějšímu celkovému pořadí. Duplicitní hlas a hlas mimo otevřenou relaci se nadále odmítají. Soukromý výsledek se hledá session-scoped klíčem. Historické záznamy se nepřepisují. [Kontrakt, kompatibilita a testy](NEUTRAL-POLLS-REFERENCE.md).
+
+## Nevydané rozšíření výsledků — 7. 10. 2026
+
+GET `/results/{lecture}/{question}` má v aktuálním vývoji nové aditivní pole `correct_answer_explanation`: obyčejný text nebo `null`. Server jej vyplní pouze pro uzavřenou relaci kvízu, pokud učitel u otázky zvolil `show_after_close` a vysvětlení není prázdné. Výchozí `teacher_only`, `hidden`, neznámá volba, otevřená/neaktivní/přeskočená relace a anketa vracejí `null`. Klient musí text escapovat; nesmí jej vkládat jako HTML.
+
+Jde o stejné veřejné výsledky podle slugů jako dosud. Zveřejnění není omezeno na konkrétního účastníka. API otázky a aktuálního stavu vysvětlení neposílá. `teacher_note` se do veřejných výsledků, otázky ani projekce neposílá nikdy. Rozšíření nepřidává učitelské role, objektovou izolaci ani scopes pro externí integrace. Podrobnosti nastavení a přenosu jsou v [CONTENT-FORMAT.md](CONTENT-FORMAT.md); jde o nevydanou změnu nad 0.8.9.
 
 ## Lokální rozpracované rozšíření AI
 

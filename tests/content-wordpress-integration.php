@@ -8,7 +8,7 @@ if (!is_file($config) || !str_contains(file_get_contents($config), "'integration
 $_SERVER['HTTP_HOST']='127.0.0.1'; $_SERVER['REQUEST_METHOD']='GET'; $_SERVER['REQUEST_URI']='/';
 require $root.'/wp-load.php';
 require_once $root.'/wp-content/plugins/miloslavhub-live/miloslavhub-live.php';
-MHL_Core::init(); MHL_Core::register_content_types();
+MHL_Access::init(); MHL_Access::register(); MHL_Core::init(); MHL_Core::register_content_types();
 $checks=0; $created=array();
 function transfer_check(bool $ok, string $message): void { $GLOBALS['checks']++; if (!$ok) { throw new RuntimeException($message); } }
 function transfer_reject(callable $fn, string $message): void {
@@ -73,7 +73,7 @@ try {
     foreach (array('version','unknown','duplicate','dangling','duplicate_ref','index','type','deep','large','unreferenced','html','id','range','options') as $case) {
         $bad=$bundle;
         switch($case) {
-            case 'version': $bad['format_version']=2; break;
+            case 'version': $bad['format_version']=999; break;
             case 'unknown': $bad['subject']['settings']['projection_token']='secret'; break;
             case 'duplicate': $bad['questions'][]=$bad['questions'][0]; break;
             case 'dangling': $bad['lectures'][0]['question_ids'][]='q999'; break;

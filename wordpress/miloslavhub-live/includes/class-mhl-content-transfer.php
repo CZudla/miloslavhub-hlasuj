@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) { exit; }
 /** Portable content only. No production identifiers, people, results or credentials. */
 class MHL_Content_Transfer {
     public const FORMAT = 'hlasuj-content';
-    public const FORMAT_VERSION = 1;
+    public const FORMAT_VERSION = 2;
     public const MAX_BYTES = 2097152;
     private const MAX_QUESTIONS = 500;
     private const MAX_LECTURES = 100;
@@ -15,11 +15,11 @@ class MHL_Content_Transfer {
     }
 
     public static function menu(): void {
-        add_submenu_page('mhl-live', __('Přenést obsah', 'miloslavhub-live'), __('Přenést obsah', 'miloslavhub-live'), 'manage_options', 'mhl-content-transfer', array(__CLASS__, 'page'));
+        add_submenu_page('mhl-live', __('Přenést obsah', 'miloslavhub-live'), __('Přenést obsah', 'miloslavhub-live'), 'mhl_access', 'mhl-content-transfer', array(__CLASS__, 'page'));
     }
 
     /** Deliberate allowlist. External links and instance settings are not portable. */
-    private static function rules(string $type): array {
+    private static function rules(string $type, int $version = self::FORMAT_VERSION): array {
         if ($type === 'subject') {
             return array(
                 'brand_template'=>array('enum', array('miloslavhub','fes_upce','neutral','custom'), 'miloslavhub'),
@@ -37,16 +37,22 @@ class MHL_Content_Transfer {
         if ($type === 'lecture') {
             return array('gamification'=>array('bool', null, false), 'score_scope'=>array('enum', array('subject','lecture','none'), 'subject'), 'show_live_results'=>array('bool', null, false));
         }
-        return array('multiplier'=>array('enum', array(1,1.5,2), 1), 'speed_window'=>array('int', array(5,120), 20),
+        $rules = array('multiplier'=>array('enum', array(1,1.5,2), 1), 'speed_window'=>array('int', array(5,120), 20),
             'poll_points'=>array('int', array(0,1000), 0), 'time_limit'=>array('time', null, null),
             'rag_policy'=>array('enum', array('exclude','private','public_after_lecture'), 'exclude'),
             'async_show_results'=>array('bool', null, true));
+        if ($version >= 2) {
+            $rules['correct_answer_explanation']=array('text',4000,'');
+            $rules['explanation_mode']=array('enum',array('teacher_only','show_after_close','hidden'),'teacher_only');
+            $rules['teacher_note']=array('text',4000,'');
+        }
+        return $rules;
     }
 
     private static function fail(string $message): void { throw new RuntimeException($message); }
 
     private static function authorize(): void {
-        if (!current_user_can('manage_options')) { self::fail(__('Nemáte oprávnění přenášet obsah.', 'miloslavhub-live')); }
+        if (!current_user_can('mhl_access')) { self::fail(__('Nemáte oprávnění přenášet obsah.', 'miloslavhub-live')); }
     }
 
     private static function post(int $id, string $type): WP_Post {
@@ -61,7 +67,9 @@ class MHL_Content_Transfer {
         $result = array();
         foreach (self::rules($type) as $name=>$rule) {
             $value = get_post_meta($id, '_mhl_'.$name, true);
-            if ($value === '') { $value = $rule[2]; }
+            // WordPress stores false metadata as ''. Preserve an explicitly
+            // disabled boolean instead of replacing it with a true default.
+            if ($value === '' && ($rule[0] !== 'bool' || !metadata_exists('post', $id, '_mhl_'.$name))) { $value = $rule[2]; }
             elseif ($rule[0] === 'bool') { $value = (bool)$value; }
             elseif ($rule[0] === 'int' || $rule[0] === 'time') { $value = (int)$value; }
             elseif ($name === 'multiplier') { $value = (float)$value; if ($value == (int)$value) { $value = (int)$value; } }
@@ -107,8 +115,8 @@ class MHL_Content_Transfer {
         return $clean;
     }
 
-    private static function validate_settings($settings, string $type): array {
-        $rules = self::rules($type); self::keys($settings, array_keys($rules));
+    private static function validate_settings($settings, string $type, int $version = self::FORMAT_VERSION): array {
+        $rules = self::rules($type,$version); self::keys($settings, array_keys($rules));
         foreach ($rules as $name=>$rule) {
             $v = $settings[$name]; $ok = false;
             switch ($rule[0]) {
@@ -129,7 +137,7 @@ class MHL_Content_Transfer {
         try { $data = json_decode($json, true, 32, JSON_THROW_ON_ERROR); }
         catch (JsonException $e) { self::fail(__('Soubor není platný JSON.', 'miloslavhub-live')); }
         self::keys($data, array('format','format_version','subject','lectures','questions'));
-        if ($data['format']!==self::FORMAT || $data['format_version']!==self::FORMAT_VERSION) { self::fail(__('Tato verze formátu není podporována.', 'miloslavhub-live')); }
+        if ($data['format']!==self::FORMAT || !in_array($data['format_version'],array(1,self::FORMAT_VERSION),true)) { self::fail(__('Tato verze formátu není podporována.', 'miloslavhub-live')); }
         self::keys($data['subject'], array('id','title','settings'));
         if ($data['subject']['id']!=='s1') { self::fail(__('Neplatný identifikátor předmětu.', 'miloslavhub-live')); }
         $data['subject']['title'] = self::text($data['subject']['title'], 1000);
@@ -145,7 +153,7 @@ class MHL_Content_Transfer {
             if (!is_array($q['options']) || !array_is_list($q['options']) || count($q['options'])<2 || count($q['options'])>26) { self::fail(__('Otázka musí mít 2 až 26 odpovědí.', 'miloslavhub-live')); }
             foreach ($q['options'] as &$option) { $option = self::text($option, 1000); } unset($option);
             if ($q['correct_index']!==null && (!is_int($q['correct_index']) || $q['correct_index']<0 || $q['correct_index']>=count($q['options']))) { self::fail(__('Správná odpověď odkazuje mimo nabídku.', 'miloslavhub-live')); }
-            $q['settings'] = self::validate_settings($q['settings'], 'question');
+            $q['settings'] = self::validate_settings($q['settings'], 'question',$data['format_version']);
         } unset($q);
         $lecture_ids = array(); $used = array();
         foreach ($data['lectures'] as &$l) {
@@ -227,7 +235,7 @@ class MHL_Content_Transfer {
 
     public static function download(): void {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') { wp_die(esc_html__('Použijte tlačítko exportu.', 'miloslavhub-live'), '', array('response'=>405)); }
-        if (!current_user_can('manage_options')) { wp_die(esc_html__('Nemáte oprávnění.', 'miloslavhub-live'), '', array('response'=>403)); }
+        if (!current_user_can('mhl_access')) { wp_die(esc_html__('Nemáte oprávnění.', 'miloslavhub-live'), '', array('response'=>403)); }
         check_admin_referer('mhl_export_content');
         try { $data = self::export_subject(absint($_POST['subject_id'] ?? 0)); }
         catch (Throwable $e) { wp_die(esc_html($e->getMessage())); }
@@ -237,7 +245,7 @@ class MHL_Content_Transfer {
     }
 
     public static function page(): void {
-        if (!current_user_can('manage_options')) { wp_die(esc_html__('Nemáte oprávnění.', 'miloslavhub-live'), '', array('response'=>403)); }
+        if (!current_user_can('mhl_access')) { wp_die(esc_html__('Nemáte oprávnění.', 'miloslavhub-live'), '', array('response'=>403)); }
         $message = ''; $error = ''; $result = null;
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             check_admin_referer('mhl_import_content');
@@ -258,7 +266,7 @@ class MHL_Content_Transfer {
         echo '<div class="wrap mhl-wrap"><h1>'.esc_html__('Přenést obsah', 'miloslavhub-live').'</h1>';
         if ($error) { echo '<div class="notice notice-error"><p>'.esc_html($error).'</p></div>'; }
         if ($message) { echo '<div class="notice notice-success"><p>'.esc_html($message).'</p></div><p><a class="button" href="'.esc_url(get_edit_post_link($result['subject_id'], 'raw')).'">'.esc_html__('Otevřít nový předmět', 'miloslavhub-live').'</a></p>'; }
-        echo '<p>'.esc_html__('Přeneste předmět s přednáškami a otázkami. Soubor obsahuje správné odpovědi; sdílejte jej pouze s vyučujícími.', 'miloslavhub-live').'</p>';
+        echo '<p>'.esc_html__('Přeneste předmět s přednáškami a otázkami. Soubor obsahuje správné odpovědi, vysvětlení i soukromé poznámky učitele. Před sdílením je zkontrolujte a soubor předejte pouze určeným vyučujícím.', 'miloslavhub-live').'</p>';
         echo '<p>'.esc_html__('Přenáší se texty, pořadí, sdílené otázky a podporovaná nastavení. Výsledky, lidé, kategorie, externí odkazy, soubory, termíny a trvalé QR adresy se nepřenášejí. Zkontrolujte také osobní údaje v textech.', 'miloslavhub-live').'</p>';
         echo '<h2>'.esc_html__('Sdílet předmět s kolegou', 'miloslavhub-live').'</h2><form method="post" action="'.esc_url(admin_url('admin-post.php')).'">';
         wp_nonce_field('mhl_export_content'); echo '<input type="hidden" name="action" value="mhl_export_content"><label for="mhl-transfer-subject">'.esc_html__('Předmět', 'miloslavhub-live').'</label> <select id="mhl-transfer-subject" name="subject_id" required><option value="">'.esc_html__('Vyberte předmět', 'miloslavhub-live').'</option>';

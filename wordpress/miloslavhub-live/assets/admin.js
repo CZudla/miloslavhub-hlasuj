@@ -1,3 +1,5 @@
+{
+const tr=globalThis.MHLUI?.text||(v=>v),ui=globalThis.MHLUI?.html||((p,...v)=>p.reduce((o,s,i)=>o+s+(i<v.length?v[i]:''),''));
 (() => {
   'use strict';
   function toggleQuestionType() {
@@ -7,21 +9,25 @@
     document.querySelectorAll('.mhl-quiz-only').forEach(el => { el.style.display = quiz ? '' : 'none'; });
     document.querySelectorAll('.mhl-poll-only').forEach(el => { el.style.display = quiz ? 'none' : ''; });
     const type = document.getElementById('mhl-inferred-type');
-    if (type) type.textContent = quiz ? 'Kvíz – se správnou odpovědí a body' : 'Anketa – bez správné odpovědi';
+    if (type) type.textContent = quiz ? tr('Kvíz – se správnou odpovědí a body') : tr('Anketa – bez správné odpovědi');
   }
   document.querySelectorAll('input[name="mhl_correct_index"]').forEach(el => el.addEventListener('change', toggleQuestionType));
   toggleQuestionType();
 
   document.querySelectorAll('.mhl-qr[data-qr]').forEach((box) => {
     const url = box.dataset.qr || ''; if (!url) return;
-    const size = Number(box.dataset.size || 220);
-    const img = document.createElement('img'); img.width = size; img.height = size; img.alt = 'QR kód pro hlasování'; img.loading = 'lazy';
-    img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=' + (size*2) + 'x' + (size*2) + '&margin=12&data=' + encodeURIComponent(url); box.appendChild(img);
+    const size = Math.max(100,Math.min(512,Number(box.dataset.size)||220));
+    box.setAttribute('role','img'); box.setAttribute('aria-label',tr('QR kód pro hlasování'));
+    try {
+      if(typeof QRCode!=='function'){box.textContent=url;return;}
+      new QRCode(box,{text:url,width:size,height:size,correctLevel:QRCode.CorrectLevel.M});
+      box.dataset.qrReady='1';
+    }catch(_){box.textContent=url;}
   });
   document.querySelectorAll('.mhl-copy[data-copy]').forEach((button) => button.addEventListener('click', async () => {
     const value = button.dataset.copy || '';
-    try { await navigator.clipboard.writeText(value); const old=button.textContent; button.textContent='Zkopírováno'; setTimeout(()=>button.textContent=old,1200); }
-    catch (_) { window.prompt('Zkopírujte adresu:', value); }
+    try { await navigator.clipboard.writeText(value); const old=button.textContent; button.textContent=tr('Zkopírováno'); setTimeout(()=>button.textContent=old,1200); }
+    catch (_) { window.prompt(tr('Zkopírujte adresu:'), value); }
   }));
 
 
@@ -55,7 +61,7 @@
           handle.setAttribute('draggable', 'true');
           handle.removeAttribute('aria-hidden');
           handle.setAttribute('tabindex', '0');
-          handle.setAttribute('aria-label', 'Přetáhnout otázku nebo změnit pořadí');
+          handle.setAttribute('aria-label', tr('Přetáhnout otázku nebo změnit pořadí'));
         }
       });
       availableItems().forEach((item) => {
@@ -71,7 +77,7 @@
           handle.setAttribute('draggable', 'true');
           handle.removeAttribute('aria-hidden');
           handle.setAttribute('tabindex', '0');
-          handle.setAttribute('aria-label', 'Přidat otázku přetažením');
+          handle.setAttribute('aria-label', tr('Přidat otázku přetažením'));
         }
       });
       const selectedEmpty = selectedList.querySelector('.mhl-selected-empty');
@@ -243,9 +249,9 @@
     if(!list||!tpl||!add)return;
     function renumber(){
       [...list.querySelectorAll('[data-mhl-teacher-row]')].forEach((row,i)=>{
-        row.querySelectorAll('[data-field]').forEach((el)=>{if(el.dataset.field)el.name=`mhl_teachers[${i}][${el.dataset.field}]`;});
+        row.querySelectorAll('[data-field]').forEach((el)=>{if(el.dataset.field)el.name=ui`mhl_teachers[${i}][${el.dataset.field}]`;});
         row.querySelectorAll('input[name^="mhl_teachers["]').forEach((el)=>{
-          const m=el.name.match(/\]\[([^\]]+)\]$/); if(m)el.name=`mhl_teachers[${i}][${m[1]}]`;
+          const m=el.name.match(/\]\[([^\]]+)\]$/); if(m)el.name=ui`mhl_teachers[${i}][${m[1]}]`;
         });
       });
     }
@@ -263,3 +269,5 @@
 
   initQuestionPicker();
 })();
+
+}

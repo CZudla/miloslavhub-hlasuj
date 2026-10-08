@@ -2,6 +2,8 @@
 
 ## Dokumentace vydání 0.8.9 · 5. října 2026
 
+V aktivním repozitáři přibyly nevydané změny z 7. 10. 2026: [vysvětlení odpovědi a poznámky učitele](11-VYSVETLENI-A-POZNAMKY.md) a aktualizace [přenosu obsahu v2](10-PRENOS-OBSAHU.md). Níže je přehled vydání 0.8.9; původní zákaznické ZIPy a PDF se automaticky nepřepisují. Novou příručku použijte pro instalaci až po kvalifikaci a nasazení odpovídající verze.
+
 Hlasuj! propojuje učitele, studentské telefony a projekci při výuce. Studenti otevřou odkaz nebo QR kód v prohlížeči. Začátek živého hlasování určuje učitel.
 
 ### Který dokument otevřít

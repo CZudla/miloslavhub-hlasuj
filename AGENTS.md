@@ -2,6 +2,8 @@
 
 ## Source of truth
 
+- Use the miloslavhub-requirements skill before specification or implementation changes. REQUIREMENTS Private API v2 is the authority for requirements, decisions, revisions, implementation and verification. Read the paginated HLASUJ context including open requirements. If unavailable, disclose pending capture and use only dated reference copies; v1 is the older pinned-baseline profile. See docs/REQUIREMENTS-INTEGRATION.md and docs/REQUIREMENTS-HANDOFF-2026-10-07.md.
+- Capture scoped chat proposals with provenance and retain them in a protected outbox outside Git/OneDrive until API receipt. Record implementation links and actual passed/failed/error/skipped/inconclusive results. Never use human admin credentials or auto-review/apply/publish/revoke. Preserve unknown approval/verification states. GitHub is secondary; the separate Service Registry owns current operational versions. This workflow does not authorize unrelated work or deployment.
 - Read README.md and the relevant sections of docs/MASTER-SPEC.md before changing behavior. Follow docs/PRODUCT-PRINCIPLES.md.
 - docs/RELEASE-0.8.9.md and docs/DEPLOYMENT-2026-10-05-0.8.9.md describe the qualified baseline. Older notes in ARCHITECTURE.md and ITERATION-PLAN.md may describe an earlier state.
 - Planned features in MASTER-SPEC.md and ROADMAP.md are not evidence of implemented behavior. Trace behavior to code and tests.
@@ -10,7 +12,7 @@
 
 - Keep the PHP/JavaScript frontend, WordPress plugin, external voting DB and separate demo storage unless the task requires a change.
 - Preserve permanent QR paths and the REST namespace mhl/v1. Students join; authorized teachers start live/test voting.
-- Enforce permissions on the server. Teacher metadata alone grants no permission; current management uses manage_options and WordPress nonces.
+- Enforce permissions on the server. Teacher metadata alone grants no permission. The unreleased organisation model uses mhl_access, per-object permissions and WordPress nonces; manage_options is restricted to the installation operator. Qualified 0.8.9 still describes the older single-administrator model. See docs/ORGANIZATIONS-I18N-REFERENCE.md.
 - Preserve privacy choices, delayed disclosure of correct answers, vote uniqueness and server timing. Treat concurrency as a separate test concern.
 - AI is optional. Teacher approval precedes use of a suggestion; ordinary voting must work with AI disabled. Never automatically send student results to an external model.
 - Changes in this workspace are local until deployed. Report exactly what was tested and whether production was touched.
@@ -22,6 +24,8 @@ Run from this repository:
 ```text
 python tests/run.py --php C:/php84/php.exe --browser
 ```
+
+`--browser-suite i18n` is a focused debugging run and does not replace the full browser suite for release qualification. Keep Czech/English catalogs and translation runtimes in both deployable components identical; tests/i18n.php and tests/i18n.cjs verify these boundaries. Never translate dynamic teacher or participant content.
 
 Python 3, PHP 8.1+, Node, Playwright and Edge are required. When Playwright is installed outside the repository, set NODE_PATH to its actual node_modules directory. Do not assume that missing package resolution requires installation.
 
