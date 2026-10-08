@@ -230,7 +230,7 @@ const num=globalThis.MHLUI?.number||((v,d=0)=>Number(v).toLocaleString(document.
                 <span>${esc(row.nickname)}</span>
                 <strong>${Number(row.score)} b.</strong>
                 <em>${Number(row.response_time_ms || 0) > 0 ? ui`${num(Number(row.response_time_ms) / 1000,1)} s` : '—'}</em>
-                ${row.synthetic ? '<small>demo</small>' : '<small>vy</small>'}
+                ${row.synthetic ? '<small>demo</small>' : ui`<small>vy</small>`}
             </div>
         `).join('');
 
@@ -351,7 +351,7 @@ const num=globalThis.MHLUI?.number||((v,d=0)=>Number(v).toLocaleString(document.
                 <b>${Number(row.rank)}.</b>
                 <span>${esc(row.nickname)}</span>
                 <strong>${Number(row.score)} b.</strong>
-                ${row.synthetic ? '<small>demo</small>' : '<small>vy</small>'}
+                ${row.synthetic ? '<small>demo</small>' : ui`<small>vy</small>`}
             </div>
         `).join('');
     }
@@ -504,7 +504,7 @@ const num=globalThis.MHLUI?.number||((v,d=0)=>Number(v).toLocaleString(document.
 
         document.querySelectorAll('[data-question-countdown]').forEach(el => {
             const deadline = Number(state?.question_ends_at || 0) * 1000;
-            el.textContent = deadline > 0 ? formatTenths(deadline - now) : '0,0 s';
+            el.textContent = deadline > 0 ? formatTenths(deadline - now) : `${num(0,1)} s`;
         });
         document.querySelectorAll('[data-question-progress]').forEach(el => {
             const deadline = Number(state?.question_ends_at || 0) * 1000;

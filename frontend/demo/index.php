@@ -561,7 +561,7 @@ const num=globalThis.MHLUI?.number||((v,d=0)=>Number(v).toLocaleString(document.
 
         document.querySelectorAll('[data-question-countdown]').forEach(el => {
             const deadline = Number(state?.question_ends_at || 0) * 1000;
-            el.textContent = deadline > 0 ? formatTenths(deadline - now) : '0,0 s';
+            el.textContent = deadline > 0 ? formatTenths(deadline - now) : `${num(0,1)} s`;
         });
         document.querySelectorAll('[data-question-progress]').forEach(el => {
             const deadline = Number(state?.question_ends_at || 0) * 1000;

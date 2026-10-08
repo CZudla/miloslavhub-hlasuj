@@ -144,8 +144,8 @@
     },
     {
       "path": "demo/index.php",
-      "size": 28529,
-      "sha256": "a8171f5366ff06de74367e6c7c2d49955dc6e6773861df0d63dec7f35227c1d3"
+      "size": 28537,
+      "sha256": "45836cdeefb5a2c6b18ad674c84c367ebb24d5eb2995411673ddad360d30d59f"
     },
     {
       "path": "demo/lib.php",
@@ -154,8 +154,8 @@
     },
     {
       "path": "demo/mobile.php",
-      "size": 28457,
-      "sha256": "169c5ee7a3a4d43a8bc8b1e86ce5d031427b8f2ba9430731c1e114130a19f5e3"
+      "size": 28469,
+      "sha256": "f9b9388f44749f912f3e1c332e69fec317a9e1048e2be13a5996b00272646390"
     },
     {
       "path": "i18n.php",
@@ -169,8 +169,8 @@
     },
     {
       "path": "lang/en.json",
-      "size": 96173,
-      "sha256": "c8de3c5d8d827b1fedce1f4a876e0d83acb431a7ef8b9640f1ceefe341ffbed7"
+      "size": 96188,
+      "sha256": "8d837f6520719d38494839421922df7c0d75eb365885a1b0ecaf619530dfe468"
     },
     {
       "path": "LEGAL-GDPR-CHECKLIST.md",

@@ -50,11 +50,12 @@ const base=process.argv[2];if(!/^http:\/\/127\.0\.0\.1:\d+$/.test(base))throw ne
   await page.getByRole('heading',{name:'Which password is the safest?'}).waitFor({timeout:8000});checks++;
   await page.waitForFunction(()=>[...document.querySelectorAll('[data-question-countdown]')].some(el=>/\d+\.\d s/.test(el.textContent)));
   check(!(await page.locator('[data-question-countdown]').first().innerText()).includes(','),'English demo countdown uses a decimal point');
-  await page.locator('[data-answer]').first().click();
+  await page.locator('[data-answer="C"]').click();
   await page.locator('.score-panel').waitFor({timeout:20000});
   check(/^\d+\.\d s$/.test(await page.locator('.score-panel > div').nth(2).locator('strong').innerText()),'English result response time uses a decimal point');
   check(!(await page.locator('.vote-chart-stats em').first().innerText()).includes(','),'English result percentage uses locale formatting');
   check(await page.locator('.demo-data-note b').innerText()==='Demo group','Demo result notice is fully English, including ASCII Czech labels');
+  check(await page.locator('.mini-rank-row.me small').innerText()==='you','Own position in the English demo ranking is translated');
   check(external.length===0,'No translation or QR requests leave the installation');
   check(errors.length===0,'No English browser errors: '+errors.join('; '));
   fs.mkdirSync('runtime/screenshots',{recursive:true});await page.screenshot({path:'runtime/screenshots/demo-english-mobile.png',fullPage:true});

@@ -1,0 +1,352 @@
+{
+  "schema_version": 1,
+  "status": "partial",
+  "recorded_at": "2026-10-08T12:56:55.539567+00:00",
+  "source_base_commit": "c6db3e96996d8759ffe8c0afb170125db444298e",
+  "source_commit": null,
+  "tested_source_sha256": "12c358cc181a98d25d131235955344abf1cf1aca6c4d62575d51dc15f941dd7e",
+  "regression": {
+    "status": "passed",
+    "production_access": false,
+    "wordpress_database_integration": "not run",
+    "started_at": "2026-10-08T12:19:55.428696+00:00",
+    "browser_suite": "all",
+    "php_lint": "passed",
+    "javascript_lint": "passed",
+    "security_contracts": {
+      "suite": "security-contracts",
+      "checks": 51,
+      "status": "passed"
+    },
+    "ai_contracts": {
+      "status": "passed",
+      "checks": 93,
+      "provider": "in-memory double",
+      "paid_calls": 0
+    },
+    "ai_disabled": {
+      "status": "passed",
+      "checks": 3
+    },
+    "i18n_php": {
+      "status": "passed",
+      "checks": 12,
+      "marked_ui_literals_audited": 805
+    },
+    "i18n_javascript": {
+      "status": "passed",
+      "checks": 18,
+      "catalog_messages": 998,
+      "scope": "UI literals, locale formatting and dynamic content boundary"
+    },
+    "requirements_context": "passed",
+    "demo_http_checks": 18,
+    "browser": {
+      "status": "passed",
+      "checks": 23,
+      "neutral_poll_checks": 8,
+      "screenshots": 3,
+      "backend": "synthetic HTTP fixtures; demo PHP real",
+      "external_requests": 0
+    },
+    "ai_browser": {
+      "status": "passed",
+      "checks": 12,
+      "external_requests": 0,
+      "provider": "synthetic HTTP fixture"
+    },
+    "i18n_browser": {
+      "status": "passed",
+      "checks": 29,
+      "external_requests": 0,
+      "backend": "synthetic HTTP fixtures; marketing and demo PHP real"
+    },
+    "tested_source_sha256": "12c358cc181a98d25d131235955344abf1cf1aca6c4d62575d51dc15f941dd7e",
+    "requirements_context_script_sha256": "3ad7aaccc903403eb966817bfd71e54b367081419bebd20f04b386921f74f590",
+    "finished_at": "2026-10-08T12:27:53.587105+00:00"
+  },
+  "integration": {
+    "status": "error",
+    "production_data_used": false,
+    "paid_api_calls": 0,
+    "external_http_blocked": true,
+    "started_at": "2026-10-08T12:38:14.244298+00:00",
+    "tested_source_sha256": "12c358cc181a98d25d131235955344abf1cf1aca6c4d62575d51dc15f941dd7e",
+    "test_database_max_connections": 500,
+    "wordpress-integration.php": {
+      "status": "passed",
+      "checks": 19,
+      "wordpress": "7.1.2",
+      "database": "11.4.9-MariaDB",
+      "production_data_used": false,
+      "concurrency_tested": false
+    },
+    "ai-wordpress-integration.php": {
+      "status": "passed",
+      "checks": 21,
+      "wordpress": "7.1.2",
+      "database": "11.4.9",
+      "provider": "pre_http_request fixture",
+      "paid_calls": 0
+    },
+    "content-wordpress-integration.php": {
+      "status": "passed",
+      "checks": 50,
+      "production_data_used": false,
+      "paid_api_calls": 0
+    },
+    "feedback-wordpress-integration.php": {
+      "status": "passed",
+      "checks": 80,
+      "question_id": 27,
+      "actual_wordpress_database": true,
+      "production_data_used": false
+    },
+    "poll-wordpress-integration.php": {
+      "status": "passed",
+      "checks": 60,
+      "actual_wordpress_database": true,
+      "production_data_used": false
+    },
+    "access-wordpress-integration.php": {
+      "status": "passed",
+      "checks": 130,
+      "synthetic_data": true,
+      "organizations": 2,
+      "accounts": 5,
+      "production_access": false,
+      "browser_fixture": {
+        "users": {
+          "a": 5,
+          "b": 6,
+          "c": 7,
+          "viewer": 8,
+          "manager": 9
+        },
+        "a": {
+          "subject": 44,
+          "lecture": 45,
+          "question": 46
+        },
+        "b": {
+          "subject": 47,
+          "lecture": 48,
+          "question": 49
+        },
+        "c": {
+          "subject": 50,
+          "lecture": 51,
+          "question": 52
+        },
+        "run_id": 8
+      }
+    },
+    "concurrency": {
+      "status": "passed",
+      "checks": 28,
+      "independent_processes": true,
+      "production_data_used": false,
+      "paid_api_calls": 0
+    },
+    "load": {
+      "status": "passed",
+      "scenarios": [
+        {
+          "students": 30,
+          "concurrent_workers": 30,
+          "status": "passed",
+          "votes": 30,
+          "burst_seconds": 3.01,
+          "handler_p50_ms": 212.3,
+          "handler_p95_ms": 802.2,
+          "handler_max_ms": 983.5
+        },
+        {
+          "students": 100,
+          "concurrent_workers": 100,
+          "status": "passed",
+          "votes": 100,
+          "burst_seconds": 7.944,
+          "handler_p50_ms": 185.1,
+          "handler_p95_ms": 419.9,
+          "handler_max_ms": 721.2
+        }
+      ],
+      "production_data_used": false,
+      "paid_api_calls": 0,
+      "transport": "independent PHP CLI processes using real REST callbacks and MariaDB",
+      "limits": "Local burst test; does not measure hosting HTTP workers, network or sustained polling"
+    },
+    "wordpress_admin_browser": {
+      "status": "passed",
+      "checks": 15,
+      "actual_wordpress_admin": true,
+      "external_requests_blocked": 7,
+      "paid_api_calls": 0
+    },
+    "browser_persistence": "passed",
+    "error_type": "RuntimeError",
+    "servers_stopped": true,
+    "finished_at": "2026-10-08T12:54:12.525353+00:00"
+  },
+  "regression_checks": 259,
+  "integration_checks": 403,
+  "requirements_context_unittest_methods": 15,
+  "ui_catalog_messages": 998,
+  "production_access": false,
+  "prior_same_source_integration_error": {
+    "status": "error",
+    "production_data_used": false,
+    "paid_api_calls": 0,
+    "external_http_blocked": true,
+    "started_at": "2026-10-08T12:19:55.642865+00:00",
+    "tested_source_sha256": "12c358cc181a98d25d131235955344abf1cf1aca6c4d62575d51dc15f941dd7e",
+    "test_database_max_connections": 500,
+    "wordpress-integration.php": {
+      "status": "passed",
+      "checks": 19,
+      "wordpress": "7.1.2",
+      "database": "11.4.9-MariaDB",
+      "production_data_used": false,
+      "concurrency_tested": false
+    },
+    "ai-wordpress-integration.php": {
+      "status": "passed",
+      "checks": 21,
+      "wordpress": "7.1.2",
+      "database": "11.4.9",
+      "provider": "pre_http_request fixture",
+      "paid_calls": 0
+    },
+    "content-wordpress-integration.php": {
+      "status": "passed",
+      "checks": 50,
+      "production_data_used": false,
+      "paid_api_calls": 0
+    },
+    "feedback-wordpress-integration.php": {
+      "status": "passed",
+      "checks": 80,
+      "question_id": 27,
+      "actual_wordpress_database": true,
+      "production_data_used": false
+    },
+    "poll-wordpress-integration.php": {
+      "status": "passed",
+      "checks": 60,
+      "actual_wordpress_database": true,
+      "production_data_used": false
+    },
+    "access-wordpress-integration.php": {
+      "status": "passed",
+      "checks": 130,
+      "synthetic_data": true,
+      "organizations": 2,
+      "accounts": 5,
+      "production_access": false,
+      "browser_fixture": {
+        "users": {
+          "a": 5,
+          "b": 6,
+          "c": 7,
+          "viewer": 8,
+          "manager": 9
+        },
+        "a": {
+          "subject": 44,
+          "lecture": 45,
+          "question": 46
+        },
+        "b": {
+          "subject": 47,
+          "lecture": 48,
+          "question": 49
+        },
+        "c": {
+          "subject": 50,
+          "lecture": 51,
+          "question": 52
+        },
+        "run_id": 8
+      }
+    },
+    "concurrency": {
+      "status": "passed",
+      "checks": 28,
+      "independent_processes": true,
+      "production_data_used": false,
+      "paid_api_calls": 0
+    },
+    "load": {
+      "status": "passed",
+      "scenarios": [
+        {
+          "students": 30,
+          "concurrent_workers": 30,
+          "status": "passed",
+          "votes": 30,
+          "burst_seconds": 0.992,
+          "handler_p50_ms": 261.8,
+          "handler_p95_ms": 422.8,
+          "handler_max_ms": 540.0
+        },
+        {
+          "students": 100,
+          "concurrent_workers": 100,
+          "status": "passed",
+          "votes": 100,
+          "burst_seconds": 3.897,
+          "handler_p50_ms": 176.1,
+          "handler_p95_ms": 299.8,
+          "handler_max_ms": 487.8
+        }
+      ],
+      "production_data_used": false,
+      "paid_api_calls": 0,
+      "transport": "independent PHP CLI processes using real REST callbacks and MariaDB",
+      "limits": "Local burst test; does not measure hosting HTTP workers, network or sustained polling"
+    },
+    "wordpress_admin_browser": {
+      "status": "passed",
+      "checks": 15,
+      "actual_wordpress_admin": true,
+      "external_requests_blocked": 7,
+      "paid_api_calls": 0
+    },
+    "browser_persistence": "passed",
+    "content_admin_browser": {
+      "status": "passed",
+      "checks": 11,
+      "actual_wordpress_admin": true,
+      "paid_api_calls": 0
+    },
+    "error_type": "RuntimeError",
+    "servers_stopped": true,
+    "finished_at": "2026-10-08T12:36:20.988162+00:00"
+  },
+  "error_diagnosis": "Previous concurrent local run hit PHP max_execution_time=30 in WordPress general-template.php:5579 during bootstrap; wp-login returned HTTP 500 and browser navigation timed out. Standalone rerun also ended ERROR: content-wordpress-browser.cjs:18 page.waitForURL timed out at 30000 ms waiting for wp-admin load after navigation to wp-admin. Both runs retain the original PHP/browser limits. The underlying cause of the second timeout is not established. Complete integration and production hosting capacity remain unqualified.",
+  "integration_not_reached": [
+    "content_admin_browser completion",
+    "feedback_admin_browser",
+    "access_admin_browser"
+  ],
+  "release_qualification": false,
+  "publication_binding": "The source commit will be created after these runs from byte-identical inputs; exact staged Git blobs are checked against this source fingerprint before publication.",
+  "changes": [
+    "Explicit UI-tag translation for own-position marker in demo ranking, including ternary HTML fragments.",
+    "Locale-formatted zero countdown in both demo layouts.",
+    "Browser votes for the prepared correct sample answer and checks the English own-rank marker."
+  ],
+  "prior_readiness": {
+    "commit": "c6db3e96996d8759ffe8c0afb170125db444298e",
+    "artifact_ref": "2026-10-08-admin-readiness.json",
+    "repeat_checks": 78,
+    "source_sha256": "b4c163ce5bdb3253ae026fd0018679126570f7be2839233678f1ccf13f9a1251"
+  },
+  "static_fragment_audit": "Remaining raw HTML string literals with visible text in the audited application scripts contain only the intentional label demo.",
+  "limits": [
+    "Local qualification is not production, AUTH or licence quota qualification.",
+    "No paid AI output-quality evaluation.",
+    "Previous actual errors and source snapshots remain in their original artifacts."
+  ]
+}
