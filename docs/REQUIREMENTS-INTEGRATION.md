@@ -2,12 +2,13 @@
 
 ## Aktualizace 8. 10. 2026 — organizace a jazyky
 
-Aktuální vývojový stav a publikaci zdrojů popisuje [zpráva organizací a jazyků](DEVELOPMENT-ORGANIZATIONS-I18N-2026-10-08.md). Čtení Private API v2 znovu potvrdilo baseline 1.6.0 se stejným snapshotem a 168 položkami all ve dvou stránkách. Dva nové návrhy rozsahu a pravidla míst mají receipty, vzdáleně čekají na lidské zpracování a `authoritative_applied=false`.
+Aktuální vývojový stav a publikaci zdrojů popisuje [zpráva organizací a jazyků](DEVELOPMENT-ORGANIZATIONS-I18N-2026-10-08.md). Private API v2 potvrdilo baseline 1.6.0 se stejným snapshotem a 168 položkami all ve dvou stránkách. Dva nové návrhy rozsahu a pravidla míst mají receipty, čekají na lidské zpracování a `authoritative_applied=false`.
 
-Nových 6 implementačních vazeb a 10 testových záznamů je zachováno v chráněném outboxu, ale **není doručeno**: aktuální zápis vrací HTTP 503 `snapshot_unavailable`. Po opravě `artifact_ref` na bezpečnou relativní cestu prošla validace těla; zápis dál blokuje centrála. Původních 10 odmítnutých HTTP 400 řádků zůstává historickou evidencí, opravené náhrady mají nová ID. Celkový stav: **37 sent / 16 pending / 10 historických blocked**, aktuální efektivní sada 0 sent / 16 pending / 0 blocked. Přesná ID, chyby a vazbu na zdrojový commit obsahuje [sanitizovaná evidence](test-evidence/2026-10-08-organizations-i18n-delivery.json).
+Bylo přijato a přesně zpětně ověřeno **24 implementačních/testových operací**: 9 implementačních zpráv a 15 testových záznamů (7 passed / 5 skipped / 3 error). Celkový outbox: **61 sent / 0 pending / 13 historických blocked**; aktuální efektivní sada **24 sent / 0 pending / 0 blocked**. [Sanitizovaná evidence](test-evidence/2026-10-08-organizations-i18n-delivery.json) obsahuje ID, receipty, revize, commity a potvrzení přesné shody těl.
 
-Nové vazby se týkají HLS-032, 033, 034, 035, 045 a 046 rev. 1; živé AUTH, kvóta, hostingová zátěž, produkce a finální balíčky mají skutečný stav skipped s důvodem. Historické chyby necommitnutých variant zůstávají chráněnými pozorováními; nevymýšlí se jim commit ani úspěšný centrální receipt. Následující text zachovává historický stav ze 7. 10. 2026.
+Zpočátku zápisy vracely HTTP 503 `snapshot_unavailable`, testové zápisy také HTTP 400 kvůli absolutnímu `artifact_ref`. Tři pozdější záznamy byly odmítnuty také kvůli environment delšímu než 200 UTF-8 bajtů. Opravené náhrady používají bezpečnou relativní cestu a stručné environment; plná diagnóza zůstává v artefaktu. Původní odmítnuté řádky zůstávají nezměněné. Po obnovení zápisu byly přijaty všechny aktuální položky. Doručení nemění schválení ani autoritativní stav požadavků.
 
+Vazby zahrnují HLS-032, 033, 034, 035, 045, 046, 067 a 073 rev. 1; doplňující testy také HLS-062 a 065. AUTH, licence, hostingová kvalifikace, produkce a finální balíčky mají skutečný stav skipped s důvodem. Historické chybové varianty bez zachovaného commitu zůstávají chráněnými pozorováními; nevymýšlí se commit ani centrální receipt. Následující text zachovává historický stav ze 7. 10. 2026.
 
 Stav 7. 10. 2026. REQUIREMENTS je autoritou požadavků, rozhodnutí, revizí a evidence. GitHub a zdejší dokumentace jsou sekundární kopie a implementační podklady. Aktuální provozní verze jiných služeb určuje samostatný Registr služeb.
 
