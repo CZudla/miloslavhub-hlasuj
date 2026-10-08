@@ -25,7 +25,7 @@ V menu **Živé hlasování** najdete Přehled, Živé ovládání, Testovací l
 
 Volba **Celkové pořadí** určuje součet v předmětu, v přednášce nebo žádné celkové pořadí. **Průběžné výsledky** doporučujeme při samostatném rozhodování studentů vypnout, aby první odpovědi neovlivňovaly další.
 
-U běžné ankety ponechte **Body za účast** na nule. Historická možnost přidělit body zůstala kvůli kompatibilitě. Dlouhodobá anketa body nepřiděluje.
+**Nevydaný vývoj od 8. 10. 2026:** anketa soutěžní body nepřiděluje ani při starším nastavení. Editor již nenabízí **Body za účast**. Historické výsledky se nepřepočítávají. V kvalifikovaném vydání 0.8.9 toto nastavení ještě existovalo; u této verze je ponechte na nule. Podrobnosti aktuálního vývoje: [Ankety](12-ANKETY.md).
 
 ## 4. Vyzkoušejte výuku předem
 

@@ -6,9 +6,11 @@ Projekt používá [CZudla/miloslavhub-hlasuj](https://github.com/CZudla/milosla
 
 **0.8.9 — přenos předmětu s náhledem a importem nových konceptů.**
 
-### Následný vývoj — nevydané změny z 7. 10. 2026
+### Následný vývoj — nevydané změny z 7.–8. 10. 2026
 
 Vývoj zahrnuje vysvětlení odpovědí s výchozím soukromým režimem, poznámky učitele, obsahový JSON v2 se zpětným importem v1 a místní QR v administraci. Tyto změny zatím nejsou kvalifikovaným vydáním ani nasazením. [Stav a plán dokončení celého systému](docs/DEVELOPMENT-2026-10-07.md), [příručka vysvětlení a poznámek](docs/customer/11-VYSVETLENI-A-POZNAMKY.md), [napojení na centrální REQUIREMENTS](docs/REQUIREMENTS-INTEGRATION.md). Verze v release metadatech stále označuje výchozí vydání 0.8.9.
+
+Vývoj z 8. 10. dokončuje neutrální ankety: žádné nové soutěžní body ani povinná přezdívka, i při starém nastavení bodů za účast. Historické hlasy se nepřepočítávají. [Příručka anket](docs/customer/12-ANKETY.md), [technická reference](docs/NEUTRAL-POLLS-REFERENCE.md), [vývoj a testy 8. 10.](docs/DEVELOPMENT-2026-10-08.md).
 
 Vývojová migrace GPT‑6 a vypnutý AI pilot: [stav migrace](docs/GPT-6-MIGRATION-STATUS.md), [popis pilotu a testů](docs/AI-PILOT.md). AI je standardně vypnutá. Rozsah vydání dokládá RELEASE-0.8.9.md; konkrétní nasazení je doloženo samostatnou zprávou DEPLOYMENT-2026-10-05-0.8.9.md.
 

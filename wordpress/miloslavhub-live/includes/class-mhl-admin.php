@@ -160,7 +160,7 @@ class MHL_Admin {
     public static function question_meta_box(WP_Post $post): void {
         wp_nonce_field('mhl_save_question','mhl_question_nonce');
         $options=MHL_Core::get_question_options($post->ID); while(count($options)<6){$options[]='';}
-        $correct=MHL_Core::question_correct_index($post->ID); $mult=(float)(get_post_meta($post->ID,'_mhl_multiplier',true)?:1); $speed=(int)(get_post_meta($post->ID,'_mhl_speed_window',true)?:MHL_Core::settings()['speed_window']); $poll_points=(int)get_post_meta($post->ID,'_mhl_poll_points',true); $time_raw=get_post_meta($post->ID,'_mhl_time_limit',true); $time_value=($time_raw===''||$time_raw===null)?'auto':(string)(int)$time_raw;
+        $correct=MHL_Core::question_correct_index($post->ID); $mult=(float)(get_post_meta($post->ID,'_mhl_multiplier',true)?:1); $speed=(int)(get_post_meta($post->ID,'_mhl_speed_window',true)?:MHL_Core::settings()['speed_window']); $time_raw=get_post_meta($post->ID,'_mhl_time_limit',true); $time_value=($time_raw===''||$time_raw===null)?'auto':(string)(int)$time_raw;
         $type=$correct===null?'Anketa – bez správné odpovědi':'Kvíz – se správnou odpovědí a body';
         ?>
         <p><strong>Typ otázky:</strong> <span id="mhl-inferred-type"><?php echo esc_html($type); ?></span> <?php echo self::help('Typ se určuje automaticky. Pokud není označena žádná správná odpověď, jde o anketu. Jakmile označíte správnou odpověď, otázka se chová jako kvíz.'); ?></p>
@@ -178,9 +178,7 @@ class MHL_Admin {
           <label class="mhl-quiz-only"><strong>Rychlostní okno <?php echo self::help('Doba, během níž se u správné odpovědi postupně snižuje rychlostní bonus. Po jejím uplynutí zůstávají základní body za správnost.'); ?></strong>
             <input type="number" min="5" max="120" name="mhl_speed_window" value="<?php echo esc_attr($speed); ?>"> s
           </label>
-          <label class="mhl-poll-only"><strong>Body za účast <?php echo self::help('U ankety se standardně body nepřidělují. Pokud chcete odměnit pouhou účast, nastavte malý počet bodů; nezávisí na zvolené odpovědi ani rychlosti.'); ?></strong>
-            <input type="number" min="0" max="1000" name="mhl_poll_points" value="<?php echo esc_attr($poll_points); ?>">
-          </label>
+          <p class="description mhl-poll-only"><?php echo esc_html__('Anketa nemá správnou odpověď a nepřidává soutěžní body.', 'miloslavhub-live'); ?></p>
           <?php $async=MHL_Core::question_async_enabled($post->ID); $async_end=(string)get_post_meta($post->ID,'_mhl_async_end',true); $async_show=MHL_Core::question_async_show_results($post->ID); ?>
           <label class="mhl-poll-only mhl-template-wide"><strong>Dlouhodobá otevřená anketa <?php echo self::help('Vytvoří samostatný trvalý odkaz, který neblokuje živou přednášku. Ankета může běžet dny či týdny; nemá společný odpočet a nepočítá body.'); ?></strong><span><input type="checkbox" name="mhl_async_enabled" value="1" <?php checked($async); ?>> Povolit samostatný dlouhodobý odkaz</span></label>
           <label class="mhl-poll-only"><strong>Automaticky uzavřít <?php echo self::help('Volitelné. Nechte prázdné pro anketu bez pevného konce; uzavřít ji pak lze v administraci.'); ?></strong><input type="datetime-local" name="mhl_async_end" value="<?php echo esc_attr($async_end); ?>"></label>
@@ -359,7 +357,8 @@ class MHL_Admin {
         update_post_meta($id,'_mhl_options',$opts);
         if($correct_new!==null){update_post_meta($id,'_mhl_correct_index',$correct_new);update_post_meta($id,'_mhl_mode','quiz');}else{delete_post_meta($id,'_mhl_correct_index');update_post_meta($id,'_mhl_mode','poll');}
         $mult=isset($_POST['mhl_multiplier'])?(float)$_POST['mhl_multiplier']:1;if(!in_array($mult,array(1.0,1.5,2.0),true)){$mult=1;}update_post_meta($id,'_mhl_multiplier',$mult);
-        update_post_meta($id,'_mhl_speed_window',min(120,max(5,absint($_POST['mhl_speed_window']??20)))); update_post_meta($id,'_mhl_poll_points',min(1000,max(0,absint($_POST['mhl_poll_points']??0))));
+        update_post_meta($id,'_mhl_speed_window',min(120,max(5,absint($_POST['mhl_speed_window']??20))));
+        // Legacy participation-points metadata is preserved for portable round trips, never used for new votes.
         $time=sanitize_text_field(wp_unslash($_POST['mhl_time_limit']??'auto')); if($time==='auto'){delete_post_meta($id,'_mhl_time_limit');}else{$tv=(int)$time;update_post_meta($id,'_mhl_time_limit',$tv<=0?0:min(600,max(5,$tv)));}
         $rag=sanitize_key($_POST['mhl_rag_policy']??'exclude');if(!in_array($rag,array('exclude','private','public_after_lecture'),true)){$rag='exclude';}update_post_meta($id,'_mhl_rag_policy',$rag);
         $is_poll=$correct_new===null;update_post_meta($id,'_mhl_async_enabled',($is_poll&&!empty($_POST['mhl_async_enabled']))?1:0);update_post_meta($id,'_mhl_async_show_results',($is_poll&&!empty($_POST['mhl_async_show_results']))?1:0);$aend=sanitize_text_field(wp_unslash((string)($_POST['mhl_async_end']??'')));if($is_poll&&$aend!==''){update_post_meta($id,'_mhl_async_end',$aend);}else{delete_post_meta($id,'_mhl_async_end');}
@@ -575,11 +574,44 @@ class MHL_Admin {
         if(!current_user_can('manage_options')){wp_die('Nemáte oprávnění.');}
         $sid=absint($_GET['session_id']??0);$rid=absint($_GET['run_id']??0);
         check_admin_referer('mhl_simulate_'.$sid);
-        $result=MHL_DB::with_run_lock($rid,static function($db,$run) use ($sid,$rid) {
-            $sessions=MHL_DB::table('sessions');$votes=MHL_DB::table('votes');$s=$db->get_row($db->prepare("SELECT * FROM {$sessions} WHERE id=%d AND run_id=%d AND mode='test'",$sid,$rid));if($run->mode!=='test'||$run->status!=='active'||!$s||$s->status!=='open'||($s->reset_at && strtotime($s->reset_at.' UTC')<=time())||($run->expires_at && strtotime($run->expires_at.' UTC')<=time())){return new WP_Error('mhl_test_closed','Testovací otázka není otevřená.');}$qid=(int)$s->question_id;$opts=MHL_Core::get_question_options($qid);$qmode=MHL_Core::question_type($qid);$ci=MHL_Core::question_correct_index($qid);if($ci===null){$ci=-1;}$settings=MHL_Core::settings();for($i=1;$i<=5;$i++){$option=$opts?($i-1)%count($opts):0;$ms=900+$i*850;$correct=$qmode==='quiz'?($option===$ci?1:0):null;$points=0;if($correct){$mult=(float)(get_post_meta($qid,'_mhl_multiplier',true)?:1);$win=max(5,(int)(get_post_meta($qid,'_mhl_speed_window',true)?:$settings['speed_window']));$factor=max(0.0,1.0-(($ms/1000)/$win));$points=(int)round(((int)$settings['base_points']+((int)$settings['speed_points']*$factor))*$mult);}elseif($qmode==='poll'){$points=(int)get_post_meta($qid,'_mhl_poll_points',true);} $ok=$db->insert($votes,array('session_id'=>$sid,'run_id'=>$rid,'question_id'=>$qid,'mode'=>'test','participant_key'=>hash('sha256','test-'.$rid.'-'.$sid.'-'.$i.'-'.wp_generate_uuid4()),'nickname'=>'Test'.$i,'option_index'=>$option,'is_correct'=>$correct,'response_ms'=>$ms,'points'=>$points,'created_at'=>MHL_Core::now_mysql()),array('%d','%d','%d','%s','%s','%s','%d','%d','%d','%d','%s'));if($ok===false){return new WP_Error('mhl_test_failed','Testovací hlasy se nepodařilo uložit.');}} return true;
-        });
+        $result=self::simulate_session_votes($rid,$sid);
         if(is_wp_error($result)){wp_die(esc_html($result->get_error_message()));}
         self::redirect_run($rid);
+    }
+
+    /** Internal administration operation; HTTP callers still require the action nonce above. */
+    public static function simulate_session_votes(int $run_id,int $session_id): bool|WP_Error {
+        if(!current_user_can('manage_options')){
+            return new WP_Error('mhl_forbidden','Nemáte oprávnění.',array('status'=>403));
+        }
+        return MHL_DB::with_run_lock($run_id,static function($db,$run) use($session_id,$run_id){
+            $sessions=MHL_DB::table('sessions');$votes=MHL_DB::table('votes');
+            $session=$db->get_row($db->prepare("SELECT * FROM {$sessions} WHERE id=%d AND run_id=%d AND mode='test'",$session_id,$run_id));
+            if($run->mode!=='test'||$run->status!=='active'||!$session||$session->status!=='open'
+                ||($session->reset_at&&strtotime($session->reset_at.' UTC')<=time())
+                ||($run->expires_at&&strtotime($run->expires_at.' UTC')<=time())){
+                return new WP_Error('mhl_test_closed','Testovací otázka není otevřená.');
+            }
+            $question_id=(int)$session->question_id;$options=MHL_Core::get_question_options($question_id);
+            $quiz=MHL_Core::question_type($question_id)==='quiz';$correct_index=MHL_Core::question_correct_index($question_id);
+            $settings=MHL_Core::settings();
+            for($i=1;$i<=5;$i++){
+                $option=$options?($i-1)%count($options):0;$ms=900+$i*850;
+                $correct=$quiz?($option===$correct_index?1:0):null;$points=0;
+                if($correct){
+                    $mult=(float)(get_post_meta($question_id,'_mhl_multiplier',true)?:1);
+                    $window=max(5,(int)(get_post_meta($question_id,'_mhl_speed_window',true)?:$settings['speed_window']));
+                    $factor=max(0.0,1.0-(($ms/1000)/$window));
+                    $points=(int)round(((int)$settings['base_points']+((int)$settings['speed_points']*$factor))*$mult);
+                }
+                $ok=$db->insert($votes,array('session_id'=>$session_id,'run_id'=>$run_id,'question_id'=>$question_id,'mode'=>'test',
+                    'participant_key'=>hash('sha256','test-'.$run_id.'-'.$session_id.'-'.$i.'-'.wp_generate_uuid4()),
+                    'nickname'=>$quiz?'Test'.$i:'','option_index'=>$option,'is_correct'=>$correct,'response_ms'=>$ms,'points'=>$points,
+                    'created_at'=>MHL_Core::now_mysql()),array('%d','%d','%d','%s','%s','%s','%d','%d','%d','%d','%s'));
+                if($ok===false){return new WP_Error('mhl_test_failed','Testovací hlasy se nepodařilo uložit.');}
+            }
+            return true;
+        });
     }
     public static function clear_test_data(): void {
         if(!current_user_can('manage_options')){wp_die('Nemáte oprávnění.');}

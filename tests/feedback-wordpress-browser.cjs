@@ -33,6 +33,8 @@ if(!/^http:\/\/127\.0\.0\.1:\d+$/.test(base)||!Number.isSafeInteger(id)||id<1)th
     await page.locator('input[name="mhl_correct_index"][value="-1"]').check();
     check(!await page.locator('#mhl-correct-explanation').isVisible(),'Poll hides quiz explanation settings');
     check(await page.locator('#mhl-teacher-note').isVisible(),'Poll retains private teaching note');
+    check(await page.locator('input[name="mhl_poll_points"]').count()===0,'Teacher cannot enable poll participation points');
+    check(await page.getByText('Anketa nemá správnou odpověď a nepřidává soutěžní body.',{exact:true}).isVisible(),'Teacher sees a neutral poll explanation');
     await page.goto(base+'/wp-admin/admin.php?page=mhl-live-demo');
     const qr=page.locator('.mhl-qr[data-qr-ready="1"] img').first();
     await qr.waitFor({state:'visible'});

@@ -90,7 +90,7 @@ try:
     run(mysql,input=b'CREATE DATABASE integration_wp CHARACTER SET utf8mb4; CREATE DATABASE integration_votes CHARACTER SET utf8mb4;')
     if args.load:run(mysql,input=b'SET GLOBAL max_connections=500;')
     run(mysql,input=b'USE integration_votes;\n'+(repo/'wordpress/miloslavhub-live/database-schema.sql').read_bytes())
-    for name in ['wordpress-integration.php','ai-wordpress-integration.php','content-wordpress-integration.php','feedback-wordpress-integration.php']:
+    for name in ['wordpress-integration.php','ai-wordpress-integration.php','content-wordpress-integration.php','feedback-wordpress-integration.php','poll-wordpress-integration.php']:
         result=json.loads(run(php+[repo/'tests'/name],env=env));report[name]=result;print(name,json.dumps(result),flush=True)
     result=json.loads(run([sys.executable,repo/'tests/concurrency.py','--php',args.php],env=env))
     report['concurrency']=result;print('concurrency',json.dumps(result),flush=True)

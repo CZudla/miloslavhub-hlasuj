@@ -1,5 +1,11 @@
 # Soukromí
 
+## Nevydaná etapa 8. 10. 2026 — ankety
+
+Nové anketní hlasy v live/test/async používají klíč konkrétní relace a prázdnou přezdívku také tehdy, když starší metadata obsahují body za účast. Přezdívka poslaná klientem se do hlasu neukládá. Body za anketu jsou nulové. Tato změna nemaže starší globálně propojené anketní hlasy ani jejich historické body. Vlastní odpověď staré bodované ankety může přestat být dostupná novým session-scoped vyhledáním; agregace zůstává zachovaná.
+
+Prohlížeč nadále drží technickou identitu, obecné připojení do soutěžní přednášky může požadovat přezdívku a další tabulky či provozní logy mohou obsahovat pseudonymní údaje. Jde o omezení propojení nových anketních odpovědí, nikoli záruku úplné anonymity. Retence existujících údajů a záloh se tím nemění.
+
 ## Nevydaná etapa 7. 10. 2026
 
 Vysvětlení kvízu se ve výchozím stavu nezveřejňuje. Při volbě „Studenti po ukončení hlasování“ se po uzavření zpřístupní ve veřejných výsledcích a na projekci; veřejný odkaz neprokazuje účast v hodině. Soukromá poznámka není ve studentských payloadech, ale je přístupná oprávněným správcům instalace a zahrnutá v učitelském obsahovém exportu JSON v2. Učitel musí vlastní texty zkontrolovat před sdílením. Poznámky s osobními údaji podléhají také retenci obsahu, záloh a sdílených souborů. Oddělení jednotlivých učitelů/organizací zůstává dalším vývojem.

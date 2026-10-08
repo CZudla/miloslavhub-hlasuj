@@ -75,9 +75,8 @@ class MHL_REST {
     private static function question_payload(WP_Post $lecture, WP_Post $question, ?object $run, ?object $session, string $mode): array {
         $qmode=MHL_Core::question_type((int)$question->ID);
         $g=$run?MHL_Core::run_gamification($run):($mode==='async'?array('enabled'=>false,'scope'=>'none'):MHL_Core::lecture_gamification((int)$lecture->ID));
-        $poll_points=(int)get_post_meta($question->ID,'_mhl_poll_points',true);
-        $g['join_nickname_required']=$g['enabled'];
-        $g['nickname_required']=$g['enabled'] && ($qmode==='quiz' || $poll_points>0);
+        $g['join_nickname_required']=$g['enabled'] && $qmode==='quiz';
+        $g['nickname_required']=$g['join_nickname_required'];
         $opts=MHL_Core::get_question_options((int)$question->ID);
         return array(
             'question_id'=>(int)$question->ID,'lecture_id'=>(int)$lecture->ID,'lecture_slug'=>MHL_Core::permanent_slug((int)$lecture->ID),'question_slug'=>MHL_Core::permanent_slug((int)$question->ID),
@@ -239,15 +238,15 @@ class MHL_REST {
         if(!$lecture||!$question){return new WP_Error('mhl_not_found','Otázka nebo přednáška nebyla nalezena.',array('status'=>404));}
         if(!$run||!$session||$session->status!=='open'){return new WP_Error('mhl_not_open','Hlasování právě není otevřené.',array('status'=>409));}
         $opts=MHL_Core::get_question_options((int)$question->ID); if($option<0||$option>=count($opts)){return new WP_Error('mhl_bad_option','Neplatná odpověď.',array('status'=>400));}
-        $qmode=MHL_Core::question_type((int)$question->ID); $g=MHL_Core::run_gamification($run); $poll_points=(int)get_post_meta($question->ID,'_mhl_poll_points',true);
-        $nickname_required=$g['enabled']&&($qmode==='quiz'||$poll_points>0); if($nickname_required&&$nickname===''){return new WP_Error('mhl_nickname_required','Zadejte přezdívku.',array('status'=>400));}
+        $qmode=MHL_Core::question_type((int)$question->ID); $g=MHL_Core::run_gamification($run);
+        $nickname_required=$g['enabled']&&$qmode==='quiz'; if($nickname_required&&$nickname===''){return new WP_Error('mhl_nickname_required','Zadejte přezdívku.',array('status'=>400));}
         if($nickname_required){$subject_id=MHL_Core::get_lecture_subject_id((int)$lecture->ID);$claim=self::claim_nickname_for_subject($subject_id,$mode,$participant_id,$nickname);if(is_wp_error($claim)){return $claim;}$nickname=$claim['nickname'];}
         // Názorová anketa bez bodů zůstává anonymní i tehdy, když má student přezdívku uloženou v prohlížeči.
         if(!$nickname_required){$nickname='';}
         $db=MHL_DB::db(); $votes=MHL_DB::table('votes');
         // Nebodovaná anketa používá pouze session-scoped klíč, takže nelze spojovat odpovědi napříč otázkami.
         $pkey=$nickname_required?MHL_Core::participant_key($participant_id):hash_hmac('sha256',$participant_id.'|session|'.(int)$session->id,wp_salt('nonce'));
-        return MHL_DB::with_run_lock((int)$run->id, static function($db,$run) use ($session,$question,$mode,$pkey,$nickname,$option,$qmode,$g,$poll_points,$votes) {
+        return MHL_DB::with_run_lock((int)$run->id, static function($db,$run) use ($session,$question,$mode,$pkey,$nickname,$option,$qmode,$votes) {
             $initial_id=(int)$session->id;
             $sessions=MHL_DB::table('sessions');
             $session=$db->get_row($db->prepare("SELECT * FROM {$sessions} WHERE run_id=%d AND question_id=%d AND mode=%s ORDER BY id DESC LIMIT 1 FOR UPDATE",(int)$run->id,(int)$question->ID,$mode));
@@ -261,7 +260,7 @@ class MHL_REST {
             if($qmode==='quiz'){
                 $ci=MHL_Core::question_correct_index((int)$question->ID); $correct=($ci!==null && $option===$ci)?1:0;
                 if($correct){$s=MHL_Core::settings();$mult=(float)(get_post_meta($question->ID,'_mhl_multiplier',true)?:1);$win=max(5,(int)(get_post_meta($question->ID,'_mhl_speed_window',true)?:$s['speed_window']));$factor=max(0.0,1.0-(($ms/1000)/$win));$points=(int)round(((int)$s['base_points']+((int)$s['speed_points']*$factor))*$mult);}
-            } elseif($g['enabled']&&$poll_points>0){$points=$poll_points;}
+            } // Polls always retain null correctness and zero points, including legacy metadata.
             $ok=$db->insert($votes,array('session_id'=>(int)$session->id,'run_id'=>(int)$run->id,'question_id'=>(int)$question->ID,'mode'=>$mode,'participant_key'=>$pkey,'nickname'=>$nickname,'option_index'=>$option,'is_correct'=>$correct,'response_ms'=>$ms,'points'=>$points,'created_at'=>MHL_Core::now_mysql()),array('%d','%d','%d','%s','%s','%s','%d','%d','%d','%d','%s'));
             if(!$ok){return new WP_Error('mhl_vote_failed','Hlas se nepodařilo uložit.',array('status'=>500));}
             // Reject and roll back if the deadline elapsed while calculating/storing the vote.
@@ -398,8 +397,8 @@ class MHL_REST {
     private static function participant_result(?object $run, ?object $session, WP_Post $question, string $mode, string $participant_id): ?array {
         if(!$run || !$session || $participant_id==='' || strlen($participant_id)<16 || strlen($participant_id)>128){return null;}
         $db=MHL_DB::db(); $votes=MHL_DB::table('votes');
-        $g=MHL_Core::run_gamification($run); $qmode=MHL_Core::question_type((int)$question->ID); $poll_points=(int)get_post_meta($question->ID,'_mhl_poll_points',true);
-        $linked_identity=$g['enabled'] && ($qmode==='quiz' || $poll_points>0);
+        $g=MHL_Core::run_gamification($run); $qmode=MHL_Core::question_type((int)$question->ID);
+        $linked_identity=$g['enabled'] && $qmode==='quiz';
         // Anonymní/nebodované ankety používají session-scoped klíč: výsledek lze vrátit jen tomuto prohlížeči, ale hlas nelze propojovat napříč otázkami.
         $pkey=$linked_identity?MHL_Core::participant_key($participant_id):hash_hmac('sha256',$participant_id.'|session|'.(int)$session->id,wp_salt('nonce'));
         $vote=$db->get_row($db->prepare("SELECT nickname,option_index,is_correct,response_ms,points FROM {$votes} WHERE session_id=%d AND mode=%s AND participant_key=%s LIMIT 1",(int)$session->id,$mode,$pkey));

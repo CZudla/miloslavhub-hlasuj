@@ -50,7 +50,7 @@ All listed keys are required; unknown keys are rejected. Limits for strings belo
 |---|---|
 | multiplier | number 1, 1.5 or 2; default 1 |
 | speed_window | integer 5–120; default 20 |
-| poll_points | integer 0–1000; default 0 |
+| poll_points | legacy integer 0–1000; default 0; preserved for round trips, ignored for new votes in the unreleased 2026-10-08 development |
 | time_limit | null (destination default), 0 (no question limit), integer 5–600; default null |
 | rag_policy | exclude, private, public_after_lecture; exclude |
 | async_show_results | boolean; true |

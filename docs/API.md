@@ -1,5 +1,9 @@
 # API 0.8.7
 
+## Nevydaná změna anket — 8. 10. 2026
+
+REST namespace zůstává `mhl/v1`. Anketní `/vote` v live/test/async ukládá nula bodů, `is_correct=null` a prázdnou přezdívku i při historickém `_mhl_poll_points>0`. Question payload má pro anketu `gamification.nickname_required=false` a `join_nickname_required=false`; gamification může zůstat enabled kvůli dřívějšímu celkovému pořadí. Duplicitní hlas a hlas mimo otevřenou relaci se nadále odmítají. Soukromý výsledek se hledá session-scoped klíčem. Historické záznamy se nepřepisují. [Kontrakt, kompatibilita a testy](NEUTRAL-POLLS-REFERENCE.md).
+
 ## Nevydané rozšíření výsledků — 7. 10. 2026
 
 GET `/results/{lecture}/{question}` má v aktuálním vývoji nové aditivní pole `correct_answer_explanation`: obyčejný text nebo `null`. Server jej vyplní pouze pro uzavřenou relaci kvízu, pokud učitel u otázky zvolil `show_after_close` a vysvětlení není prázdné. Výchozí `teacher_only`, `hidden`, neznámá volba, otevřená/neaktivní/přeskočená relace a anketa vracejí `null`. Klient musí text escapovat; nesmí jej vkládat jako HTML.
