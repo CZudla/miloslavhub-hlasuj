@@ -9,15 +9,24 @@ ROOT = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
 parser.add_argument('--php', default=shutil.which('php') or 'C:/php84/php.exe')
 parser.add_argument('--browser', action='store_true')
+parser.add_argument('--browser-suite',choices=('all','i18n'),default='all',help='Focused i18n is not a full release qualification.')
 args = parser.parse_args()
 report = {'status': 'running', 'production_access': False, 'wordpress_database_integration': 'not run'}
 report['started_at'] = datetime.now(timezone.utc).isoformat()
+report['browser_suite']=args.browser_suite
 runtime = ROOT/'runtime'
 runtime.mkdir(exist_ok=True)
 # Invalidate the previous successful run before any new checks start.
 (runtime/'test-results.json').write_text(json.dumps(report, indent=2), encoding='utf8')
 tested_source = source_sha256(ROOT)
 adapter_sha = hashlib.sha256((ROOT/'scripts/requirements_context.py').read_bytes()).hexdigest()
+original_excepthook=sys.excepthook
+def record_runner_error(error_type,error,traceback):
+    report.update(status='error',error_type=error_type.__name__,tested_source_sha256=tested_source,
+                  finished_at=datetime.now(timezone.utc).isoformat())
+    (runtime/'test-results.json').write_text(json.dumps(report,indent=2),encoding='utf8')
+    original_excepthook(error_type,error,traceback)
+sys.excepthook=record_runner_error
 
 def run(command):
     result = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, encoding='utf8')
@@ -36,6 +45,8 @@ report['javascript_lint'] = 'passed'
 report['security_contracts'] = json.loads(run([args.php, str(ROOT/'tests/security.php')]))
 report['ai_contracts'] = json.loads(run([args.php, str(ROOT/'tests/ai.php')]))
 report['ai_disabled'] = json.loads(run([args.php, str(ROOT/'tests/ai.php'), 'disabled']))
+report['i18n_php'] = json.loads(run([args.php, str(ROOT/'tests/i18n.php')]))
+report['i18n_javascript'] = json.loads(run(['node', str(ROOT/'tests/i18n.cjs')]))
 
 run([sys.executable, str(ROOT/'tests/requirements_context.py')])
 report['requirements_context'] = 'passed'
@@ -123,8 +134,10 @@ with tempfile.TemporaryDirectory(prefix='regression-', dir=runtime) as temp:
         check(not (storage/(missing+'.lock')).exists(), 'Unknown session does not leave lock file')
         report['demo_http_checks'] = checks
         if args.browser:
-            report['browser'] = json.loads(run(['node', str(ROOT/'tests/browser.cjs'), base]))
-            report['ai_browser'] = json.loads(run(['node', str(ROOT/'tests/ai-browser.cjs'), base]))
+            if args.browser_suite=='all':
+                report['browser'] = json.loads(run(['node', str(ROOT/'tests/browser.cjs'), base]))
+                report['ai_browser'] = json.loads(run(['node', str(ROOT/'tests/ai-browser.cjs'), base]))
+            report['i18n_browser'] = json.loads(run(['node', str(ROOT/'tests/i18n-browser.cjs'), base]))
         report['status'] = 'passed'
     finally:
         server.terminate(); server.wait(timeout=10); log.close()

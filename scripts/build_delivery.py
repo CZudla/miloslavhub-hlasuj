@@ -19,6 +19,10 @@ assert tests['status']=='passed' and tests['browser']['status']=='passed' and qu
 assert qualification.get('version')==VERSION and qualification.get('integration',{}).get('load',{}).get('status')=='passed'
 assert qualification.get('integration',{}).get('content-wordpress-integration.php',{}).get('status')=='passed'
 assert qualification.get('integration',{}).get('content_admin_browser',{}).get('status')=='passed'
+if (ROOT/'wordpress/miloslavhub-live/includes/class-mhl-access.php').is_file():
+    assert tests.get('browser_suite')=='all' and tests.get('i18n_browser',{}).get('status')=='passed'
+    assert qualification.get('integration',{}).get('access-wordpress-integration.php',{}).get('status')=='passed'
+    assert qualification.get('integration',{}).get('access_admin_browser',{}).get('status')=='passed'
 tracked=[p.decode('utf8') for p in git('ls-files','-z').split(b'\0') if p and source_path(p.decode('utf8'))]
 sources={name:(ROOT/name).read_bytes() for name in tracked if source_path(name)}
 plugin_hash=hashlib.sha256(b''.join(n.encode()+b'\0'+sources[n] for n in sorted(sources) if n.startswith('wordpress/') and n.endswith('.php'))).hexdigest()
@@ -34,7 +38,7 @@ subprocess.run(['git','-C',str(ROOT),'bundle','create',str(bundle),'--all'],chec
 subprocess.run(['git','-C',str(ROOT),'bundle','verify',str(bundle)],check=True,capture_output=True)
 
 common={}
-for p in sorted((ROOT/'docs/customer').glob('*.md')):common['dokumentace/zdroje/'+p.name]=p.read_bytes()
+for p in sorted((ROOT/'docs/customer').rglob('*.md')):common['dokumentace/zdroje/'+p.relative_to(ROOT/'docs/customer').as_posix()]=p.read_bytes()
 for p in sorted((ROOT/f'runtime/handbooks-{VERSION}').iterdir()):
     if p.is_file():common['dokumentace/'+p.name]=p.read_bytes()
 for p in sorted((ROOT/'docs/licenses').iterdir()):common['licence/'+p.name]=p.read_bytes()
@@ -48,15 +52,15 @@ common['marketing/produktovy-list.pdf']=(ROOT/f'runtime/handbooks-{VERSION}/Hlas
 common['marketing/SCREENSHOTY.txt']=f'Aktuální snímky {VERSION} jsou z izolovaného testovacího prostředí se syntetickými daty. Nejde o živé zákaznické výsledky. Historická galerie uvnitř aplikace je označena samostatně.\n'.encode('utf8')
 for p in sorted((ROOT/'runtime/screenshots').glob('*.png')):common['marketing/screenshots/'+p.name]=p.read_bytes()
 integration=qualification['integration']
-check_count=sum(tests.get(k,{}).get('checks',0) for k in ['security_contracts','ai_contracts','ai_disabled','browser','ai_browser'])+tests['demo_http_checks']+sum(integration.get(k,{}).get('checks',0) for k in ['wordpress-integration.php','ai-wordpress-integration.php','content-wordpress-integration.php','concurrency','wordpress_admin_browser','content_admin_browser'])
+check_count=sum(v.get('checks',0) for v in tests.values() if isinstance(v,dict))+tests['demo_http_checks']+sum(v.get('checks',0) for v in integration.values() if isinstance(v,dict))
 summary=f'''# Hlasuj! by MiloslavHub {VERSION}
 
 Nasazený aplikační commit: {deploy['application_commit']}.
 Commit předání zdrojů a dokumentace: {commit}.
 Schéma: {SCHEMA}, bez migrace pro přechod z 0.8.5.
 Ověření: {check_count} kontrol, včetně skutečné WordPress/DB integrace, přenosu obsahu, učitelské administrace a souběhu; navíc místní souběžné dávky 30 a 100 hlasů. Hostingová kapacita a dlouhodobý polling tím nejsou prokázány.
-Nasazeno 5. 10. 2026 na hlasuj.miloslavhub.cz. Stav původního nasazení nedokládá stav nové zákaznické instalace.
-Přenos předmětu s náhledem a importem nových konceptů je dostupný ve formátu JSON v1. Rozsah a omezení popisuje příručka přenosu. Domácí úkoly, kompletní i18n a oddělené organizace zůstávají dalšími etapami.
+Datum vydání: {RELEASE['release_date']}. Nasazení dokládá přiložená zpráva a přesný aplikační commit; stav původního nasazení nedokládá stav nové zákaznické instalace.
+Přenos předmětu s náhledem a importem nových konceptů používá formát JSON v2 a podporuje čtení staršího v1. Rozsah funkcí, jazyků, oprávnění a omezení popisují přiložené příručky konkrétního vydání. Místní organizace ani počet učitelů samy nepotvrzují živou licenci či centrální AUTH. Domácí úkoly jsou mimo aktuální rozsah.
 Licenční a obchodní podmínky vlastního frontendu a assets musí autor dokončit; plugin deklaruje GPL-2.0-or-later, QRCode.js MIT.
 '''
 common['VYDANI.md']=summary.encode('utf8')

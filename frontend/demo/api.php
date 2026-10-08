@@ -107,21 +107,21 @@ try {
                 $stage = (int)$session['stage'];
 
                 if (!mhl_demo_is_open_stage($stage)) {
-                    throw new RuntimeException('Tato otázka už není otevřená.');
+                    throw new RuntimeException(mhl_ui_text('Tato otázka už není otevřená.'));
                 }
 
                 $questionStartsAt = (float)($session['question_starts_at'] ?? 0);
                 if ($questionStartsAt > 0 && microtime(true) < $questionStartsAt) {
-                    throw new RuntimeException('Otázka ještě nezačala. Počkejte na START.');
+                    throw new RuntimeException(mhl_ui_text('Otázka ještě nezačala. Počkejte na START.'));
                 }
 
                 if (!isset($session['participants'][$participantId])) {
-                    throw new RuntimeException('Nejdříve se připojte k demu.');
+                    throw new RuntimeException(mhl_ui_text('Nejdříve se připojte k demu.'));
                 }
 
                 $question = mhl_demo_questions()[$stage] ?? null;
                 if (!$question || !array_key_exists($answer, $question['options'])) {
-                    throw new RuntimeException('Neplatná odpověď.');
+                    throw new RuntimeException(mhl_ui_text('Neplatná odpověď.'));
                 }
 
                 if (!isset($session['answers'][(string)$stage][$participantId])) {
@@ -177,11 +177,11 @@ try {
             $sessionId,
             function (array $session) use ($participantId, $choice): array {
                 if (!in_array((int)($session['stage'] ?? 0), [7, 8], true)) {
-                    throw new RuntimeException('Síň slávy nyní není aktivní.');
+                    throw new RuntimeException(mhl_ui_text('Síň slávy nyní není aktivní.'));
                 }
 
                 if (!isset($session['participants'][$participantId])) {
-                    throw new RuntimeException('Účastník nebyl nalezen.');
+                    throw new RuntimeException(mhl_ui_text('Účastník nebyl nalezen.'));
                 }
 
                 $session['participants'][$participantId]['hall_choice'] = $choice;
@@ -219,7 +219,7 @@ try {
                         $presenterToken
                     )
                 ) {
-                    throw new RuntimeException('Neplatné oprávnění prezentujícího.');
+                    throw new RuntimeException(mhl_ui_text('Neplatné oprávnění prezentujícího.'));
                 }
 
                 $stage = (int)$session['stage'];

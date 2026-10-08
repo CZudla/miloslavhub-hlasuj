@@ -20,6 +20,7 @@ if(($argv[1]??'')==='inspect'){
 $password=getenv('MHL_TEST_ADMIN_PASSWORD');
 if(!$password){throw new RuntimeException('Synthetic password must be supplied in the environment');}
 wp_set_password($password,$admin->ID);wp_set_current_user($admin->ID);
+update_user_meta($admin->ID,'locale','cs_CZ');
 delete_user_meta($admin->ID,'mhl_ai_disabled');delete_option('mhl_ai_daily_usage');
 update_option('mhl_browser_fixture_calls',0);
 MHL_Core::register_content_types();

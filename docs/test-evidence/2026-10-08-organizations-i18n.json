@@ -1,0 +1,449 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-08T11:41:56.025599+00:00",
+  "implementation_state": "unreleased development, no production change",
+  "source_base_commit": "ede056a5f8152ba938585bf4120fdf68a4d6b8f1",
+  "central_submission_at_recording": "pending implementation commit publication",
+  "requirements_baseline": {
+    "registry_version": "1.6.0",
+    "snapshot_sha256": "aa53c6696d6c5dc83e596bc397ecba722a8c2b1b44abfa8e958e673be4ad2bcf",
+    "source": "private-api-v2",
+    "all_count": 168,
+    "open_count": 149,
+    "all_pages": 2,
+    "open_pages": 2,
+    "central_generation": null
+  },
+  "scope_proposals": [
+    {
+      "receipt": "6405859c087e82a574fc4c617b62911f",
+      "type": "decision",
+      "status": "pending",
+      "authoritative_applied": false
+    },
+    {
+      "receipt": "0742bff249a76d69304b8ff130741819",
+      "target_key": "hlasuj:requirement:HLS-035",
+      "base_revision": 1,
+      "status": "pending",
+      "authoritative_applied": false
+    }
+  ],
+  "regression_check_count": 258,
+  "integration_check_count": 450,
+  "requirements_context_unittest_methods": 15,
+  "regression": {
+    "status": "passed",
+    "production_access": false,
+    "wordpress_database_integration": "not run",
+    "started_at": "2026-10-08T11:38:51.706191+00:00",
+    "browser_suite": "all",
+    "php_lint": "passed",
+    "javascript_lint": "passed",
+    "security_contracts": {
+      "suite": "security-contracts",
+      "checks": 51,
+      "status": "passed"
+    },
+    "ai_contracts": {
+      "status": "passed",
+      "checks": 93,
+      "provider": "in-memory double",
+      "paid_calls": 0
+    },
+    "ai_disabled": {
+      "status": "passed",
+      "checks": 3
+    },
+    "i18n_php": {
+      "status": "passed",
+      "checks": 12,
+      "marked_ui_literals_audited": 805
+    },
+    "i18n_javascript": {
+      "status": "passed",
+      "checks": 18,
+      "catalog_messages": 997,
+      "scope": "UI literals, locale formatting and dynamic content boundary"
+    },
+    "requirements_context": "passed",
+    "demo_http_checks": 18,
+    "browser": {
+      "status": "passed",
+      "checks": 23,
+      "neutral_poll_checks": 8,
+      "screenshots": 3,
+      "backend": "synthetic HTTP fixtures; demo PHP real",
+      "external_requests": 0
+    },
+    "ai_browser": {
+      "status": "passed",
+      "checks": 12,
+      "external_requests": 0,
+      "provider": "synthetic HTTP fixture"
+    },
+    "i18n_browser": {
+      "status": "passed",
+      "checks": 28,
+      "external_requests": 0,
+      "backend": "synthetic HTTP fixtures; marketing and demo PHP real"
+    },
+    "tested_source_sha256": "46c0eb56d460b8c5a7f531ea1f70c8a2ff4242c325dd04b578c9666c563b345c",
+    "requirements_context_script_sha256": "3ad7aaccc903403eb966817bfd71e54b367081419bebd20f04b386921f74f590",
+    "finished_at": "2026-10-08T11:39:41.265760+00:00"
+  },
+  "integration": {
+    "status": "passed",
+    "production_data_used": false,
+    "paid_api_calls": 0,
+    "external_http_blocked": true,
+    "started_at": "2026-10-08T11:38:59.237774+00:00",
+    "tested_source_sha256": "46c0eb56d460b8c5a7f531ea1f70c8a2ff4242c325dd04b578c9666c563b345c",
+    "test_database_max_connections": 500,
+    "wordpress-integration.php": {
+      "status": "passed",
+      "checks": 19,
+      "wordpress": "7.1.2",
+      "database": "11.4.9-MariaDB",
+      "production_data_used": false,
+      "concurrency_tested": false
+    },
+    "ai-wordpress-integration.php": {
+      "status": "passed",
+      "checks": 21,
+      "wordpress": "7.1.2",
+      "database": "11.4.9",
+      "provider": "pre_http_request fixture",
+      "paid_calls": 0
+    },
+    "content-wordpress-integration.php": {
+      "status": "passed",
+      "checks": 50,
+      "production_data_used": false,
+      "paid_api_calls": 0
+    },
+    "feedback-wordpress-integration.php": {
+      "status": "passed",
+      "checks": 80,
+      "question_id": 27,
+      "actual_wordpress_database": true,
+      "production_data_used": false
+    },
+    "poll-wordpress-integration.php": {
+      "status": "passed",
+      "checks": 60,
+      "actual_wordpress_database": true,
+      "production_data_used": false
+    },
+    "access-wordpress-integration.php": {
+      "status": "passed",
+      "checks": 130,
+      "synthetic_data": true,
+      "organizations": 2,
+      "accounts": 5,
+      "production_access": false,
+      "browser_fixture": {
+        "users": {
+          "a": 5,
+          "b": 6,
+          "c": 7,
+          "viewer": 8,
+          "manager": 9
+        },
+        "a": {
+          "subject": 44,
+          "lecture": 45,
+          "question": 46
+        },
+        "b": {
+          "subject": 47,
+          "lecture": 48,
+          "question": 49
+        },
+        "c": {
+          "subject": 50,
+          "lecture": 51,
+          "question": 52
+        },
+        "run_id": 8
+      }
+    },
+    "concurrency": {
+      "status": "passed",
+      "checks": 28,
+      "independent_processes": true,
+      "production_data_used": false,
+      "paid_api_calls": 0
+    },
+    "load": {
+      "status": "passed",
+      "scenarios": [
+        {
+          "students": 30,
+          "concurrent_workers": 30,
+          "status": "passed",
+          "votes": 30,
+          "burst_seconds": 2.586,
+          "handler_p50_ms": 2631.1,
+          "handler_p95_ms": 2804.5,
+          "handler_max_ms": 2907.4
+        },
+        {
+          "students": 100,
+          "concurrent_workers": 100,
+          "status": "passed",
+          "votes": 100,
+          "burst_seconds": 3.846,
+          "handler_p50_ms": 3720.8,
+          "handler_p95_ms": 4128.7,
+          "handler_max_ms": 4553.6
+        }
+      ],
+      "production_data_used": false,
+      "paid_api_calls": 0,
+      "transport": "independent PHP CLI processes using real REST callbacks and MariaDB",
+      "limits": "Local burst test; does not measure hosting HTTP workers, network or sustained polling"
+    },
+    "wordpress_admin_browser": {
+      "status": "passed",
+      "checks": 15,
+      "actual_wordpress_admin": true,
+      "external_requests_blocked": 7,
+      "paid_api_calls": 0
+    },
+    "browser_persistence": "passed",
+    "content_admin_browser": {
+      "status": "passed",
+      "checks": 11,
+      "actual_wordpress_admin": true,
+      "paid_api_calls": 0
+    },
+    "feedback_admin_browser": {
+      "status": "passed",
+      "checks": 10,
+      "actual_wordpress_admin": true,
+      "external_qr_requests": 0
+    },
+    "access_admin_browser": {
+      "status": "passed",
+      "checks": 26,
+      "accounts": 3,
+      "organizations": 2,
+      "external_requests_blocked": 13,
+      "backend": "real isolated WordPress and MariaDB"
+    },
+    "servers_stopped": true,
+    "finished_at": "2026-10-08T11:41:40.352085+00:00"
+  },
+  "prior_uncommitted_attempts": [
+    {
+      "local_record": "access-i18n-regression-initial-error.json",
+      "status": "error",
+      "reason": "JavaScript helper shadowed an existing local name; corrected.",
+      "tested_source_sha256": "0297c1885b900193641bc3a88ab4457f882332ace9b8ffb73d74b9049aa7794d",
+      "source_commit": null,
+      "started_at": "2026-10-08T10:04:09.119780+00:00",
+      "finished_at": null,
+      "error_type": "BrowserTimeout",
+      "central_submission": "protected pending observation: verification schema requires an actual commit; uncommitted failure is not attributed to a different committed source"
+    },
+    {
+      "local_record": "i18n-pcre-focused-error.json",
+      "status": "error",
+      "reason": "Initial PHP regular expression exceeded compiled-pattern limit; bounded chunks replaced it.",
+      "tested_source_sha256": null,
+      "source_commit": null,
+      "started_at": null,
+      "finished_at": null,
+      "error_type": "PCRE compiled-pattern size limit; TypeError from null replacement result",
+      "central_submission": "protected pending observation: verification schema requires an actual commit; uncommitted failure is not attributed to a different committed source"
+    },
+    {
+      "local_record": "access-i18n-regression-error-2.json",
+      "status": "error",
+      "reason": "New fixture expected desktop navigation while using mobile width.",
+      "tested_source_sha256": "56ab757fe8967f6ab1860000fd74fb6c0af1e5b5a0172c395ec76219442722bb",
+      "source_commit": null,
+      "started_at": "2026-10-08T10:33:24.742395+00:00",
+      "finished_at": "2026-10-08T10:35:24.563102+00:00",
+      "error_type": "AssertionError",
+      "central_submission": "protected pending observation: verification schema requires an actual commit; uncommitted failure is not attributed to a different committed source"
+    },
+    {
+      "local_record": "access-wordpress-error-2.json",
+      "status": "error",
+      "reason": "Restored fixture remained draft; corrected explicit synthetic publish step.",
+      "tested_source_sha256": null,
+      "source_commit": null,
+      "started_at": "2026-10-08T10:33:24.996461+00:00",
+      "finished_at": "2026-10-08T10:34:22.401565+00:00",
+      "error_type": "RuntimeError",
+      "central_submission": "protected pending observation: verification schema requires an actual commit; uncommitted failure is not attributed to a different committed source"
+    },
+    {
+      "local_record": "access-i18n-regression-error-3.json",
+      "status": "error",
+      "reason": "Projection fixture selected an incorrect results container.",
+      "tested_source_sha256": "b022e90284c63b88b67a4a72ed23e4470dfd8f8824e6436e09073b2f05502192",
+      "source_commit": null,
+      "started_at": "2026-10-08T10:37:34.302778+00:00",
+      "finished_at": "2026-10-08T10:42:47.822932+00:00",
+      "error_type": "AssertionError",
+      "central_submission": "protected pending observation: verification schema requires an actual commit; uncommitted failure is not attributed to a different committed source"
+    },
+    {
+      "local_record": "access-wordpress-error-3.json",
+      "status": "error",
+      "reason": "Concurrency fixture deleted a test as anonymous; new permission guard correctly denied it. Fixture uses authenticated teacher.",
+      "tested_source_sha256": "b022e90284c63b88b67a4a72ed23e4470dfd8f8824e6436e09073b2f05502192",
+      "source_commit": null,
+      "started_at": "2026-10-08T10:37:34.695649+00:00",
+      "finished_at": "2026-10-08T10:38:46.545581+00:00",
+      "error_type": "RuntimeError",
+      "central_submission": "protected pending observation: verification schema requires an actual commit; uncommitted failure is not attributed to a different committed source"
+    },
+    {
+      "local_record": "access-i18n-regression-error-4.json",
+      "status": "error",
+      "reason": "Demo intro lacked explicit fictional-participant notice; added it to both intro layouts.",
+      "tested_source_sha256": "46976fad67467eb836d1ab80fa8f1b9a87f07b92e5d9df5195c1c17c78782349",
+      "source_commit": null,
+      "started_at": "2026-10-08T10:44:41.517354+00:00",
+      "finished_at": "2026-10-08T10:46:07.133762+00:00",
+      "error_type": "AssertionError",
+      "central_submission": "protected pending observation: verification schema requires an actual commit; uncommitted failure is not attributed to a different committed source"
+    },
+    {
+      "local_record": "access-wordpress-error-4.json",
+      "status": "error",
+      "reason": "Incorrectly escaped HTML attribute delimiter contaminated editor options; repaired markup and added real browser checks.",
+      "tested_source_sha256": "46976fad67467eb836d1ab80fa8f1b9a87f07b92e5d9df5195c1c17c78782349",
+      "source_commit": null,
+      "started_at": "2026-10-08T10:44:52.397299+00:00",
+      "finished_at": "2026-10-08T10:46:59.262210+00:00",
+      "error_type": "RuntimeError",
+      "central_submission": "protected pending observation: verification schema requires an actual commit; uncommitted failure is not attributed to a different committed source"
+    },
+    {
+      "local_record": "access-i18n-regression-error-5.json",
+      "status": "error",
+      "reason": "Fixture prefixed an already absolute demo link; URL resolution corrected.",
+      "tested_source_sha256": "99476939b9420eb71982fb49dfc3c14b1a0bb095128576a09afe69747c0dfd22",
+      "source_commit": null,
+      "started_at": "2026-10-08T10:50:34.528903+00:00",
+      "finished_at": "2026-10-08T10:53:03.126044+00:00",
+      "error_type": "AssertionError",
+      "central_submission": "protected pending observation: verification schema requires an actual commit; uncommitted failure is not attributed to a different committed source"
+    },
+    {
+      "local_record": "access-wordpress-error-5.json",
+      "status": "error",
+      "reason": "Local PHP server has no pretty REST rewrite; fixture now calls real index.php REST route.",
+      "tested_source_sha256": "99476939b9420eb71982fb49dfc3c14b1a0bb095128576a09afe69747c0dfd22",
+      "source_commit": null,
+      "started_at": "2026-10-08T10:50:45.053025+00:00",
+      "finished_at": "2026-10-08T10:54:20.291211+00:00",
+      "error_type": "RuntimeError",
+      "central_submission": "protected pending observation: verification schema requires an actual commit; uncommitted failure is not attributed to a different committed source"
+    },
+    {
+      "local_record": "access-i18n-regression-error-6.json",
+      "status": "error",
+      "reason": "Authoring helper inserted PHP into a PHP string for one placeholder; lint caught it and source was corrected.",
+      "tested_source_sha256": "dbb131a5fceb6af228e87d7f3fd991f5fc6173ded6c9bcb6168254e13b11e2aa",
+      "source_commit": null,
+      "started_at": "2026-10-08T10:55:03.234457+00:00",
+      "finished_at": "2026-10-08T10:55:04.597861+00:00",
+      "error_type": "AssertionError",
+      "central_submission": "protected pending observation: verification schema requires an actual commit; uncommitted failure is not attributed to a different committed source"
+    },
+    {
+      "local_record": "access-wordpress-error-6.json",
+      "status": "error",
+      "reason": "Same placeholder parse error stopped integration; servers shut down.",
+      "tested_source_sha256": "dbb131a5fceb6af228e87d7f3fd991f5fc6173ded6c9bcb6168254e13b11e2aa",
+      "source_commit": null,
+      "started_at": "2026-10-08T10:55:05.503163+00:00",
+      "finished_at": "2026-10-08T10:55:39.961305+00:00",
+      "error_type": "RuntimeError",
+      "central_submission": "protected pending observation: verification schema requires an actual commit; uncommitted failure is not attributed to a different committed source"
+    },
+    {
+      "local_record": "access-wordpress-error-7.json",
+      "status": "error",
+      "reason": "Fixture waited for quiz explanation visibility on a poll, which correctly hides it. English poll controls now tested.",
+      "tested_source_sha256": "038e405fd27ba7c3c744d485e6c5fdc833728f943578781a3733a959d2dd184e",
+      "source_commit": null,
+      "started_at": "2026-10-08T10:56:38.767980+00:00",
+      "finished_at": "2026-10-08T11:03:47.806576+00:00",
+      "error_type": "RuntimeError",
+      "central_submission": "protected pending observation: verification schema requires an actual commit; uncommitted failure is not attributed to a different committed source"
+    },
+    {
+      "local_record": "access-wordpress-error-8.json",
+      "status": "error",
+      "reason": "English browser found a missing Answer placeholder translation. Marked-literal audit identified remaining omissions; catalog completed and PHP coverage check added.",
+      "tested_source_sha256": "685c4ba062a11de223c0b01445bd38cfaf736da6ab2be7c9f8afe4bad010d34e",
+      "source_commit": null,
+      "started_at": "2026-10-08T11:05:07.306135+00:00",
+      "finished_at": "2026-10-08T11:09:49.397892+00:00",
+      "error_type": "RuntimeError",
+      "central_submission": "protected pending observation: verification schema requires an actual commit; uncommitted failure is not attributed to a different committed source"
+    },
+    {
+      "local_record": "access-wordpress-error-9.json",
+      "status": "error",
+      "reason": "Organization submenu registered before parent, producing a mismatched WordPress dispatch hook and HTTP 403. Registration now follows parent; browser explicitly checks HTTP 200.",
+      "tested_source_sha256": "9b5def266dffdc9f221fb384fa2b5a16be2e4b0efd716600c7d8e5b415cbb861",
+      "source_commit": null,
+      "started_at": "2026-10-08T11:13:27.273651+00:00",
+      "finished_at": "2026-10-08T11:19:30.474500+00:00",
+      "error_type": "RuntimeError",
+      "central_submission": "protected pending observation: verification schema requires an actual commit; uncommitted failure is not attributed to a different committed source"
+    },
+    {
+      "local_record": "access-wordpress-error-10.json",
+      "status": "error",
+      "reason": "One later browser run reported a JavaScript serialize error. Error reporting was expanded with page URL and stack; final rerun status is recorded separately. Cause has not been established by this observation.",
+      "tested_source_sha256": "4b6cbecbd51b05e6d50442f403e31fe4a9dfed61b737518d60a51a6f93d16226",
+      "source_commit": null,
+      "started_at": "2026-10-08T11:35:47.666770+00:00",
+      "finished_at": "2026-10-08T11:38:22.308129+00:00",
+      "error_type": "RuntimeError",
+      "central_submission": "protected pending observation: verification schema requires an actual commit; uncommitted failure is not attributed to a different committed source"
+    }
+  ],
+  "skipped": [
+    {
+      "test_id": "live-auth-multiple-user-e2e",
+      "reason": "No qualified Hlasuj client registration and current account/session assurance integration."
+    },
+    {
+      "test_id": "live-license-quota-concurrent-reservation",
+      "reason": "Authoritative LICENSE/ENTITLEMENTS source contracts and deployment remain unqualified; local count is not enforcement."
+    },
+    {
+      "test_id": "production-hosting-load-qualification",
+      "reason": "Only isolated CLI worker bursts ran; hosting workers/network/polling were not tested."
+    },
+    {
+      "test_id": "production-deployment-organizations-i18n",
+      "reason": "Final integrated release blocked by upstream contracts; fresh coordinated backup/restore/rollback still required."
+    },
+    {
+      "test_id": "final-two-release-packages",
+      "reason": "No new qualified production release; builder guards retained."
+    }
+  ],
+  "visual_review": {
+    "english_demo_mobile": "Inspected; decimal separator issue corrected and covered by browser check.",
+    "screenshots_publication": "Screenshots are synthetic; runtime images retained locally."
+  },
+  "limitations": [
+    "Local tests do not prove paid AI output quality.",
+    "WordPress avatar requests are blocked in synthetic browsers; production avatar policy remains installation configuration.",
+    "Historical failed uncommitted sources have no invented commit; missing timestamps/hash remain null.",
+    "No homework implementation.",
+    "No approval/review/apply/publish/revoke operation used."
+  ]
+}

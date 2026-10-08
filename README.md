@@ -12,6 +12,10 @@ Vývoj zahrnuje vysvětlení odpovědí s výchozím soukromým režimem, pozná
 
 Vývoj z 8. 10. dokončuje neutrální ankety: žádné nové soutěžní body ani povinná přezdívka, i při starém nastavení bodů za účast. Historické hlasy se nepřepočítávají. [Příručka anket](docs/customer/12-ANKETY.md), [technická reference](docs/NEUTRAL-POLLS-REFERENCE.md), [vývoj a testy 8. 10.](docs/DEVELOPMENT-2026-10-08.md).
 
+Následná nevydaná etapa přidává samostatné učitelské účty, místní organizace, vlastnictví/sdílení obsahu a české/anglické ovládání. [Technická reference a integrační hranice](docs/ORGANIZATIONS-I18N-REFERENCE.md), [manuál učitele](docs/customer/13-ORGANIZACE-A-JAZYKY.md), [English teacher guide](docs/customer/en/USER-GUIDE.md), [English organisation guide](docs/customer/en/TEACHERS-AND-ORGANISATIONS.md), [English product overview](docs/marketing/en/PRODUCT-OVERVIEW.md). Místní role a výpočet učitelských účtů nenahrazují centrální AUTH a platnou licenci. Živé propojení ještě není kvalifikované. Domácí úkoly jsou mimo aktuální zadání.
+
+[Výsledky ověření organizací a jazyků a podmínky finálního vydání](docs/DEVELOPMENT-ORGANIZATIONS-I18N-2026-10-08.md).
+
 Vývojová migrace GPT‑6 a vypnutý AI pilot: [stav migrace](docs/GPT-6-MIGRATION-STATUS.md), [popis pilotu a testů](docs/AI-PILOT.md). AI je standardně vypnutá. Rozsah vydání dokládá RELEASE-0.8.9.md; konkrétní nasazení je doloženo samostatnou zprávou DEPLOYMENT-2026-10-05-0.8.9.md.
 
 Rozsah, provedená ověření a zbývající omezení jsou v docs/RELEASE-0.8.9.md. Stav konkrétního nasazení dokládá samostatná deployment zpráva; sestavení ZIPu samo nasazení nepotvrzuje.
@@ -33,7 +37,7 @@ python tests/run.py --php C:/php84/php.exe
 python tests/run.py --php C:/php84/php.exe --browser
 ```
 
-Node musí mít dostupný balíček `playwright` (případně přes `NODE_PATH`). Testy založí dočasný server pouze na `127.0.0.1`, používají syntetická data a po dokončení jej ukončí. Výsledky a screenshoty zůstávají v ignorované složce `runtime/`. Testy WordPress kontraktů používají testovací objekty; dodatečný tests/wordpress-integration.php ověřuje 19 scénářů na skutečném WordPressu a MariaDB v izolovaném prostředí. Plné místní WordPress/DB ověření, 28 kontrol souběhu a 13 kontrol skutečné administrace v Edge spouští `tests/local-integration.py`; postup je v [AI-PILOT.md](docs/AI-PILOT.md). [Souhrn výsledků z 5. 10.](docs/test-evidence/2026-10-05-local.json) neobsahuje konfigurace ani provozní logy. Místní souběžné dávky 30 a 100 hlasů spustíte přepínačem --load u tests/local-integration.py. Nejde o ověření kapacity hostingu.
+Node musí mít dostupný balíček `playwright` (případně přes `NODE_PATH`). Testy založí dočasný server pouze na `127.0.0.1`, používají syntetická data a po dokončení jej ukončí. Výsledky a screenshoty zůstávají v ignorované složce `runtime/`. Testy WordPress kontraktů používají testovací objekty; dodatečný tests/wordpress-integration.php ověřuje 19 scénářů na skutečném WordPressu a MariaDB v izolovaném prostředí. Plné místní WordPress/DB ověření, kontroly souběhu a scénáře skutečné administrace v Edge spouští `tests/local-integration.py`; postup je v [AI-PILOT.md](docs/AI-PILOT.md). [Souhrn výsledků z 5. 10.](docs/test-evidence/2026-10-05-local.json) neobsahuje konfigurace ani provozní logy. Místní souběžné dávky 30 a 100 hlasů spustíte přepínačem --load u tests/local-integration.py. Nejde o ověření kapacity hostingu.
 
 ## Dokumentace
 
@@ -57,6 +61,6 @@ Sestavení odmítne nečistý checkout, citlivé názvy souborů, zastaralý fro
 
 ## Přenos obsahu
 
-Menu **Živé hlasování → Přenést obsah** exportuje předmět, přednášky a jejich otázky jako otevřený JSON. Vydání 0.8.9 používá v1; tento nevydaný vývoj exportuje v2 s vysvětleními a soukromými poznámkami a importuje v1 i v2. Import nejprve ukáže náhled a po potvrzení vytvoří nové koncepty. Stávající obsah a QR zachovává. [Postup učitele](docs/customer/10-PRENOS-OBSAHU.md), [technický formát a hranice](docs/CONTENT-FORMAT.md). Přenos vyžaduje oprávnění správce, platné nonces a potvrzení náhledu; výsledky, účty, kategorie, soubory a externí URL nejsou součástí. Vlastní texty včetně poznámek zkontrolujte před sdílením kvůli osobním údajům.
+Menu **Živé hlasování → Přenést obsah** exportuje předmět, přednášky a jejich otázky jako otevřený JSON. Vydání 0.8.9 používá v1; tento nevydaný vývoj exportuje v2 s vysvětleními a soukromými poznámkami a importuje v1 i v2. Import nejprve ukáže náhled a po potvrzení vytvoří nové koncepty. Stávající obsah a QR zachovává. [Postup učitele](docs/customer/10-PRENOS-OBSAHU.md), [technický formát a hranice](docs/CONTENT-FORMAT.md). Kvalifikovaná 0.8.9 vyžaduje správce; aktuální vývoj kontroluje učitelský přístup, oprávnění ke každému exportovanému objektu a právo vytvářet obsah ve vybraném prostoru. Platné nonces a potvrzení náhledu zůstávají povinné. Výsledky, účty, členství, ACL, kategorie, soubory a externí URL se nepřenášejí. Vlastní texty včetně poznámek zkontrolujte před sdílením kvůli osobním údajům.
 
 Přenos navíc ověřuje 	ests/content-wordpress-integration.php (50 kontrol na skutečném WordPressu/MariaDB) a 	ests/content-wordpress-browser.cjs (11 kontrol přihlášené administrace v Edge). Souhrn: [testy přenosu a celé integrace](docs/test-evidence/2026-10-05-content-transfer.json).

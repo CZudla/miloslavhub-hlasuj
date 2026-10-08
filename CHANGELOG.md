@@ -1,5 +1,10 @@
 # UNRELEASED · 2026-10-08
 
+- Místní organizace a samostatné učitelské účty, vlastnictví a sdílení předmětů/přednášek/otázek, serverové oprávnění editace, řízení výuky a výsledků. Správce organizace nezískává správu WordPressu; převod vlastníka zachovává QR.
+- Český/anglický katalog ovládání pro frontend, marketing, demo, WordPress editor a zprávy API. Vlastní obsah zůstává v původním jazyce. Přepnutí jazyka nepřiděluje oprávnění.
+- Výpočet unikátních účtů s právy k výuce za celou organizaci podle potvrzeného zadání. Živé AUTH/licence a souběžná externí kvóta zůstávají integrační podmínkou; tato etapa je neprohlašuje za dokončené.
+- [Reference](docs/ORGANIZATIONS-I18N-REFERENCE.md), český a anglický manuál. Domácí úkoly jsou mimo aktuální rozsah.
+
 - Neutrální anketa v live/test/async: žádné nové soutěžní body, povinná přezdívka ani hodnocení správnosti, i při starém nastavení bodů za účast. Historická data se nepřepočítávají.
 - Editor již nenabízí body za anketu. Starší obsahové soubory v1/v2 se nadále přenášejí beze ztráty metadat; historické `poll_points` neovlivňuje nové hlasy.
 - Studentské výsledky a projekce potlačují soutěžní zvýraznění ankety a vysvětlují původ dřívějšího celkového pořadí. Příručka a reference: docs/customer/12-ANKETY.md a docs/NEUTRAL-POLLS-REFERENCE.md.

@@ -1,5 +1,11 @@
 # Bezpečnost a hranice ověření
 
+## Nevydaná etapa 8. 10. 2026 — učitelé a organizace
+
+Aktuální vývoj nahrazuje jediný administrátorský přístup lokální schopností aplikace a oprávněním konkrétního objektu. Kontroluje organizaci, vlastníka, sdílení, spuštění/změnu relace, export a mazání testů. Dotazy administrace filtruje před stránkováním. Správce organizace nedostává `manage_options`; technický správce instalace má nadále přístup k celé instalaci. Původní QR a veřejné výsledkové cesty zachovávají dosavadní veřejný kontrakt. Podrobná [reference](ORGANIZATIONS-I18N-REFERENCE.md) uvádí role, dědění, odvolání a hranice.
+
+Místní WordPress účty nejsou dokončená centrální AUTH integrace. Licence není udělena místní rolí ani výpočtem počtu účtů. Před cutoverem je nutné kvalifikovat skutečné identity, stav účtu, MFA, odvolání a zdrojové licenční rozhodnutí. Starší sekce níže zachycují původní kvalifikované vydání a nesmějí se číst jako nové testové či produkční potvrzení.
+
 ## Nevydaná etapa 7. 10. 2026
 
 - QR administrace používá místní knihovnu s licencí a kontrolními součty. Neodesílá hlasovací adresy externímu QR generátoru. Tím je v této vývojové etapě vyřešen starší bod o backendových QR níže.

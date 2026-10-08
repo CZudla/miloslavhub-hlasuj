@@ -1,5 +1,13 @@
 # Soukromí
 
+## Nevydaná etapa 8. 10. 2026 — organizace a jazyky
+
+Vývoj odděluje učitelský obsah místním vlastnictvím, členstvím a sdílením. Soukromé poznámky mohou číst oprávnění spolupracující učitelé a technický správce instalace; vlastník musí obsah zkontrolovat před sdílením. Odebrání členství odvolá přístup a nemaže obsah. Členství a ACL se nepřenášejí obsahovým exportem. Veřejné studentské/výsledkové odkazy zachovávají původní režim.
+
+Jazyková volba používá místní cookie `mhl_ui_lang` na jeden rok, HttpOnly/SameSite=Lax a na HTTPS Secure. Obsahuje pouze `cs` nebo `en`. Překlad běží místně bez externí překladové služby. Otázky, odpovědi, poznámky a přezdívky se překladači neposílají; mění se ovládání. [Reference a současné integrační hranice](ORGANIZATIONS-I18N-REFERENCE.md).
+
+WordPress administrace může podle nastavení instalace načítat avatar přes Gravatar. Místní browser testy tyto požadavky blokují a vykazují samostatně; jejich úspěch neprokazuje, že je produkční WordPress nevytváří. Správce musí při kvalifikaci provozu posoudit či vypnout externí avatary a ověřit také ostatní pluginy. Překladový katalog ani místní QR generátor tuto závislost nepotřebují.
+
 ## Nevydaná etapa 8. 10. 2026 — ankety
 
 Nové anketní hlasy v live/test/async používají klíč konkrétní relace a prázdnou přezdívku také tehdy, když starší metadata obsahují body za účast. Přezdívka poslaná klientem se do hlasu neukládá. Body za anketu jsou nulové. Tato změna nemaže starší globálně propojené anketní hlasy ani jejich historické body. Vlastní odpověď staré bodované ankety může přestat být dostupná novým session-scoped vyhledáním; agregace zůstává zachovaná.

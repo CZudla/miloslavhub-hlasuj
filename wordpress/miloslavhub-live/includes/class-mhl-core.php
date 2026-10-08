@@ -1,5 +1,6 @@
 <?php
 if (!defined('ABSPATH')) { exit; }
+require_once __DIR__.'/class-mhl-i18n.php';
 
 class MHL_Core {
     public static function init(): void {
@@ -47,7 +48,7 @@ class MHL_Core {
         $ids=get_posts(array(
             'post_type'=>$post_type,'post_status'=>'any','numberposts'=>2,'fields'=>'ids',
             'meta_key'=>'_mhl_permanent_slug','meta_value'=>$slug,
-            'post__not_in'=>$exclude_id?array($exclude_id):array()
+            '_mhl_public_lookup'=>true,'post__not_in'=>$exclude_id?array($exclude_id):array()
         ));
         return !empty($ids);
     }
@@ -86,19 +87,19 @@ class MHL_Core {
 
     public static function register_content_types(): void {
         register_post_type('mhl_subject', array(
-            'labels'=>array('name'=>'Předměty','singular_name'=>'Předmět','add_new_item'=>'Přidat předmět','edit_item'=>'Upravit předmět','new_item'=>'Nový předmět','search_items'=>'Hledat předměty'),
-            'public'=>false,'show_ui'=>true,'show_in_menu'=>'mhl-live','supports'=>array('title'),'show_in_rest'=>false,'menu_icon'=>'dashicons-book-alt'
+            'labels'=>array('name'=>MHL_I18n::text('Předměty'),'singular_name'=>MHL_I18n::text('Předmět'),'add_new_item'=>MHL_I18n::text('Přidat předmět'),'edit_item'=>MHL_I18n::text('Upravit předmět'),'new_item'=>MHL_I18n::text('Nový předmět'),'search_items'=>MHL_I18n::text('Hledat předměty')),
+            'public'=>false,'show_ui'=>true,'show_in_menu'=>'mhl-live','supports'=>array('title'),'show_in_rest'=>false,'capabilities'=>MHL_Access::capabilities(),'map_meta_cap'=>true,'menu_icon'=>'dashicons-book-alt'
         ));
         register_post_type('mhl_lecture', array(
-            'labels'=>array('name'=>'Přednášky','singular_name'=>'Přednáška','add_new_item'=>'Přidat přednášku','edit_item'=>'Upravit přednášku','new_item'=>'Nová přednáška','search_items'=>'Hledat přednášky'),
-            'public'=>false,'show_ui'=>true,'show_in_menu'=>'mhl-live','supports'=>array('title'),'show_in_rest'=>false,'menu_icon'=>'dashicons-welcome-learn-more'
+            'labels'=>array('name'=>MHL_I18n::text('Přednášky'),'singular_name'=>MHL_I18n::text('Přednáška'),'add_new_item'=>MHL_I18n::text('Přidat přednášku'),'edit_item'=>MHL_I18n::text('Upravit přednášku'),'new_item'=>MHL_I18n::text('Nová přednáška'),'search_items'=>MHL_I18n::text('Hledat přednášky')),
+            'public'=>false,'show_ui'=>true,'show_in_menu'=>'mhl-live','supports'=>array('title'),'show_in_rest'=>false,'capabilities'=>MHL_Access::capabilities(),'map_meta_cap'=>true,'menu_icon'=>'dashicons-welcome-learn-more'
         ));
         register_post_type('mhl_question', array(
-            'labels'=>array('name'=>'Banka otázek','singular_name'=>'Otázka','add_new_item'=>'Přidat otázku','edit_item'=>'Upravit otázku','new_item'=>'Nová otázka','search_items'=>'Hledat otázky'),
-            'public'=>false,'show_ui'=>true,'show_in_menu'=>'mhl-live','supports'=>array('title'),'show_in_rest'=>false,'menu_icon'=>'dashicons-editor-help'
+            'labels'=>array('name'=>MHL_I18n::text('Banka otázek'),'singular_name'=>MHL_I18n::text('Otázka'),'add_new_item'=>MHL_I18n::text('Přidat otázku'),'edit_item'=>MHL_I18n::text('Upravit otázku'),'new_item'=>MHL_I18n::text('Nová otázka'),'search_items'=>MHL_I18n::text('Hledat otázky')),
+            'public'=>false,'show_ui'=>true,'show_in_menu'=>'mhl-live','supports'=>array('title'),'show_in_rest'=>false,'capabilities'=>MHL_Access::capabilities(),'map_meta_cap'=>true,'menu_icon'=>'dashicons-editor-help'
         ));
         register_taxonomy('mhl_question_category', array('mhl_question'), array(
-            'labels'=>array('name'=>'Kategorie otázek','singular_name'=>'Kategorie otázky'),
+            'labels'=>array('name'=>MHL_I18n::text('Kategorie otázek'),'singular_name'=>MHL_I18n::text('Kategorie otázky')),
             'public'=>false,'show_ui'=>true,'show_admin_column'=>true,'hierarchical'=>true,'show_in_rest'=>false
         ));
     }
@@ -267,8 +268,8 @@ class MHL_Core {
     private static function resolve_brand_template(array $data): array {
         $brand=$data['brand_template']??'miloslavhub';
         if($brand==='fes_upce'){
-            $data['brand_name']='Fakulta ekonomicko-správní';
-            $data['brand_subtitle']='Univerzita Pardubice · živé hlasování';
+            $data['brand_name']=MHL_I18n::text('Fakulta ekonomicko-správní');
+            $data['brand_subtitle']=MHL_I18n::text('Univerzita Pardubice · živé hlasování');
             $data['brand_url']='https://fes.upce.cz';
             $data['brand_logo_url']='';
             $data['primary_color']='#172033';
@@ -276,8 +277,8 @@ class MHL_Core {
             $data['accent_soft']='#edf6e8';
             $data['show_miloslavhub']=false;
         } elseif($brand==='neutral'){
-            $data['brand_name']='Živé hlasování';
-            $data['brand_subtitle']='Interaktivní výuka';
+            $data['brand_name']=MHL_I18n::text('Živé hlasování');
+            $data['brand_subtitle']=MHL_I18n::text('Interaktivní výuka');
             $data['brand_url']='';
             $data['brand_logo_url']='';
             $data['primary_color']='#1f2937';
@@ -285,8 +286,8 @@ class MHL_Core {
             $data['accent_soft']='#f1f5f9';
             $data['show_miloslavhub']=false;
         } elseif($brand==='custom'){
-            $data['brand_name']=$data['custom_brand_name']?:'Živé hlasování';
-            $data['brand_subtitle']=$data['custom_brand_subtitle']?:'Interaktivní výuka';
+            $data['brand_name']=$data['custom_brand_name']?:MHL_I18n::text('Živé hlasování');
+            $data['brand_subtitle']=$data['custom_brand_subtitle']?:MHL_I18n::text('Interaktivní výuka');
             $data['brand_url']=$data['custom_brand_url']?:'';
             $data['brand_logo_url']=$data['custom_logo_url']?:'';
             $data['primary_color']=$data['custom_primary_color']?:'#172033';
@@ -295,7 +296,7 @@ class MHL_Core {
             $data['show_miloslavhub']=false;
         } else {
             $data['brand_name']='Miloslav Hub';
-            $data['brand_subtitle']='miloslavhub.cz · živé hlasování';
+            $data['brand_subtitle']=MHL_I18n::text('miloslavhub.cz · živé hlasování');
             $data['brand_url']='https://miloslavhub.cz';
             $data['brand_logo_url']='';
             $data['primary_color']='#172033';
@@ -329,7 +330,7 @@ class MHL_Core {
             'limit'=>$limit,
             'visibility'=>$visibility,
             'period_days'=>$days,
-            'title'=>$title?:($subject?($subject->post_title.' – Síň slávy'):'Síň slávy'),
+            'title'=>$title?:($subject?($subject->post_title.MHL_I18n::text(' – Síň slávy')):MHL_I18n::text('Síň slávy')),
             'nonopt_mode'=>$nonopt,
             'url'=>$slug?trailingslashit((string)$settings['frontend_url']).'hall-of-fame/'.$slug:'',
             'privacy_url'=>trailingslashit((string)$settings['frontend_url']).'privacy',
@@ -338,7 +339,7 @@ class MHL_Core {
 
     public static function lecture_hall_of_fame(int $lecture_id): array {
         $subject_id=self::get_lecture_subject_id($lecture_id);
-        return $subject_id?self::subject_hall_of_fame($subject_id):array('enabled'=>false,'limit'=>10,'period_days'=>365,'title'=>'Síň slávy','nonopt_mode'=>'hidden','url'=>'','privacy_url'=>trailingslashit((string)self::settings()['frontend_url']).'privacy');
+        return $subject_id?self::subject_hall_of_fame($subject_id):array('enabled'=>false,'limit'=>10,'period_days'=>365,'title'=>MHL_I18n::text('Síň slávy'),'nonopt_mode'=>'hidden','url'=>'','privacy_url'=>trailingslashit((string)self::settings()['frontend_url']).'privacy');
     }
 
     /** Veřejný read-only projekční odkaz pro vyučujícího bez WordPress účtu. */
@@ -421,7 +422,7 @@ class MHL_Core {
             if ($db->update($runs,array('status'=>'closed','closed_at'=>$now),array('id'=>$run_id),array('%s','%s'),array('%d'))===false
                 || $db->query($db->prepare("UPDATE {$sessions} SET status='closed',closed_at=%s WHERE run_id=%d AND status IN ('joining','open')",$now,$run_id))===false
                 || $db->query($db->prepare("UPDATE {$sessions} SET status='skipped',closed_at=%s WHERE run_id=%d AND status='waiting'",$now,$run_id))===false) {
-                return new WP_Error('mhl_close_failed','Běh se nepodařilo uzavřít.',array('status'=>503));
+                return new WP_Error('mhl_close_failed',MHL_I18n::text('Běh se nepodařilo uzavřít.'),array('status'=>503));
             }
             return true;
         });
@@ -430,15 +431,16 @@ class MHL_Core {
 
     /** Delete a test run only after any vote in progress has finished. */
     public static function delete_test_run(int $run_id): bool {
+        if (class_exists('MHL_Access') && !MHL_Access::can_run($run_id,'control')) { return false; }
         $result=MHL_DB::with_run_lock($run_id, static function($db,$run) use ($run_id) {
-            if ($run->mode!=='test') { return new WP_Error('mhl_test_only','Mazat lze pouze testovací běh.'); }
+            if ($run->mode!=='test') { return new WP_Error('mhl_test_only',MHL_I18n::text('Mazat lze pouze testovací běh.')); }
             $sessions=MHL_DB::table('sessions'); $joins=MHL_DB::table('session_joins');
             if ($db->query($db->prepare("DELETE j FROM {$joins} j INNER JOIN {$sessions} s ON s.id=j.session_id WHERE s.run_id=%d",$run_id))===false) {
-                return new WP_Error('mhl_delete_failed','Test se nepodařilo odstranit.');
+                return new WP_Error('mhl_delete_failed',MHL_I18n::text('Test se nepodařilo odstranit.'));
             }
             foreach (array('votes','sessions','runs') as $name) {
                 if ($db->delete(MHL_DB::table($name),array($name==='runs'?'id':'run_id'=>$run_id),array('%d'))===false) {
-                    return new WP_Error('mhl_delete_failed','Test se nepodařilo odstranit.');
+                    return new WP_Error('mhl_delete_failed',MHL_I18n::text('Test se nepodařilo odstranit.'));
                 }
             }
             return true;
@@ -450,7 +452,7 @@ class MHL_Core {
         MHL_DB::with_run_lock($run_id, static function($db,$run) use ($run_id) {
             $sessions=MHL_DB::table('sessions');
             $ok=$db->query($db->prepare("UPDATE {$sessions} SET status='closed',closed_at=UTC_TIMESTAMP() WHERE run_id=%d AND status='open' AND reset_at IS NOT NULL AND reset_at<=UTC_TIMESTAMP()",$run_id));
-            return $ok===false?new WP_Error('mhl_expire_failed','Otázku se nepodařilo uzavřít.'):true;
+            return $ok===false?new WP_Error('mhl_expire_failed',MHL_I18n::text('Otázku se nepodařilo uzavřít.')):true;
         });
     }
 
@@ -458,21 +460,21 @@ class MHL_Core {
     public static function change_session(int $session_id, string $action): array|WP_Error {
         $db=MHL_DB::db(); $sessions=MHL_DB::table('sessions');
         $initial=$db->get_row($db->prepare("SELECT * FROM {$sessions} WHERE id=%d",$session_id));
-        if (!$initial) { return new WP_Error('mhl_session_missing','Relace již není dostupná.',array('status'=>409)); }
+        if (!$initial) { return new WP_Error('mhl_session_missing',MHL_I18n::text('Relace již není dostupná.'),array('status'=>409)); }
         return MHL_DB::with_run_lock((int)$initial->run_id, static function($db,$run) use ($session_id,$action,$sessions) {
             $now=self::now_mysql();
             if ($run->status!=='active' || ($run->expires_at && strtotime($run->expires_at.' UTC')<=time())) {
-                return new WP_Error('mhl_not_open','Běh již není aktivní.',array('status'=>409));
+                return new WP_Error('mhl_not_open',MHL_I18n::text('Běh již není aktivní.'),array('status'=>409));
             }
             $s=$db->get_row($db->prepare("SELECT * FROM {$sessions} WHERE id=%d AND run_id=%d FOR UPDATE",$session_id,(int)$run->id));
-            if (!$s) { return new WP_Error('mhl_session_missing','Relace již není dostupná.',array('status'=>409)); }
+            if (!$s) { return new WP_Error('mhl_session_missing',MHL_I18n::text('Relace již není dostupná.'),array('status'=>409)); }
             $latest=(int)$db->get_var($db->prepare("SELECT MAX(id) FROM {$sessions} WHERE run_id=%d AND question_id=%d AND mode=%s",(int)$run->id,(int)$s->question_id,$s->mode));
-            if ($latest!==$session_id) { return new WP_Error('mhl_stale_session','Otázka již byla zopakována. Obnovte panel.',array('status'=>409)); }
+            if ($latest!==$session_id) { return new WP_Error('mhl_stale_session',MHL_I18n::text('Otázka již byla zopakována. Obnovte panel.'),array('status'=>409)); }
             if ($action==='open') {
                 if ($s->status==='open') { return array('session'=>$s,'changed'=>false); }
-                if (!in_array($s->status,array('waiting','joining'),true)) { return new WP_Error('mhl_not_open','Pro další hlasování použijte Zopakovat otázku.',array('status'=>409)); }
+                if (!in_array($s->status,array('waiting','joining'),true)) { return new WP_Error('mhl_not_open',MHL_I18n::text('Pro další hlasování použijte Zopakovat otázku.'),array('status'=>409)); }
                 if ($s->mode!=='async' && $db->query($db->prepare("UPDATE {$sessions} SET status='closed',closed_at=%s WHERE run_id=%d AND mode=%s AND status IN ('joining','open') AND id<>%d",$now,(int)$run->id,$s->mode,$session_id))===false) {
-                    return new WP_Error('mhl_session_failed','Otázku se nepodařilo otevřít.',array('status'=>503));
+                    return new WP_Error('mhl_session_failed',MHL_I18n::text('Otázku se nepodařilo otevřít.'),array('status'=>503));
                 }
                 $timeout=self::question_time_limit((int)$s->question_id);
                 $deadline=$s->mode==='async'?self::question_async_end_mysql((int)$s->question_id):($timeout>0?self::mysql_after_seconds($timeout):null);
@@ -483,8 +485,8 @@ class MHL_Core {
                     $ok=$db->insert($sessions,array('run_id'=>(int)$run->id,'question_id'=>(int)$s->question_id,'mode'=>$s->mode,'status'=>'waiting','created_at'=>$now));
                     if ($ok!==false) { $session_id=(int)$db->insert_id; }
                 }
-            } else { return new WP_Error('mhl_bad_action','Neplatná operace.',array('status'=>400)); }
-            if ($ok===false) { return new WP_Error('mhl_session_failed','Změnu otázky se nepodařilo uložit.',array('status'=>503)); }
+            } else { return new WP_Error('mhl_bad_action',MHL_I18n::text('Neplatná operace.'),array('status'=>400)); }
+            if ($ok===false) { return new WP_Error('mhl_session_failed',MHL_I18n::text('Změnu otázky se nepodařilo uložit.'),array('status'=>503)); }
             return array('session'=>$db->get_row($db->prepare("SELECT * FROM {$sessions} WHERE id=%d",$session_id)),'changed'=>true);
         });
     }
@@ -542,7 +544,7 @@ class MHL_Core {
     }
 
     public static function activate_question(int $lecture_id,int $question_id,string $mode='live',bool $allow_start=true): array {
-        if ($mode !== 'async' && !current_user_can('manage_options')) {
+        if ($mode !== 'async' && !(class_exists('MHL_Access') ? MHL_Access::can($lecture_id,'control') : current_user_can('manage_options'))) {
             return array(null, null, false, 'forbidden');
         }
         if(!MHL_DB::schema_ready() || !self::question_in_lecture($lecture_id,$question_id)){return array(null,null,false,'invalid');}
@@ -553,6 +555,7 @@ class MHL_Core {
             $subject_id=self::get_lecture_subject_id($lecture_id);
             $subject_run=$mode==='async'?null:self::get_active_run_for_subject($subject_id,$mode);
             if($subject_run && (int)$subject_run->lecture_id!==$lecture_id){
+                if(class_exists('MHL_Access') && !MHL_Access::can_run((int)$subject_run->id)){return array(null,null,false,'forbidden');}
                 if(!self::close_run((int)$subject_run->id)){return array(null,null,false,'close_failed');}
             }
             $run=self::create_run($lecture_id,$mode,0,false);

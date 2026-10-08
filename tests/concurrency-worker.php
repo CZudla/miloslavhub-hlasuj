@@ -11,6 +11,11 @@ require $testRoot.'/wp-load.php';
 require_once $testRoot.'/wp-content/plugins/miloslavhub-live/miloslavhub-live.php';
 MHL_Core::register_content_types();MHL_REST::init();
 $input=json_decode(stream_get_contents(STDIN),true,512,JSON_THROW_ON_ERROR);
+if (in_array($input['operation']??'',array('setup','finish','delete','close','reset','open_second'),true)) {
+    $actor=get_user_by('login','integration_admin');
+    if (!$actor) { throw new RuntimeException('Missing isolated teacher actor.'); }
+    wp_set_current_user($actor->ID);
+}
 $db=MHL_DB::db();
 $barrier_wait_ms=0.0;
 if(!empty($input['barrier'])){

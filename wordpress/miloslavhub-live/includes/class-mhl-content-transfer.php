@@ -15,7 +15,7 @@ class MHL_Content_Transfer {
     }
 
     public static function menu(): void {
-        add_submenu_page('mhl-live', __('Přenést obsah', 'miloslavhub-live'), __('Přenést obsah', 'miloslavhub-live'), 'manage_options', 'mhl-content-transfer', array(__CLASS__, 'page'));
+        add_submenu_page('mhl-live', __('Přenést obsah', 'miloslavhub-live'), __('Přenést obsah', 'miloslavhub-live'), 'mhl_access', 'mhl-content-transfer', array(__CLASS__, 'page'));
     }
 
     /** Deliberate allowlist. External links and instance settings are not portable. */
@@ -52,7 +52,7 @@ class MHL_Content_Transfer {
     private static function fail(string $message): void { throw new RuntimeException($message); }
 
     private static function authorize(): void {
-        if (!current_user_can('manage_options')) { self::fail(__('Nemáte oprávnění přenášet obsah.', 'miloslavhub-live')); }
+        if (!current_user_can('mhl_access')) { self::fail(__('Nemáte oprávnění přenášet obsah.', 'miloslavhub-live')); }
     }
 
     private static function post(int $id, string $type): WP_Post {
@@ -235,7 +235,7 @@ class MHL_Content_Transfer {
 
     public static function download(): void {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') { wp_die(esc_html__('Použijte tlačítko exportu.', 'miloslavhub-live'), '', array('response'=>405)); }
-        if (!current_user_can('manage_options')) { wp_die(esc_html__('Nemáte oprávnění.', 'miloslavhub-live'), '', array('response'=>403)); }
+        if (!current_user_can('mhl_access')) { wp_die(esc_html__('Nemáte oprávnění.', 'miloslavhub-live'), '', array('response'=>403)); }
         check_admin_referer('mhl_export_content');
         try { $data = self::export_subject(absint($_POST['subject_id'] ?? 0)); }
         catch (Throwable $e) { wp_die(esc_html($e->getMessage())); }
@@ -245,7 +245,7 @@ class MHL_Content_Transfer {
     }
 
     public static function page(): void {
-        if (!current_user_can('manage_options')) { wp_die(esc_html__('Nemáte oprávnění.', 'miloslavhub-live'), '', array('response'=>403)); }
+        if (!current_user_can('mhl_access')) { wp_die(esc_html__('Nemáte oprávnění.', 'miloslavhub-live'), '', array('response'=>403)); }
         $message = ''; $error = ''; $result = null;
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             check_admin_referer('mhl_import_content');

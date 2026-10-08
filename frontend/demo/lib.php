@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+require_once dirname(__DIR__).'/i18n.php';
 
 const MHL_DEMO_TTL = 900; // 15 minut
 const MHL_DEMO_PRESTART_SECONDS = 2; // společný férový start
@@ -26,7 +27,7 @@ function mhl_demo_storage_dir(): string
     }
 
     if (!is_dir($dir) || !is_writable($dir)) {
-        throw new RuntimeException('Úložiště dema není zapisovatelné.');
+        throw new RuntimeException(mhl_ui_text('Úložiště dema není zapisovatelné.'));
     }
 
     return $dir;
@@ -34,7 +35,7 @@ function mhl_demo_storage_dir(): string
 
 function mhl_demo_questions(): array
 {
-    return [
+    $questions = [
         1 => [
             'kind' => 'quiz',
             'title' => 'Které heslo je nejbezpečnější?',
@@ -75,12 +76,26 @@ function mhl_demo_questions(): array
             'explanation' => null,
         ],
     ];
+    if (mhl_ui_language()==='en') {
+        // Owned demo examples have explicit language variants; teacher content is never translated.
+        $questions[1]['title']='Which password is the safest?';
+        $questions[1]['subtitle']='Choose one answer.';
+        $questions[1]['options']['D']='password123';
+        $questions[1]['explanation']='Option C is long, random and combines different types of characters.';
+        $questions[3]['title']='What does VPN stand for?';
+        $questions[3]['subtitle']='The second question shows that your phone stays connected.';
+        $questions[3]['explanation']='VPN stands for Virtual Private Network.';
+        $questions[5]['title']='Do you ever use public Wi-Fi?';
+        $questions[5]['subtitle']='A poll has no correct answer or scoring.';
+        $questions[5]['options']=array('A'=>'Yes, often','B'=>'Sometimes','C'=>'Rarely','D'=>'Never');
+    }
+    return $questions;
 }
 
 function mhl_demo_session_path(string $sessionId): string
 {
     if (!preg_match('/^[a-f0-9]{32}$/', $sessionId)) {
-        throw new RuntimeException('Neplatný identifikátor relace.');
+        throw new RuntimeException(mhl_ui_text('Neplatný identifikátor relace.'));
     }
     return mhl_demo_storage_dir() . DIRECTORY_SEPARATOR . $sessionId . '.json';
 }
@@ -88,7 +103,7 @@ function mhl_demo_session_path(string $sessionId): string
 function mhl_demo_lock_path(string $sessionId): string
 {
     if (!preg_match('/^[a-f0-9]{32}$/', $sessionId)) {
-        throw new RuntimeException('Neplatný identifikátor relace.');
+        throw new RuntimeException(mhl_ui_text('Neplatný identifikátor relace.'));
     }
     return mhl_demo_storage_dir() . DIRECTORY_SEPARATOR . $sessionId . '.lock';
 }
@@ -97,12 +112,12 @@ function mhl_demo_atomic_write(string $path, string $json): void
 {
     $tmp = $path . '.' . bin2hex(random_bytes(6)) . '.tmp';
     if (file_put_contents($tmp, $json) === false) {
-        throw new RuntimeException('Demo relaci se nepodařilo uložit.');
+        throw new RuntimeException(mhl_ui_text('Demo relaci se nepodařilo uložit.'));
     }
     @chmod($tmp, 0600);
     if (!@rename($tmp, $path)) {
         @unlink($tmp);
-        throw new RuntimeException('Demo relaci se nepodařilo bezpečně uložit.');
+        throw new RuntimeException(mhl_ui_text('Demo relaci se nepodařilo bezpečně uložit.'));
     }
 }
 
@@ -166,22 +181,22 @@ function mhl_demo_read_session(string $sessionId): array
 {
     $path = mhl_demo_session_path($sessionId);
     $lockPath = mhl_demo_lock_path($sessionId);
-    if (!is_file($path)) throw new RuntimeException('Demo relace nebyla nalezena.');
+    if (!is_file($path)) throw new RuntimeException(mhl_ui_text('Demo relace nebyla nalezena.'));
     $lock = @fopen($lockPath, 'c+');
-    if (!$lock) throw new RuntimeException('Demo relaci nelze otevřít.');
+    if (!$lock) throw new RuntimeException(mhl_ui_text('Demo relaci nelze otevřít.'));
     try {
-        if (!flock($lock, LOCK_SH)) throw new RuntimeException('Demo relaci nelze číst.');
+        if (!flock($lock, LOCK_SH)) throw new RuntimeException(mhl_ui_text('Demo relaci nelze číst.'));
         $raw = @file_get_contents($path);
     } finally {
         @flock($lock, LOCK_UN);
         fclose($lock);
     }
     $data = is_string($raw) ? json_decode($raw, true) : null;
-    if (!is_array($data)) throw new RuntimeException('Demo relace je poškozená. Spusťte nové demo.');
+    if (!is_array($data)) throw new RuntimeException(mhl_ui_text('Demo relace je poškozená. Spusťte nové demo.'));
     if ((int)($data['expires_at'] ?? 0) < time()) {
         @unlink($path);
         @unlink($lockPath);
-        throw new RuntimeException('Demo relace vypršela. Spusťte nové demo.');
+        throw new RuntimeException(mhl_ui_text('Demo relace vypršela. Spusťte nové demo.'));
     }
     return $data;
 }
@@ -192,9 +207,9 @@ function mhl_demo_write_session(array $session): void
     $path = mhl_demo_session_path($sessionId);
     $lockPath = mhl_demo_lock_path($sessionId);
     $lock = @fopen($lockPath, 'c+');
-    if (!$lock) throw new RuntimeException('Demo relaci nelze vytvořit.');
+    if (!$lock) throw new RuntimeException(mhl_ui_text('Demo relaci nelze vytvořit.'));
     try {
-        if (!flock($lock, LOCK_EX)) throw new RuntimeException('Demo relaci nelze uzamknout.');
+        if (!flock($lock, LOCK_EX)) throw new RuntimeException(mhl_ui_text('Demo relaci nelze uzamknout.'));
         $json = json_encode($session, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
         mhl_demo_atomic_write($path, $json);
     } finally {
@@ -208,18 +223,18 @@ function mhl_demo_update_session(string $sessionId, callable $mutator): array
     $path = mhl_demo_session_path($sessionId);
     $lockPath = mhl_demo_lock_path($sessionId);
     // Do not create unbounded lock files for made-up session IDs.
-    if (!is_file($path)) throw new RuntimeException('Demo relace nebyla nalezena.');
+    if (!is_file($path)) throw new RuntimeException(mhl_ui_text('Demo relace nebyla nalezena.'));
     $lock = @fopen($lockPath, 'c+');
-    if (!$lock) throw new RuntimeException('Demo relaci nelze otevřít.');
+    if (!$lock) throw new RuntimeException(mhl_ui_text('Demo relaci nelze otevřít.'));
     try {
-        if (!flock($lock, LOCK_EX)) throw new RuntimeException('Demo relaci nelze uzamknout.');
-        if (!is_file($path)) throw new RuntimeException('Demo relace nebyla nalezena.');
+        if (!flock($lock, LOCK_EX)) throw new RuntimeException(mhl_ui_text('Demo relaci nelze uzamknout.'));
+        if (!is_file($path)) throw new RuntimeException(mhl_ui_text('Demo relace nebyla nalezena.'));
         $raw = @file_get_contents($path);
         $session = is_string($raw) ? json_decode($raw, true) : null;
-        if (!is_array($session)) throw new RuntimeException('Demo relace je poškozená. Spusťte nové demo.');
+        if (!is_array($session)) throw new RuntimeException(mhl_ui_text('Demo relace je poškozená. Spusťte nové demo.'));
         if ((int)($session['expires_at'] ?? 0) < time()) {
             @unlink($path);
-            throw new RuntimeException('Demo relace vypršela. Spusťte nové demo.');
+            throw new RuntimeException(mhl_ui_text('Demo relace vypršela. Spusťte nové demo.'));
         }
         $updated = $mutator($session);
         if (!is_array($updated)) $updated = $session;
@@ -650,7 +665,7 @@ function mhl_demo_public_state(array $session, ?string $participantId = null): a
         'results_visible' => mhl_demo_is_result_stage($stage),
         'my_answer' => $myAnswer,
         'question_stage' => $questionStage,
-        'demo_data_notice' => 'Výsledky obsahují 17 fiktivních respondentů určených pouze pro ukázku.',
+        'demo_data_notice' => mhl_ui_text('Výsledky obsahují 17 fiktivních respondentů určených pouze pro ukázku.'),
     ];
 
     if ($question !== null) {
@@ -740,7 +755,7 @@ function mhl_demo_public_hall(array $rows): array
         if (empty($row['synthetic'])) {
             $choice = $row['hall_choice'] ?? null;
             if (!in_array($choice, ['nickname', 'anonymous'], true)) continue;
-            if ($choice === 'anonymous') $row['nickname'] = 'Anonymní účastník';
+            if ($choice === 'anonymous') $row['nickname'] = mhl_ui_text('Anonymní účastník');
         }
         $row['rank'] = count($public) + 1;
         $public[] = $row;

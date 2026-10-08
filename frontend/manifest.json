@@ -3,7 +3,7 @@
   "frontend_version": "0.8.9",
   "backend_version": "0.8.9",
   "schema_version": "0.8.5",
-  "status": "release-candidate",
+  "status": "unreleased-development",
   "backend_changed": true,
   "database_migration_required": false,
   "files": [
@@ -14,13 +14,13 @@
     },
     {
       "path": "assets/app.css",
-      "size": 24110,
-      "sha256": "e9d10fb641da3c8afcdae962c8ca9f72860913af2dc0b0f23d169aa34ae2df5a"
+      "size": 23842,
+      "sha256": "f2b02242b44c1492b9ec634640ded6abab82caf71aa8d88ffc468ebe8e0e45aa"
     },
     {
       "path": "assets/app.js",
-      "size": 44196,
-      "sha256": "fb0608ebe59c615c70d730a1d486e0f85a37b13f67325849fce0f30cc5a136b9"
+      "size": 44606,
+      "sha256": "db9d01c19cf22143abd1e54134aab4f5bdf437fdf0a2c2745eff70c97fbc21f9"
     },
     {
       "path": "assets/brand/hlasuj-icon-512.png",
@@ -36,6 +36,11 @@
       "path": "assets/brand/hlasuj-logo.png",
       "size": 369957,
       "sha256": "4897896de0db533877af30ba02a48fb90c22cbf6bb23df77e37fe85068dc8705"
+    },
+    {
+      "path": "assets/i18n.js",
+      "size": 1061,
+      "sha256": "3491288213808ff3d5f9348630e3e4ef98fbd8a71797f833d9efa6a0be5f3a61"
     },
     {
       "path": "assets/landing.css",
@@ -69,8 +74,8 @@
     },
     {
       "path": "assets/vendor/provenance.json",
-      "size": 418,
-      "sha256": "30503623511a8b974daf298dc639c98720e100e66172ac3d807822bbc648ef47"
+      "size": 407,
+      "sha256": "13030f0f6ed36e7ffde33a4cc74a446fd9c488179bc26eb5dbc61104f0ce67b2"
     },
     {
       "path": "assets/vendor/qrcode-LICENSE.txt",
@@ -114,13 +119,13 @@
     },
     {
       "path": "config.example.php",
-      "size": 632,
-      "sha256": "4006b11906a985d59a96ba9a539112103303262a2d2e933dfe8dda9807c9a1f8"
+      "size": 617,
+      "sha256": "ba22c81b9a18f5d878812c1689c3b02a12a6a7fa6f0a818a708b877bac0932af"
     },
     {
       "path": "demo/api.php",
-      "size": 9992,
-      "sha256": "ba9dbb5c2a71222368aed8998ced6268091aee978ccd7e06a7e0597c96bf1845"
+      "size": 9826,
+      "sha256": "6a7b966853b4762d38cdfc14c4db42cad6a54ed7c26b3086dd922a841eeb3ed0"
     },
     {
       "path": "demo/assets/demo.css",
@@ -134,28 +139,38 @@
     },
     {
       "path": "demo/assets/THIRD-PARTY.txt",
-      "size": 255,
-      "sha256": "d77aca0cc05c35c561937c1a5c96b3bb2a307dc4ea725680f350f7b11bcce2d1"
+      "size": 250,
+      "sha256": "8a25053cf613d88adee7d9f7be53ed580ba196419f047f6f9cfbacc264531fd3"
     },
     {
       "path": "demo/index.php",
-      "size": 28147,
-      "sha256": "a3b0b82f325056c2322d1e59cd61e2435a1a6fe4ccf7685042cb3f10c6a6571d"
+      "size": 28529,
+      "sha256": "a8171f5366ff06de74367e6c7c2d49955dc6e6773861df0d63dec7f35227c1d3"
     },
     {
       "path": "demo/lib.php",
-      "size": 28206,
-      "sha256": "b7b974a0fc36583ad8c82ff92823f570cdbc4186535a1626a11efe522f25e2e5"
+      "size": 28680,
+      "sha256": "cb282848f30686cbe5dca8cb65a75eeeb82b58d4aba08cd6bca52a71fef7b203"
     },
     {
       "path": "demo/mobile.php",
-      "size": 28545,
-      "sha256": "27d481a3fa37bed2cc35265b810333c12185f8c92b17f6439703c02cb2ea3441"
+      "size": 28457,
+      "sha256": "169c5ee7a3a4d43a8bc8b1e86ce5d031427b8f2ba9430731c1e114130a19f5e3"
+    },
+    {
+      "path": "i18n.php",
+      "size": 1628,
+      "sha256": "8305c321ee0c88b45ea76340280f63ae460f702db3c44f7c8ddd2010f42fd909"
     },
     {
       "path": "index.php",
-      "size": 39359,
-      "sha256": "dbb44d7481e93a675a7a40a3dfd65cfba35869651be6a71cd0f33b6a2321f851"
+      "size": 44350,
+      "sha256": "3b149f1737ac3c8206a81404fe278408797d429e1f5b329453ab97fb0145cdd1"
+    },
+    {
+      "path": "lang/en.json",
+      "size": 96173,
+      "sha256": "c8de3c5d8d827b1fedce1f4a876e0d83acb431a7ef8b9640f1ceefe341ffbed7"
     },
     {
       "path": "LEGAL-GDPR-CHECKLIST.md",
@@ -164,13 +179,13 @@
     },
     {
       "path": "README-INSTALL.txt",
-      "size": 1337,
-      "sha256": "69409246351f81da078b290ede3eb075f78684f0606696823d62f1a3938e4751"
+      "size": 1305,
+      "sha256": "d449c48bc1ddb6a9fe823df7f679e9faa1328a8e23ef7a49cf0ad2768ed74462"
     },
     {
       "path": "README.txt",
-      "size": 622,
-      "sha256": "432aa5be7c3c150a4f1fae8a9f5dd6fb7827c743c56481ec837e6440af9c66ad"
+      "size": 610,
+      "sha256": "56df47759f0f98e57caafdf5c77f693c766d1c4854a63f6ff6051c2526ed20e9"
     },
     {
       "path": "robots.txt",
@@ -179,8 +194,13 @@
     },
     {
       "path": "SECURITY.md",
-      "size": 1396,
-      "sha256": "eb3d348e27b0a4dbe45ffc18aad7f9fe116be5f0dab6dc1ccfa1d56e82dec87f"
+      "size": 1371,
+      "sha256": "e80eb2b58f8f921290ca65a1eab0e3856fc59c2fa082374eb28dc9d330c1b745"
+    },
+    {
+      "path": "ui-messages.php",
+      "size": 1784,
+      "sha256": "4fe9a62956ddee5892c61cd1d437355ce179a0458f72a5be8dd2958a36238749"
     },
     {
       "path": "UPRAVA-CONFIG-PRO-MILOSLAVHUB.txt",

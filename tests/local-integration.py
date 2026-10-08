@@ -36,6 +36,7 @@ php=[args.php,'-d','extension=mysqli']
 report={'status':'running','production_data_used':False,'paid_api_calls':0,'external_http_blocked':True}
 report['started_at']=datetime.now(timezone.utc).isoformat()
 tested_source=source_sha256(repo)
+report['tested_source_sha256']=tested_source
 runtime=repo/'runtime';runtime.mkdir(exist_ok=True)
 (runtime/'local-integration-results.json').write_text(json.dumps(report,indent=2),encoding='utf8')
 def run(command,**kwargs):
@@ -90,7 +91,7 @@ try:
     run(mysql,input=b'CREATE DATABASE integration_wp CHARACTER SET utf8mb4; CREATE DATABASE integration_votes CHARACTER SET utf8mb4;')
     if args.load:run(mysql,input=b'SET GLOBAL max_connections=500;')
     run(mysql,input=b'USE integration_votes;\n'+(repo/'wordpress/miloslavhub-live/database-schema.sql').read_bytes())
-    for name in ['wordpress-integration.php','ai-wordpress-integration.php','content-wordpress-integration.php','feedback-wordpress-integration.php','poll-wordpress-integration.php']:
+    for name in ['wordpress-integration.php','ai-wordpress-integration.php','content-wordpress-integration.php','feedback-wordpress-integration.php','poll-wordpress-integration.php','access-wordpress-integration.php']:
         result=json.loads(run(php+[repo/'tests'/name],env=env));report[name]=result;print(name,json.dumps(result),flush=True)
     result=json.loads(run([sys.executable,repo/'tests/concurrency.py','--php',args.php],env=env))
     report['concurrency']=result;print('concurrency',json.dumps(result),flush=True)
@@ -114,6 +115,8 @@ try:
         report['content_admin_browser']=result;print('content_admin_browser',json.dumps(result),flush=True)
         result=json.loads(run(['node',repo/'tests/feedback-wordpress-browser.cjs',base,str(report['feedback-wordpress-integration.php']['question_id'])],env=env))
         report['feedback_admin_browser']=result;print('feedback_admin_browser',json.dumps(result),flush=True)
+        result=json.loads(run(['node',repo/'tests/access-wordpress-browser.cjs',base,json.dumps(report['access-wordpress-integration.php']['browser_fixture'])],env=env))
+        report['access_admin_browser']=result;print('access_admin_browser',json.dumps(result),flush=True)
     if source_sha256(repo)!=tested_source:raise RuntimeError('Source changed during integration; rerun against stable inputs')
     report['tested_source_sha256']=tested_source
     report['status']='passed'

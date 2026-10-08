@@ -1,0 +1,67 @@
+const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs');
+const base=process.argv[2];if(!/^http:\/\/127\.0\.0\.1:\d+$/.test(base))throw new Error('Loopback required');
+(async()=>{
+ const browser=await chromium.launch({channel:'msedge',headless:true});let checks=0,status='waiting';const external=[],errors=[],calls=[];
+ const context=await browser.newContext({viewport:{width:1280,height:900}}),page=await context.newPage();
+ const check=(ok,message)=>{assert(ok,message);checks++;};
+ page.on('pageerror',error=>errors.push(error.message));
+ const title='Příliš žluťoučký kůň — Vysvětlení <img src=x onerror=alert(1)>',label='Vysvětlení správné odpovědi';
+ await context.route('**/*',async route=>{
+  const url=new URL(route.request().url());if(url.origin!==base){external.push(url.origin);return route.abort();}
+  if(!url.pathname.startsWith('/test-api/'))return route.continue();
+  calls.push({path:url.pathname,language:url.searchParams.get('ui_lang'),method:route.request().method()});
+  const q={title,status,session_id:456,lecture_slug:'lesson',question_slug:'question',subject_slug:'subject',options:[{index:0,code:'A',label,count:1,percent:100}],gamification:{enabled:false},share_url:base+'/q/lesson/question'};
+  if(url.pathname.includes('/results/'))return route.fulfill({json:{...q,total:1,mode:'poll',correct_index:null,participant_result:null}});
+  if(url.pathname.endsWith('/current'))return route.fulfill({json:{...q,question_slug:status==='open'?'question':null}});
+  if(url.pathname.endsWith('/privacy'))return route.fulfill({json:{subject_title:'Český předmět',retention_days:365,hall_of_fame:{enabled:false}}});
+  return route.fulfill({json:q});
+ });
+ try{
+  await page.goto(base+'/?lang=en');
+  check(await page.locator('html').getAttribute('lang')==='en','HTML language is English');
+  await page.getByRole('heading',{name:/Engage your audience.*Without delay/}).waitFor();checks++;
+  check(await page.getByRole('link',{name:'How it works',exact:true}).count()===1,'Marketing navigation is English');
+  check(await page.getByRole('link',{name:'Contact',exact:true}).count()>=1,'ASCII Czech navigation translated');
+  check((await page.locator('body').innerText()).includes('No student accounts'),'Marketing claims translated');
+  await page.locator('[data-template-preview]').first().click();
+  check(await page.locator('#template-modal').isVisible(),'English marketing preview works');
+  await page.keyboard.press('Escape');
+  await page.setViewportSize({width:390,height:844});
+  await page.goto(base+'/q/lesson/question?lang=en');
+  await page.getByText('The question is ready. Wait for the teacher to start voting.',{exact:false}).waitFor();checks++;
+  check((await page.locator('#screen').innerText()).includes(title),'Teacher title preserved in English UI');
+  check(await page.locator('#screen img').count()===0,'Teacher content remains escaped');
+  status='open';
+  await page.getByRole('button',{name:'A '+label,exact:true}).waitFor({timeout:8000});checks++;
+  check(calls.every(c=>c.language==='en'),'English UI sends language to API');
+  check(!calls.some(c=>c.path.endsWith('/activate')),'Language selection never starts teaching');
+  check(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'English student UI fits a phone');
+  status='closed';await page.goto(base+'/r/lesson/question?lang=en');
+  await page.locator('.results-head').getByText('Voting has closed',{exact:true}).waitFor();checks++;
+  check((await page.locator('#screen').innerText()).includes(label),'Answer content stays Czech in English results');
+  await page.goto(base+'/demo/?lang=en');
+  await page.getByText('INTERACTIVE PRESENTATION DEMO',{exact:true}).waitFor();checks++;
+  check((await page.locator('body').innerText()).includes('17 fictional respondents'),'Demo clearly labels simulated participants in English');
+  const join=await page.getByRole('link',{name:'Cannot scan the QR code? Open the join page'}).getAttribute('href');
+  await page.goto(new URL(join,base).href);
+  await page.getByLabel('Your nickname',{exact:true}).waitFor();checks++;
+  check(/^Join\s+→$/.test(await page.locator('#join-button').innerText()),'Demo student controls translated');
+  await page.getByLabel('Your nickname',{exact:true}).fill('English demo participant');await page.locator('#join-button').click();
+  await page.getByRole('heading',{name:'Which password is the safest?'}).waitFor({timeout:8000});checks++;
+  await page.waitForFunction(()=>[...document.querySelectorAll('[data-question-countdown]')].some(el=>/\d+\.\d s/.test(el.textContent)));
+  check(!(await page.locator('[data-question-countdown]').first().innerText()).includes(','),'English demo countdown uses a decimal point');
+  await page.locator('[data-answer]').first().click();
+  await page.locator('.score-panel').waitFor({timeout:20000});
+  check(/^\d+\.\d s$/.test(await page.locator('.score-panel > div').nth(2).locator('strong').innerText()),'English result response time uses a decimal point');
+  check(!(await page.locator('.vote-chart-stats em').first().innerText()).includes(','),'English result percentage uses locale formatting');
+  check(await page.locator('.demo-data-note b').innerText()==='Demo group','Demo result notice is fully English, including ASCII Czech labels');
+  check(external.length===0,'No translation or QR requests leave the installation');
+  check(errors.length===0,'No English browser errors: '+errors.join('; '));
+  fs.mkdirSync('runtime/screenshots',{recursive:true});await page.screenshot({path:'runtime/screenshots/demo-english-mobile.png',fullPage:true});
+  status='open';await page.goto(base+'/q/lesson/question?lang=cs');
+  await page.getByRole('button',{name:'A '+label,exact:true}).waitFor();
+  check(await page.locator('html').getAttribute('lang')==='cs','Switch back to Czech');
+  check((await page.locator('#screen').innerText()).includes(title),'Language switch preserves teacher content');
+  console.log(JSON.stringify({status:'passed',checks,external_requests:external.length,backend:'synthetic HTTP fixtures; marketing and demo PHP real'}));
+ } finally { await browser.close(); }
+})().catch(error=>{console.error(error);process.exit(1);});

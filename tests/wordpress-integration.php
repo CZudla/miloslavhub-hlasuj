@@ -20,7 +20,7 @@ if (!is_blog_installed()) {
     wp_install('Hlasuj integration', 'integration_admin', 'test@example.invalid', false, '', bin2hex(random_bytes(20)));
 }
 require_once $testRoot . '/wp-content/plugins/miloslavhub-live/miloslavhub-live.php';
-MHL_Core::init();
+MHL_Access::init(); MHL_Access::register(); MHL_Core::init();
 MHL_Core::register_content_types();
 MHL_REST::init();
 update_option('mhl_settings', ['frontend_url'=>'http://127.0.0.1:8097','allowed_origin'=>'http://127.0.0.1:8097']);

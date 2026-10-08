@@ -1,5 +1,6 @@
 <?php
 if (!defined('ABSPATH')) { exit; }
+require_once __DIR__.'/class-mhl-i18n.php';
 
 class MHL_DB {
     private static $db = null;
@@ -24,36 +25,36 @@ class MHL_DB {
             foreach (array('runs','sessions','votes','session_joins') as $name) {
                 $engine = $db->get_var($db->prepare('SELECT ENGINE FROM information_schema.TABLES WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME=%s', self::table($name)));
                 if (strtoupper((string)$engine) !== 'INNODB') {
-                    return new WP_Error('mhl_transaction_required', 'Hlasování vyžaduje tabulky InnoDB. Kontaktujte správce.', array('status'=>503));
+                    return new WP_Error('mhl_transaction_required', MHL_I18n::text('Hlasování vyžaduje tabulky InnoDB. Kontaktujte správce.'), array('status'=>503));
                 }
             }
             $engines_checked = true;
         }
         if ($db->query('START TRANSACTION') === false) {
-            return new WP_Error('mhl_database_busy', 'Databáze nyní nemůže potvrdit změnu. Zkuste to znovu.', array('status'=>503));
+            return new WP_Error('mhl_database_busy', MHL_I18n::text('Databáze nyní nemůže potvrdit změnu. Zkuste to znovu.'), array('status'=>503));
         }
         try {
             $run = $db->get_row($db->prepare('SELECT * FROM '.self::table('runs').' WHERE id=%d FOR UPDATE', $run_id));
             if (!$run) {
                 $db->query('ROLLBACK');
-                return new WP_Error('mhl_run_unavailable', 'Běh již není dostupný.', array('status'=>409));
+                return new WP_Error('mhl_run_unavailable', MHL_I18n::text('Běh již není dostupný.'), array('status'=>409));
             }
             $result = $operation($db, $run);
             if (is_wp_error($result)) { $db->query('ROLLBACK'); return $result; }
             if ($db->query('COMMIT') === false) {
                 $db->query('ROLLBACK');
-                return new WP_Error('mhl_database_busy', 'Změnu se nepodařilo potvrdit. Zkontrolujte stav a zkuste to znovu.', array('status'=>503));
+                return new WP_Error('mhl_database_busy', MHL_I18n::text('Změnu se nepodařilo potvrdit. Zkontrolujte stav a zkuste to znovu.'), array('status'=>503));
             }
             return $result;
         } catch (Throwable $error) {
             $db->query('ROLLBACK');
-            return new WP_Error('mhl_database_busy', 'Změnu se nepodařilo dokončit. Zkuste to znovu.', array('status'=>503));
+            return new WP_Error('mhl_database_busy', MHL_I18n::text('Změnu se nepodařilo dokončit. Zkuste to znovu.'), array('status'=>503));
         }
     }
 
     public static function db(): wpdb {
         if (self::$db instanceof wpdb) { return self::$db; }
-        if (!self::configured()) { throw new RuntimeException('MiloslavHub Live: samostatná databáze není nakonfigurována v wp-config.php.'); }
+        if (!self::configured()) { throw new RuntimeException(MHL_I18n::text('MiloslavHub Live: samostatná databáze není nakonfigurována v wp-config.php.')); }
 
         if (function_exists('mysqli_init')) {
             $host = (string) MHL_LIVE_DB_HOST;
@@ -63,7 +64,7 @@ class MHL_DB {
             @mysqli_options($mysqli, MYSQLI_OPT_CONNECT_TIMEOUT, 5);
             $ok = @mysqli_real_connect($mysqli, $host, (string) MHL_LIVE_DB_USER, (string) MHL_LIVE_DB_PASSWORD, (string) MHL_LIVE_DB_NAME, $port ?: (int) ini_get('mysqli.default_port'));
             if (!$ok) {
-                self::$error = mysqli_connect_error() ?: 'Nepodařilo se připojit k databázi.';
+                self::$error = mysqli_connect_error() ?: MHL_I18n::text('Nepodařilo se připojit k databázi.');
                 if ($mysqli) { @mysqli_close($mysqli); }
                 throw new RuntimeException('MiloslavHub Live: ' . self::$error);
             }
@@ -126,15 +127,15 @@ class MHL_DB {
     }
 
     public static function status(): array {
-        if (!self::configured()) { return array('ok'=>false,'message'=>'Chybí konstanty MHL_LIVE_DB_* ve wp-config.php.'); }
+        if (!self::configured()) { return array('ok'=>false,'message'=>MHL_I18n::text('Chybí konstanty MHL_LIVE_DB_* ve wp-config.php.')); }
         try {
             $db = self::db();
-            if ((string) $db->get_var('SELECT 1') !== '1') { return array('ok'=>false,'message'=>'Databáze neodpověděla na testovací dotaz.'); }
+            if ((string) $db->get_var('SELECT 1') !== '1') { return array('ok'=>false,'message'=>MHL_I18n::text('Databáze neodpověděla na testovací dotaz.')); }
             $missing_tables = self::missing_tables();
-            if ($missing_tables) { return array('ok'=>false,'message'=>'Chybí tabulky: ' . implode(', ', $missing_tables) . '. Importujte databázové schéma účtem admin.'); }
+            if ($missing_tables) { return array('ok'=>false,'message'=>MHL_I18n::text('Chybí tabulky: ') . implode(', ', $missing_tables) . MHL_I18n::text('. Importujte databázové schéma účtem admin.')); }
             $missing_columns = self::missing_columns();
-            if ($missing_columns) { return array('ok'=>false,'message'=>'Databáze vyžaduje aktuální migraci. Chybí: ' . implode(', ', $missing_columns) . '. Importujte soubor database-migration-0.8.1-to-0.8.5.sql účtem admin.'); }
-            return array('ok'=>true,'message'=>'Připojení i databázové schéma jsou v pořádku.');
+            if ($missing_columns) { return array('ok'=>false,'message'=>MHL_I18n::text('Databáze vyžaduje aktuální migraci. Chybí: ') . implode(', ', $missing_columns) . MHL_I18n::text('. Importujte soubor database-migration-0.8.1-to-0.8.5.sql účtem admin.')); }
+            return array('ok'=>true,'message'=>MHL_I18n::text('Připojení i databázové schéma jsou v pořádku.'));
         } catch (Throwable $e) { return array('ok'=>false,'message'=>$e->getMessage()); }
     }
 
