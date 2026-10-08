@@ -1,5 +1,9 @@
 # Hlasuj! by MiloslavHub
 
+[Domovská stránka](https://hlasuj.miloslavhub.cz/) · [Příručky na webu](https://hlasuj.miloslavhub.cz/docs/) · [English documentation](https://hlasuj.miloslavhub.cz/docs/en/) · **[Úplný index dokumentace](docs/INDEX.md)**
+
+Přehled příruček pro učitele, studenty, správce, autory a integrátory je v indexu. [Pokrytí a otevřené body](docs/DOCUMENTATION-COVERAGE.md), [domény a směrování](docs/HOMEPAGE-AND-ROUTING.md). Veřejný informační web má vlastní izolovaný postup aktualizace; jeho změna nenasazuje nevydané aplikační funkce.
+
 ## GitHub a distribuce
 
 Projekt používá [CZudla/miloslavhub-hlasuj](https://github.com/CZudla/miloslavhub-hlasuj). Větev `main` uchovává aktuální kvalifikované vydání, `develop` následný pracovní vývoj. Dva balíčky a PDF jsou v `releases/0.8.9/`. Postup práce a obnova původní historie jsou v [docs/GITHUB.md](docs/GITHUB.md).

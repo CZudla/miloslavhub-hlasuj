@@ -158,19 +158,44 @@
       "sha256": "f9b9388f44749f912f3e1c332e69fec317a9e1048e2be13a5996b00272646390"
     },
     {
+      "path": "docs/.htaccess",
+      "size": 382,
+      "sha256": "05fd68c470f3fb96dc688c414a107b4081c2122645c1d719f9abf19ad9b1a33e"
+    },
+    {
+      "path": "docs/en/index.html",
+      "size": 7327,
+      "sha256": "64289d361dc3e8f598109f028ba08e7f20aea290c6fc8cf6b813dfcd9c420af4"
+    },
+    {
+      "path": "docs/index.html",
+      "size": 7560,
+      "sha256": "b871c63f10a23bdf8057ef2b195baa660f345b97b422bd0b832c79786b92865c"
+    },
+    {
+      "path": "docs/site-manifest.json",
+      "size": 5262,
+      "sha256": "1eb82871e9c52f7efd30686ca90d3e790e5975cda2e87debe201ba234b4deb2d"
+    },
+    {
+      "path": "docs/style.css",
+      "size": 2998,
+      "sha256": "8bf9195915fd8198fd88fa926b0944f887b0087237669917158cb60ffc974772"
+    },
+    {
       "path": "i18n.php",
       "size": 1628,
       "sha256": "8305c321ee0c88b45ea76340280f63ae460f702db3c44f7c8ddd2010f42fd909"
     },
     {
       "path": "index.php",
-      "size": 44350,
-      "sha256": "3b149f1737ac3c8206a81404fe278408797d429e1f5b329453ab97fb0145cdd1"
+      "size": 44615,
+      "sha256": "750348be6dc95b270f9cd879e6558f44046e2a457e072c52b91e7ebd7cde8aa2"
     },
     {
       "path": "lang/en.json",
-      "size": 96188,
-      "sha256": "8d837f6520719d38494839421922df7c0d75eb365885a1b0ecaf619530dfe468"
+      "size": 96222,
+      "sha256": "44de1a567b081a4bbe0cd244e8d789c49770137e8cf57202bbba52e0c2a081ee"
     },
     {
       "path": "LEGAL-GDPR-CHECKLIST.md",

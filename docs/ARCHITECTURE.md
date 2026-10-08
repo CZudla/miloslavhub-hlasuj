@@ -1,5 +1,15 @@
 # Architektura
 
+## Aktuální orientace — 8. 10. 2026
+
+Zachovanou kvalifikovanou baseline tvoří frontend/plugin 0.8.9 a hlasovací schéma 0.8.5. Níže uvedený historický diagram stále popisuje hlavní komponenty. Vývojová větev navíc obsahuje `MHL_Access`: místní prostory a ACL v posts/meta WordPressu, vlastní schopnost `mhl_access`, vlastnictví, sdílení a serverové kontroly objektů. Správce organizace není správcem instalace. Historický popis role `manage_options` níže patří staršímu vydání.
+
+Sdílený PHP/JS katalog cs/en existuje ve frontendu i pluginu. Překládá označené ovládací texty; autorský obsah se nemění. [Přesný model organizací, jazyků a integračních hranic](ORGANIZATIONS-I18N-REFERENCE.md).
+
+Statický veřejný rozcestník `frontend/docs/` odkazuje na verzované příručky. Nepotřebuje databázi ani přihlášení. Jeho samostatná webová aktualizace nemění aktivní backend. [Routing a návrat](HOMEPAGE-AND-ROUTING.md).
+
+Centrální AUTH a licence nejsou kvalifikovaně propojené; poslední úplná integrační zkouška vývoje skončila ERROR. [Skutečný stav a důkazy](DEVELOPMENT-ORGANIZATIONS-I18N-2026-10-08.md). [Celý index dokumentace](INDEX.md).
+
 **Aktualizace 2026-10-02 pro 0.8.7:** opravný rozsah původního 0.9.0-dev.1 prošel také 19 integračními kontrolami na WordPressu 7.1.2/MariaDB 11.4.9. Oba SQL exporty byly obnoveny a tabulky zkontrolovány lokálně. Původní body níže označené „dosud neověřeno“ zachycují stav před touto kvalifikací; aktuální souhrn je v RELEASE-0.8.7.md. Nasazení prokazuje samostatná deployment zpráva.
 
 ```mermaid

@@ -126,6 +126,7 @@ function e($value) {
                 <a href="#ukazky"><?php echo mhl_ui_html('Ukázky'); ?></a>
                 <a href="#pro-koho"><?php echo mhl_ui_html('Pro koho'); ?></a>
                 <a href="#sablony"><?php echo mhl_ui_html('Šablony'); ?></a>
+                <a href="<?php echo mhl_ui_language() === 'en' ? '/docs/en/' : '/docs/'; ?>"><?php echo mhl_ui_html('Dokumentace'); ?></a>
                 <a href="#kontakt"><?php echo mhl_ui_html('Kontakt'); ?></a>
             </nav>
             <a class="nav-cta" href="<?php echo e($demoUrl); ?>"><?php echo mhl_ui_html('Vyzkoušet demo'); ?></a>
@@ -468,7 +469,7 @@ const tr=globalThis.MHLUI?.text||(v=>v),ui=globalThis.MHLUI?.html||((p,...v)=>p.
     <footer class="landing-footer">
         <div class="landing-wrap footer-wrap">
             <span>© <?php echo date('Y'); ?> <?php echo e($contactName); ?> · <?php echo e($productName); ?></span>
-            <span class="footer-links"><a href="<?php echo e($frontendBase); ?>/privacy"><?php echo mhl_ui_html('Soukromí a data'); ?></a> · <a href="<?php echo e($frontendBase); ?>/privacy#hall-of-fame"><?php echo mhl_ui_html('Pravidla Síně slávy'); ?></a> · <a href="<?php echo e($mainSite); ?>">miloslavhub.cz</a></span>
+            <span class="footer-links"><a href="<?php echo mhl_ui_language() === 'en' ? '/docs/en/' : '/docs/'; ?>"><?php echo mhl_ui_html('Dokumentace'); ?></a> · <a href="<?php echo e($frontendBase); ?>/privacy"><?php echo mhl_ui_html('Soukromí a data'); ?></a> · <a href="<?php echo e($frontendBase); ?>/privacy#hall-of-fame"><?php echo mhl_ui_html('Pravidla Síně slávy'); ?></a> · <a href="<?php echo e($mainSite); ?>">miloslavhub.cz</a></span>
         </div>
     </footer>
 <?php else: ?>

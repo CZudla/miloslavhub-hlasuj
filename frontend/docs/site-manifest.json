@@ -1,0 +1,154 @@
+{
+  "product": "Hlasuj! by MiloslavHub",
+  "documentation_date": "2026-10-08",
+  "qualified_application_baseline": "0.8.9",
+  "unreleased_features_deployed": false,
+  "sources": [
+    {
+      "path": "docs/customer/02-MANUAL-UCITELE.md",
+      "sha256": "ccbc2e6092e30c8c813fc2d6b8851653ea8f02e37cc8ade02949f004ea097b90"
+    },
+    {
+      "path": "docs/customer/03-MANUAL-STUDENTA.md",
+      "sha256": "795a0609f41d4ba811e9d9a1249494cb048e668db162b8b65a933408d8e42418"
+    },
+    {
+      "path": "docs/customer/04-REFERENCNI-PRIRUCKA.md",
+      "sha256": "257cd02bfbd901ac9ec96d41b284161ddfdc47a0ce7776a729e2165eebec187b"
+    },
+    {
+      "path": "docs/customer/05-PRIRUCKA-SPRAVCE.md",
+      "sha256": "58d5f42d9d3085f21eaa0bd490f92d91714de9a0d4f6cb0487dfdc2441a3b0e0"
+    },
+    {
+      "path": "docs/customer/06-RESENI-PROBLEMU.md",
+      "sha256": "e285aa1b5c3c14a2846359481ec512eb95de6eeeb75c3a1f1a249a96d6d56451"
+    },
+    {
+      "path": "docs/customer/07-SOUKROMI-A-LICENCE.md",
+      "sha256": "0fbc1b63119ffd830489d94e5cf27c68431fba6b7ec531cbf6344ae5954b126f"
+    },
+    {
+      "path": "docs/customer/09-TAHAK-PRO-VYUKU.md",
+      "sha256": "6668ebcb5a79779f8cd939e1e69f1a42a602c5cd33561e9b9637f237141bf800"
+    },
+    {
+      "path": "docs/customer/10-PRENOS-OBSAHU.md",
+      "sha256": "43758bc4f4ea05f7297f11ecd8e2d392ff49c4f42c574b2b8d8bd83184edad67"
+    },
+    {
+      "path": "docs/customer/en/USER-GUIDE.md",
+      "sha256": "974d0804d25a8c66eae2c338b3611ea051d4a041d9d2b4d940d55c533501b083"
+    },
+    {
+      "path": "docs/customer/en/STUDENT-GUIDE.md",
+      "sha256": "27a57367b806f0f0388e64c32f220b718d4888ed92fd4bf255ad782702b45936"
+    },
+    {
+      "path": "docs/customer/en/ADMINISTRATOR-GUIDE.md",
+      "sha256": "a957c4f0524462e3bc4b1de710e407ce85586e54ff7ff2d8a6823060fc9d0efb"
+    },
+    {
+      "path": "docs/customer/en/REFERENCE.md",
+      "sha256": "983948c6509c9431f2eb227a4f4b9e9bba896a60cd3ff5af2552ae65057c8e44"
+    },
+    {
+      "path": "docs/customer/11-VYSVETLENI-A-POZNAMKY.md",
+      "sha256": "afd3066f6fcbd28e0abc74fc833c4b110f30ef6edd00c4dcedde1e949515d39e"
+    },
+    {
+      "path": "docs/customer/12-ANKETY.md",
+      "sha256": "3db18d93313850591a984917a25f74d051446534f133d0a4d0066dfbd46feff2"
+    },
+    {
+      "path": "docs/customer/13-ORGANIZACE-A-JAZYKY.md",
+      "sha256": "dc240ea5be785773bbc1800ed2ac4e54ffda9b7cebb115ee0c5fe1c5f741485c"
+    },
+    {
+      "path": "docs/customer/en/TEACHERS-AND-ORGANISATIONS.md",
+      "sha256": "d3fc85637103ffebe414b15b10eafb3324e530ade3f4b4e9b0efa706d39fe879"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "sha256": "653531557e52efcbcc493ce5cb2ff6eca97d3c0f30d1007c2dae789f19cd73c5"
+    },
+    {
+      "path": "docs/API.md",
+      "sha256": "4decb3b068156fb75d2142fbcc6bbaf3637083854790a47f1406b68161ba8a20"
+    },
+    {
+      "path": "docs/CONTENT-FORMAT.md",
+      "sha256": "4e2e590cff513cef24680d4b19a3542089664a87ec932445e637593036abbb03"
+    },
+    {
+      "path": "docs/ORGANIZATIONS-I18N-REFERENCE.md",
+      "sha256": "748397996ad39fba5e0329b74acf678022d1124216947cfdf851fb9d8d03265e"
+    },
+    {
+      "path": "docs/DEPLOYMENT.md",
+      "sha256": "309f26f5a4b32af3afa2a03971f3247b83a865415d531ae70267c65e51a3e9ce"
+    },
+    {
+      "path": "docs/HOMEPAGE-AND-ROUTING.md",
+      "sha256": "f9ceeefe3527d5e01b5f38a3328bfc300ac64d93aad86d7f63148b5bc68d0c2e"
+    },
+    {
+      "path": "docs/SECURITY.md",
+      "sha256": "6f4bc6ff61a30b25ffce8e29e00e93b62866c3056e4b9fba596df810e486f6d5"
+    },
+    {
+      "path": "docs/PRIVACY.md",
+      "sha256": "36dffcfce4cdf0f6a0f1c76e785480589b4a8d68bcc5427d21fbe5a26872157f"
+    },
+    {
+      "path": "docs/licenses/NOTICE.md",
+      "sha256": "1649d4f8e90103643e191ad266447ad0a43ffac09e24f695aaf79e979045153b"
+    },
+    {
+      "path": "docs/LEGAL-CHECKLIST.md",
+      "sha256": "616b19750f10898a1f0cf50ccc31a7d7d227d65fccf537f35bf5407603571f24"
+    },
+    {
+      "path": "docs/DOCUMENTATION-COVERAGE.md",
+      "sha256": "e1ae7aa3209b24f6505bce1bde26887c43bfc6703b153ea5859bcf2de10fb9c4"
+    },
+    {
+      "path": "docs/DEVELOPMENT-ORGANIZATIONS-I18N-2026-10-08.md",
+      "sha256": "2c1ef375642c884187630df405315d74c9130080928efc370b2aedf76bb41546"
+    },
+    {
+      "path": "docs/customer/08-MARKETINGOVE-PODKLADY.md",
+      "sha256": "9d71ffa42672d974dc99e988d8c8faf35ac42490196bfb82b25041ea6b4af9f2"
+    },
+    {
+      "path": "docs/marketing/en/PRODUCT-OVERVIEW.md",
+      "sha256": "3481766ef0ea893bb484924a680b534e296169b84b74efe7749ca08ae8972d8d"
+    },
+    {
+      "path": "docs/INDEX.md",
+      "sha256": "d9fcf92016d34fa51f8861938e33e9ce04faafe63f1e01534adaf3f424b49807"
+    }
+  ],
+  "files": [
+    {
+      "path": ".htaccess",
+      "sha256": "05fd68c470f3fb96dc688c414a107b4081c2122645c1d719f9abf19ad9b1a33e",
+      "size": 382
+    },
+    {
+      "path": "en/index.html",
+      "sha256": "64289d361dc3e8f598109f028ba08e7f20aea290c6fc8cf6b813dfcd9c420af4",
+      "size": 7327
+    },
+    {
+      "path": "index.html",
+      "sha256": "b871c63f10a23bdf8057ef2b195baa660f345b97b422bd0b832c79786b92865c",
+      "size": 7560
+    },
+    {
+      "path": "style.css",
+      "sha256": "8bf9195915fd8198fd88fa926b0944f887b0087237669917158cb60ffc974772",
+      "size": 2998
+    }
+  ]
+}

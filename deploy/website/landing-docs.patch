@@ -1,0 +1,19 @@
+--- baseline-0.8.9/index.php
++++ website-docs/index.php
+@@ -121,6 +121,7 @@
+                 <a href="#ukazky">Ukázky</a>
+                 <a href="#pro-koho">Pro koho</a>
+                 <a href="#sablony">Šablony</a>
++                <a href="/docs/">Dokumentace</a>
+                 <a href="#kontakt">Kontakt</a>
+             </nav>
+             <a class="nav-cta" href="<?php echo e($demoUrl); ?>">Vyzkoušet demo</a>
+@@ -460,7 +461,7 @@
+     <footer class="landing-footer">
+         <div class="landing-wrap footer-wrap">
+             <span>© <?php echo date('Y'); ?> <?php echo e($contactName); ?> · <?php echo e($productName); ?></span>
+-            <span class="footer-links"><a href="<?php echo e($frontendBase); ?>/privacy">Soukromí a data</a> · <a href="<?php echo e($frontendBase); ?>/privacy#hall-of-fame">Pravidla Síně slávy</a> · <a href="<?php echo e($mainSite); ?>">miloslavhub.cz</a></span>
++            <span class="footer-links"><a href="/docs/">Dokumentace</a> · <a href="<?php echo e($frontendBase); ?>/privacy">Soukromí a data</a> · <a href="<?php echo e($frontendBase); ?>/privacy#hall-of-fame">Pravidla Síně slávy</a> · <a href="<?php echo e($mainSite); ?>">miloslavhub.cz</a></span>
+         </div>
+     </footer>
+ <?php else: ?>

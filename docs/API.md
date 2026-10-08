@@ -1,4 +1,10 @@
-# API 0.8.7
+# API — kvalifikovaná baseline a nevydaný vývoj
+
+## Oprávnění a jazyk ve vývoji — 8. 10. 2026
+
+Namespace zůstává `mhl/v1`. Nový místní model `MHL_Access` kontroluje oprávnění k objektu pro řízení výuky, export a editaci. Historická tabulka a věta o neimplementované roli níže dokumentují 0.8.7; nejsou popisem nové vývojové větve. REST požadavky mohou předávat `ui_lang` pro vlastní zprávy cs/en, což nemění identitu ani oprávnění. [Reference organizací a i18n](ORGANIZATIONS-I18N-REFERENCE.md).
+
+Veřejné studentské a výsledkové cesty zachovávají dosavadní veřejné chování. Nové ACL administrace z nich nedělá soukromé rozhraní. Centrální AUTH, licenční entitlement, oddělené integrační scopes, rate limiting a kvalifikované veřejné OpenAPI nejsou tímto dokumentem prohlášené za dokončené. [Stav testů a integrací](DEVELOPMENT-ORGANIZATIONS-I18N-2026-10-08.md), [index dokumentace](INDEX.md).
 
 ## Nevydaná změna anket — 8. 10. 2026
 
