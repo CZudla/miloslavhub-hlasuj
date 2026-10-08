@@ -35,7 +35,9 @@ Zdrojové texty aplikace a testů používají LF; `.gitattributes` sjednocuje c
 
 Nový rozsah bez domácích úkolů je zachycen návrhem rozhodnutí s receiptem `6405859c087e82a574fc4c617b62911f`. Organizační pravidlo míst navazuje na HLS-035 rev. 1, receipt `0742bff249a76d69304b8ff130741819`. Oba návrhy mají stav pending a `authoritative_applied=false`; tento stav znamená čekání na lidské zpracování v centrále, nikoli nedoručený lokální požadavek.
 
-Implementační vazby se týkají HLS-032, 033, 034, 035, 045 a 046, vše rev. 1. HLS-032 a HLS-035 jsou částečné kvůli živému přihlášení, pozvánkám a licencování. Předchozí historické reporty zůstávají zachované. Současné receipty a stav fronty dokládá samostatná evidence po publikaci zdrojového commitu.
+Implementační vazby se týkají HLS-032, 033, 034, 035, 045 a 046, vše rev. 1. HLS-032 a HLS-035 jsou částečné kvůli živému přihlášení, pozvánkám a licencování. Předchozí historické reporty zůstávají zachované. Zdrojový commit [`098ea28`](https://github.com/CZudla/miloslavhub-hlasuj/commit/098ea2836c085ca49a902a648a309f51321556d6) byl publikován a zpětně ověřen proti Git indexu i hashi 98 testovaných souborů. [Evidence publikace a fronty](test-evidence/2026-10-08-organizations-i18n-delivery.json) zachovává skutečný stav doručení.
+
+Nových **16 operací (6 implementací a 10 testových záznamů) zůstává pending**, bez receiptů: zápis opakovaně vrátil HTTP 503 `snapshot_unavailable`. Čtení centrály při opakovaném pokusu fungovalo se stejnou baseline. První testové zápisy dostaly HTTP 400 kvůli absolutnímu `artifact_ref`; API vyžaduje bezpečnou relativní cestu. Deset opravených náhrad zachovává původní časy a výsledky; původních deset blocked řádků zůstává jako historie. Celková chráněná fronta má **37 sent, 16 pending a 10 historických blocked**. Aktuální efektivní sada má 0 blocked, ale není doručená. Dřívější receipty dvou návrhů tím nejsou zneplatněné. Obnova centrálního serveru je mimo rozsah práce na Hlasuj!.
 
 ## Podmínky dokončení a nasazení
 

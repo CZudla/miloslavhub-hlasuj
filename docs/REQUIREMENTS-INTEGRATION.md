@@ -1,5 +1,14 @@
 # Hlasuj! a centrální REQUIREMENTS
 
+## Aktualizace 8. 10. 2026 — organizace a jazyky
+
+Aktuální vývojový stav a publikaci zdrojů popisuje [zpráva organizací a jazyků](DEVELOPMENT-ORGANIZATIONS-I18N-2026-10-08.md). Čtení Private API v2 znovu potvrdilo baseline 1.6.0 se stejným snapshotem a 168 položkami all ve dvou stránkách. Dva nové návrhy rozsahu a pravidla míst mají receipty, vzdáleně čekají na lidské zpracování a `authoritative_applied=false`.
+
+Nových 6 implementačních vazeb a 10 testových záznamů je zachováno v chráněném outboxu, ale **není doručeno**: aktuální zápis vrací HTTP 503 `snapshot_unavailable`. Po opravě `artifact_ref` na bezpečnou relativní cestu prošla validace těla; zápis dál blokuje centrála. Původních 10 odmítnutých HTTP 400 řádků zůstává historickou evidencí, opravené náhrady mají nová ID. Celkový stav: **37 sent / 16 pending / 10 historických blocked**, aktuální efektivní sada 0 sent / 16 pending / 0 blocked. Přesná ID, chyby a vazbu na zdrojový commit obsahuje [sanitizovaná evidence](test-evidence/2026-10-08-organizations-i18n-delivery.json).
+
+Nové vazby se týkají HLS-032, 033, 034, 035, 045 a 046 rev. 1; živé AUTH, kvóta, hostingová zátěž, produkce a finální balíčky mají skutečný stav skipped s důvodem. Historické chyby necommitnutých variant zůstávají chráněnými pozorováními; nevymýšlí se jim commit ani úspěšný centrální receipt. Následující text zachovává historický stav ze 7. 10. 2026.
+
+
 Stav 7. 10. 2026. REQUIREMENTS je autoritou požadavků, rozhodnutí, revizí a evidence. GitHub a zdejší dokumentace jsou sekundární kopie a implementační podklady. Aktuální provozní verze jiných služeb určuje samostatný Registr služeb.
 
 ## Aktualizace podle nových projektových instrukcí

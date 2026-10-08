@@ -1,0 +1,310 @@
+{
+  "recorded_at": "2026-10-08T11:54:58.880538+00:00",
+  "commit": "098ea2836c085ca49a902a648a309f51321556d6",
+  "counts": {
+    "sent": 37,
+    "pending": 16,
+    "blocked": 10,
+    "sending": 0
+  },
+  "effective_submission_counts": {
+    "sent": 0,
+    "pending": 16,
+    "blocked": 0,
+    "sending": 0
+  },
+  "records": [
+    {
+      "id": "1304c1b34f8c48e6b3ba18df48817f54",
+      "path": "/api/v2/entries/hlasuj%3Arequirement%3AHLS-032/implementation",
+      "state": "pending",
+      "receipt": null,
+      "error_code": "http_503",
+      "digest": "e893e49cfb0cf8cb30aa6a3a96ad067e149f98eb2fa8cd4104e2560e20648d04",
+      "readback_exact": false,
+      "entry_revision": 1,
+      "status": "partial",
+      "commit": "098ea2836c085ca49a902a648a309f51321556d6"
+    },
+    {
+      "id": "f025993463e54043bbca52b2c6189391",
+      "path": "/api/v2/entries/hlasuj%3Arequirement%3AHLS-033/implementation",
+      "state": "pending",
+      "receipt": null,
+      "error_code": "http_503",
+      "digest": "3b259180845fd26702d9f5e5e45bcbc6b2928107ba733d19f3a887900d2d4565",
+      "readback_exact": false,
+      "entry_revision": 1,
+      "status": "implemented",
+      "commit": "098ea2836c085ca49a902a648a309f51321556d6"
+    },
+    {
+      "id": "c13137165edf460cae6d8922198107bb",
+      "path": "/api/v2/entries/hlasuj%3Arequirement%3AHLS-034/implementation",
+      "state": "pending",
+      "receipt": null,
+      "error_code": "http_503",
+      "digest": "a64d18f395192e4d991b8048b97b77869bd4e7449b2d764c9e2e19e34a9eab41",
+      "readback_exact": false,
+      "entry_revision": 1,
+      "status": "implemented",
+      "commit": "098ea2836c085ca49a902a648a309f51321556d6"
+    },
+    {
+      "id": "1ce1597c5789432f94a6e38e4784dfc3",
+      "path": "/api/v2/entries/hlasuj%3Arequirement%3AHLS-035/implementation",
+      "state": "pending",
+      "receipt": null,
+      "error_code": "http_503",
+      "digest": "fe7c42d309c056203f78ff5fc22c627e133c5508b46060ae4de6fce014353bbc",
+      "readback_exact": false,
+      "entry_revision": 1,
+      "status": "partial",
+      "commit": "098ea2836c085ca49a902a648a309f51321556d6"
+    },
+    {
+      "id": "37b3fba7e2324e398408b7b04ca9ae85",
+      "path": "/api/v2/entries/hlasuj%3Arequirement%3AHLS-045/implementation",
+      "state": "pending",
+      "receipt": null,
+      "error_code": "http_503",
+      "digest": "4f8bae2f66638e8805500ac7010a91f2349997d22e396ff1e35790157b7b6bc5",
+      "readback_exact": false,
+      "entry_revision": 1,
+      "status": "implemented",
+      "commit": "098ea2836c085ca49a902a648a309f51321556d6"
+    },
+    {
+      "id": "8cf49906a311458e876b76df76d37dfb",
+      "path": "/api/v2/entries/hlasuj%3Arequirement%3AHLS-046/implementation",
+      "state": "pending",
+      "receipt": null,
+      "error_code": "http_503",
+      "digest": "91d2c15a874173f77bdbe94e2da875827f0c138680463710b1a850f908e6205b",
+      "readback_exact": false,
+      "entry_revision": 1,
+      "status": "implemented",
+      "commit": "098ea2836c085ca49a902a648a309f51321556d6"
+    },
+    {
+      "id": "7388618dfe2249f8a37b30d03da7b0e6",
+      "path": "/api/v2/entries/hlasuj%3Arequirement%3AHLS-033/verification",
+      "state": "pending",
+      "receipt": null,
+      "error_code": "http_503",
+      "digest": "977ffce3d7751183bdaa96421a3d078262cb91933aaa439b0fb95e8632d6b17e",
+      "readback_exact": false,
+      "entry_revision": 1,
+      "test_id": "organization-permissions-130-server-checks",
+      "result": "passed",
+      "commit": "098ea2836c085ca49a902a648a309f51321556d6"
+    },
+    {
+      "id": "f8f5fe7fb22644c2bcb53fbb3b682f74",
+      "path": "/api/v2/entries/hlasuj%3Arequirement%3AHLS-034/verification",
+      "state": "pending",
+      "receipt": null,
+      "error_code": "http_503",
+      "digest": "5324baac612509e6c834963c5ddb4fc9c5eb1157ae1307f7dce7baedbd6b918d",
+      "readback_exact": false,
+      "entry_revision": 1,
+      "test_id": "organization-sharing-real-wordpress-browser",
+      "result": "passed",
+      "commit": "098ea2836c085ca49a902a648a309f51321556d6"
+    },
+    {
+      "id": "5563f14a9c2642c58807c82081e241d4",
+      "path": "/api/v2/entries/hlasuj%3Arequirement%3AHLS-035/verification",
+      "state": "pending",
+      "receipt": null,
+      "error_code": "http_503",
+      "digest": "1f6dca98e9c34d53e65def1f971d1f193b96da41e12e2b8f6a451271e19a2db9",
+      "readback_exact": false,
+      "entry_revision": 1,
+      "test_id": "local-organization-teaching-account-count",
+      "result": "passed",
+      "commit": "098ea2836c085ca49a902a648a309f51321556d6"
+    },
+    {
+      "id": "5015a2eb4b3749f2ae31f63e9a97167a",
+      "path": "/api/v2/entries/hlasuj%3Arequirement%3AHLS-045/verification",
+      "state": "pending",
+      "receipt": null,
+      "error_code": "http_503",
+      "digest": "6bc1adcb64e910401ac5eda644f99f0e3722c3ea05b5509ee9f0efcc35ec89a0",
+      "readback_exact": false,
+      "entry_revision": 1,
+      "test_id": "full-regression-and-english-browser",
+      "result": "passed",
+      "commit": "098ea2836c085ca49a902a648a309f51321556d6"
+    },
+    {
+      "id": "2c413260de324c0e840e257b5a394f78",
+      "path": "/api/v2/entries/hlasuj%3Arequirement%3AHLS-046/verification",
+      "state": "pending",
+      "receipt": null,
+      "error_code": "http_503",
+      "digest": "ca8cb4cb8971cd3db1a9a60ecb788adbdadb12868402c8e72bc3fe059ff9aaf2",
+      "readback_exact": false,
+      "entry_revision": 1,
+      "test_id": "literal-translation-preserves-authored-content",
+      "result": "passed",
+      "commit": "098ea2836c085ca49a902a648a309f51321556d6"
+    },
+    {
+      "id": "b177504eb12b48d097d6166562068870",
+      "path": "/api/v2/entries/hlasuj%3Arequirement%3AHLS-032/verification",
+      "state": "pending",
+      "receipt": null,
+      "error_code": "http_503",
+      "digest": "b25052ccee5f293a748e14ab4ace885790a2e1e333af4b8bfb1aa33aec70eb2f",
+      "readback_exact": false,
+      "entry_revision": 1,
+      "test_id": "live-auth-multiple-user-e2e",
+      "result": "skipped",
+      "commit": "098ea2836c085ca49a902a648a309f51321556d6"
+    },
+    {
+      "id": "c2de12668d0d4304b1f6d22ce8453243",
+      "path": "/api/v2/entries/hlasuj%3Arequirement%3AHLS-035/verification",
+      "state": "pending",
+      "receipt": null,
+      "error_code": "http_503",
+      "digest": "f6eeccfcabea25927be9dc9776f45431787d78191df9ca3e71dbf9def2b596f0",
+      "readback_exact": false,
+      "entry_revision": 1,
+      "test_id": "live-license-quota-concurrent-reservation",
+      "result": "skipped",
+      "commit": "098ea2836c085ca49a902a648a309f51321556d6"
+    },
+    {
+      "id": "09cab9ee7a4c4b48a04cb10792ea7bc3",
+      "path": "/api/v2/entries/hlasuj%3Arequirement%3AHLS-062/verification",
+      "state": "pending",
+      "receipt": null,
+      "error_code": "http_503",
+      "digest": "5dba24226c7aa6879ee86860ba0d0200a132866ef82025c34e6fe2f5aa00b470",
+      "readback_exact": false,
+      "entry_revision": 1,
+      "test_id": "production-hosting-load-qualification",
+      "result": "skipped",
+      "commit": "098ea2836c085ca49a902a648a309f51321556d6"
+    },
+    {
+      "id": "ab569803a6ed42a4bfe1fc06dbd6d250",
+      "path": "/api/v2/entries/hlasuj%3Arequirement%3AHLS-065/verification",
+      "state": "pending",
+      "receipt": null,
+      "error_code": "http_503",
+      "digest": "d75482660a8d3de6eb7cb5702d69eb2232cde99afbe00861d139d8eef240f9a1",
+      "readback_exact": false,
+      "entry_revision": 1,
+      "test_id": "production-deployment-organizations-i18n",
+      "result": "skipped",
+      "commit": "098ea2836c085ca49a902a648a309f51321556d6"
+    },
+    {
+      "id": "aa4a11d304fa4606a08dd3f7c0025a15",
+      "path": "/api/v2/entries/hlasuj%3Arequirement%3AHLS-073/verification",
+      "state": "pending",
+      "receipt": null,
+      "error_code": "http_503",
+      "digest": "ecd752e18b0e805790d21b1fe936bca062e32b7174df46a9c1fe83a0a8230235",
+      "readback_exact": false,
+      "entry_revision": 1,
+      "test_id": "final-two-release-packages",
+      "result": "skipped",
+      "commit": "098ea2836c085ca49a902a648a309f51321556d6"
+    }
+  ],
+  "superseded_records": [
+    {
+      "original_id": "422a474f015448779d1c9bfa3db843b1",
+      "replacement_id": "7388618dfe2249f8a37b30d03da7b0e6",
+      "original_state": "blocked",
+      "original_error_code": "http_400",
+      "reason": "Live API requires safe relative artifact_ref; absolute GitHub URL rejected. Original record retained unchanged."
+    },
+    {
+      "original_id": "0f433853c71e4ab6a661253510780699",
+      "replacement_id": "f8f5fe7fb22644c2bcb53fbb3b682f74",
+      "original_state": "blocked",
+      "original_error_code": "http_400",
+      "reason": "Live API requires safe relative artifact_ref; absolute GitHub URL rejected. Original record retained unchanged."
+    },
+    {
+      "original_id": "76021364a6854cc2a323a1c46c62a527",
+      "replacement_id": "5563f14a9c2642c58807c82081e241d4",
+      "original_state": "blocked",
+      "original_error_code": "http_400",
+      "reason": "Live API requires safe relative artifact_ref; absolute GitHub URL rejected. Original record retained unchanged."
+    },
+    {
+      "original_id": "49125a95448243238384d5a5c4e2913a",
+      "replacement_id": "5015a2eb4b3749f2ae31f63e9a97167a",
+      "original_state": "blocked",
+      "original_error_code": "http_400",
+      "reason": "Live API requires safe relative artifact_ref; absolute GitHub URL rejected. Original record retained unchanged."
+    },
+    {
+      "original_id": "cc9042dd74774cea944cade2f986dbda",
+      "replacement_id": "2c413260de324c0e840e257b5a394f78",
+      "original_state": "blocked",
+      "original_error_code": "http_400",
+      "reason": "Live API requires safe relative artifact_ref; absolute GitHub URL rejected. Original record retained unchanged."
+    },
+    {
+      "original_id": "d5ebcfbb29994ba9953d8ff62ff9ffa3",
+      "replacement_id": "b177504eb12b48d097d6166562068870",
+      "original_state": "blocked",
+      "original_error_code": "http_400",
+      "reason": "Live API requires safe relative artifact_ref; absolute GitHub URL rejected. Original record retained unchanged."
+    },
+    {
+      "original_id": "c220e87bd0094ff88e08ab468f04ae83",
+      "replacement_id": "c2de12668d0d4304b1f6d22ce8453243",
+      "original_state": "blocked",
+      "original_error_code": "http_400",
+      "reason": "Live API requires safe relative artifact_ref; absolute GitHub URL rejected. Original record retained unchanged."
+    },
+    {
+      "original_id": "87a6b8bd60674d9d8c78c96ad661fe63",
+      "replacement_id": "09cab9ee7a4c4b48a04cb10792ea7bc3",
+      "original_state": "blocked",
+      "original_error_code": "http_400",
+      "reason": "Live API requires safe relative artifact_ref; absolute GitHub URL rejected. Original record retained unchanged."
+    },
+    {
+      "original_id": "5619cd905b794ca5b1df3dabe1f80b69",
+      "replacement_id": "ab569803a6ed42a4bfe1fc06dbd6d250",
+      "original_state": "blocked",
+      "original_error_code": "http_400",
+      "reason": "Live API requires safe relative artifact_ref; absolute GitHub URL rejected. Original record retained unchanged."
+    },
+    {
+      "original_id": "a503ca355b034172bf1560603d8fc55a",
+      "replacement_id": "aa4a11d304fa4606a08dd3f7c0025a15",
+      "original_state": "blocked",
+      "original_error_code": "http_400",
+      "reason": "Live API requires safe relative artifact_ref; absolute GitHub URL rejected. Original record retained unchanged."
+    }
+  ],
+  "review_apply_publish_revoke_called": false,
+  "source_publication": {
+    "repository": "CZudla/miloslavhub-hlasuj",
+    "source_commit": "098ea2836c085ca49a902a648a309f51321556d6",
+    "source_tree": "6fb13e41bad6cb822ff7e860df4a32f7315be361",
+    "files": 98,
+    "tested_source_sha256": "46c0eb56d460b8c5a7f531ea1f70c8a2ff4242c325dd04b578c9666c563b345c",
+    "remote_tree_matches_index": true
+  },
+  "delivery_observation": {
+    "recorded_at": "2026-10-08T11:54:59.720052+00:00",
+    "implementation_initial_error": "HTTP 503 snapshot_unavailable",
+    "verification_initial_error": "HTTP 400 invalid_body: artifact_ref must be a safe relative reference",
+    "verification_correction": "Append-only replacements use docs/test-evidence/2026-10-08-organizations-i18n.json; original blocked records retained.",
+    "corrected_write_error": "HTTP 503 snapshot_unavailable",
+    "read_context_status": "passed: Private API v2, baseline 1.6.0, 168 items in 2 pages",
+    "scope": "No central server, review, approval, apply, publish or revoke operation performed."
+  }
+}
